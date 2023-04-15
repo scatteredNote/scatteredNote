@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --single-quote --write .",
+    "lint:fix": "yarn lint -- --fix"
   },
   "dependencies": {
     "@uiw/react-md-editor": "3.6.0",
@@ -22,6 +24,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.21",
+    "prettier": "2.8.7",
     "tailwindcss": "^3.2.7"
   }
 }

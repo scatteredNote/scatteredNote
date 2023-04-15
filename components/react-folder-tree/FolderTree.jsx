@@ -14,7 +14,7 @@ import ConfigContext from './Context';
 
 const FolderTree = ({
   data,
-  onChange = console.log,   // eslint-disable-line
+  onChange = console.log, // eslint-disable-line
   initCheckedStatus = 'unchecked',
   initOpenStatus = 'open',
   iconComponents = {},
@@ -28,13 +28,7 @@ const FolderTree = ({
     initOpenStatus,
   };
   const { treeState, reducers } = useTreeState({ data, options, onChange });
-  const {
-    checkNode,
-    renameNode,
-    deleteNode,
-    addNode,
-    toggleOpen,
-  } = reducers;
+  const { checkNode, renameNode, deleteNode, addNode, toggleOpen } = reducers;
 
   if (!treeState) return null;
 
@@ -57,15 +51,9 @@ const FolderTree = ({
     - tree node specific data is passed recursively to each node, which is different for each node
                                                                                         ---------- */
   return (
-    <div className='FolderTree w-full'>
-      <ConfigContext.Provider
-        value={ configs }
-      >
-        <TreeNode
-          key={ treeState._id }
-          path={ [] }
-          { ...treeState }
-        />
+    <div className="FolderTree w-full">
+      <ConfigContext.Provider value={configs}>
+        <TreeNode key={treeState._id} path={[]} {...treeState} />
       </ConfigContext.Provider>
     </div>
   );

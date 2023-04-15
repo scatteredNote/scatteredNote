@@ -1,7 +1,4 @@
-import React, {
-  useContext,
-  useState,
-} from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   AiFillCaretRight,
@@ -26,16 +23,13 @@ import {
   getDefaultIcon,
 } from './iconUtils';
 
-const TreeNode = ({
-  path,
-  name,
-  checked,
-  isOpen,
-  children,
-  ...restData
-}) => {
+const TreeNode = ({ path, name, checked, isOpen, children, ...restData }) => {
   const nodeData = {
-    path, name, checked, isOpen, ...restData,
+    path,
+    name,
+    checked,
+    isOpen,
+    ...restData,
   };
 
   const {
@@ -78,25 +72,21 @@ const TreeNode = ({
   let TypeIcon = FileIcon;
   let TypeIconType = 'FileIcon';
   if (isFolder) {
-    TypeIcon = isOpen
-      ? FolderOpenIcon
-      : FolderIcon;
+    TypeIcon = isOpen ? FolderOpenIcon : FolderIcon;
 
-    TypeIconType = isOpen
-      ? 'FolderOpenIcon'
-      : 'FolderIcon';
+    TypeIconType = isOpen ? 'FolderOpenIcon' : 'FolderIcon';
   }
 
-  const handleCheckBoxChange = e => {
+  const handleCheckBoxChange = (e) => {
     if (readOnly) return;
 
     const newStatus = +e.target.checked;
     handleCheck(path, newStatus);
   };
 
-  const onNameChange = newName => handleRename(path, newName);
+  const onNameChange = (newName) => handleRename(path, newName);
 
-  const selectMe = () => (!isEditing && !readOnly && setIsSelected(true));
+  const selectMe = () => !isEditing && !readOnly && setIsSelected(true);
   const unSelectMe = () => setIsSelected(false);
 
   const openMe = () => handleToggleOpen(path, true);
@@ -122,111 +112,93 @@ const TreeNode = ({
   };
 
   const TreeNodeToolBar = (
-    <span className={ iconContainerClassName('TreeNodeToolBar') + " flex" }>
+    <span className={iconContainerClassName('TreeNodeToolBar') + ' flex'}>
       <EditIcon
-        className={ iconClassName('EditIcon') }
-        onClick={ editMe }
-        nodeData={ nodeData }
+        className={iconClassName('EditIcon')}
+        onClick={editMe}
+        nodeData={nodeData}
       />
       <DeleteIcon
-        className={ iconClassName('DeleteIcon') }
-        onClick={ deleteMe }
-        nodeData={ nodeData }
+        className={iconClassName('DeleteIcon')}
+        onClick={deleteMe}
+        nodeData={nodeData}
       />
-      {
-        isFolder && (
-          <>
-            <AddFileIcon
-              className={ iconClassName('AddFileIcon') }
-              onClick={ addFile }
-              nodeData={ nodeData }
-            />
-            <AddFolderIcon
-              className={ iconClassName('AddFolderIcon') }
-              onClick={ addFolder }
-              nodeData={ nodeData }
-            />
-          </>
-        )
-      }
+      {isFolder && (
+        <>
+          <AddFileIcon
+            className={iconClassName('AddFileIcon')}
+            onClick={addFile}
+            nodeData={nodeData}
+          />
+          <AddFolderIcon
+            className={iconClassName('AddFolderIcon')}
+            onClick={addFolder}
+            nodeData={nodeData}
+          />
+        </>
+      )}
 
       <CancelIcon
-        className={ iconClassName('CancelIcon') }
-        onClick={ unSelectMe }
-        nodeData={ nodeData }
+        className={iconClassName('CancelIcon')}
+        onClick={unSelectMe}
+        nodeData={nodeData}
       />
     </span>
   );
 
   const folderCaret = (
-    <span
-      className={ iconContainerClassName('caretContainer') }
-    >
-      {
-        isOpen
-          ? (
-            <CaretDownIcon
-              className={ iconClassName('CaretDownIcon') }
-              onClick={ closeMe }
-              nodeData={ nodeData }
-            />
-          )
-          : (
-            <CaretRightIcon
-              className={ iconClassName('CaretRightIcon') }
-              onClick={ openMe }
-              nodeData={ nodeData }
-            />
-          )
-      }
+    <span className={iconContainerClassName('caretContainer')}>
+      {isOpen ? (
+        <CaretDownIcon
+          className={iconClassName('CaretDownIcon')}
+          onClick={closeMe}
+          nodeData={nodeData}
+        />
+      ) : (
+        <CaretRightIcon
+          className={iconClassName('CaretRightIcon')}
+          onClick={openMe}
+          nodeData={nodeData}
+        />
+      )}
     </span>
   );
 
   return (
     <>
-      <div className='TreeNode flex' style={ treeNodeStyle }>
-        { showCheckbox && (
-          <CheckBox
-            status={ checked }
-            onChange={ handleCheckBoxChange }
-          />
+      <div className="TreeNode flex" style={treeNodeStyle}>
+        {showCheckbox && (
+          <CheckBox status={checked} onChange={handleCheckBoxChange} />
         )}
 
-        { isFolder && folderCaret }
+        {isFolder && folderCaret}
 
-        <span className={ iconContainerClassName('typeIconContainer') }>
+        <span className={iconContainerClassName('typeIconContainer')}>
           <TypeIcon
-            className={ iconClassName(TypeIconType) }
-            onClick={ selectMe }
-            nodeData={ nodeData }
+            className={iconClassName(TypeIconType)}
+            onClick={selectMe}
+            nodeData={nodeData}
           />
         </span>
 
-        <span
-          onClick={ handleNameClick }
-        >
+        <span onClick={handleNameClick}>
           <EditableName
-            isEditing={ isEditing }
-            setIsEditing={ setIsEditing }
-            onNameChange={ onNameChange }
-            OKIcon={ OKIcon }
-            CancelIcon={ CancelIcon }
-            nodeData={ nodeData }
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
+            onNameChange={onNameChange}
+            OKIcon={OKIcon}
+            CancelIcon={CancelIcon}
+            nodeData={nodeData}
           />
         </span>
-        { isSelected && TreeNodeToolBar }
-
+        {isSelected && TreeNodeToolBar}
       </div>
 
-      {
-        isFolder && isOpen && children.map((data, idx) => (
-          <TreeNode
-            key={ data._id }
-            path={ [...path, idx] }
-            { ...data }
-          />
-        ))
-      }
+      {isFolder &&
+        isOpen &&
+        children.map((data, idx) => (
+          <TreeNode key={data._id} path={[...path, idx]} {...data} />
+        ))}
     </>
   );
 };

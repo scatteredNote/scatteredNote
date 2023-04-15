@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  iconContainerClassName,
-  iconClassName,
-} from './iconUtils';
+import { iconContainerClassName, iconClassName } from './iconUtils';
 
 const EditableName = ({
   isEditing,
@@ -17,7 +14,7 @@ const EditableName = ({
   const { name } = nodeData;
   const [inputVal, setInputVal] = useState(name);
 
-  const onInputChange = e => setInputVal(e.target.value);
+  const onInputChange = (e) => setInputVal(e.target.value);
 
   const cancelEditing = () => {
     setInputVal(name);
@@ -30,36 +27,30 @@ const EditableName = ({
   };
 
   const editingName = (
-    <span className='editingName flex'>
-      <input
-        type='text'
-        value={ inputVal }
-        onChange={ onInputChange }
-      />
-      <span className={ iconContainerClassName('editableNameToolbar') + " flex" }>
+    <span className="editingName flex">
+      <input type="text" value={inputVal} onChange={onInputChange} />
+      <span
+        className={iconContainerClassName('editableNameToolbar') + ' flex'}
+      >
         <OKIcon
-          className={ iconClassName('OKIcon') }
-          onClick={ handleNameChange }
-          nodeData={ nodeData }
+          className={iconClassName('OKIcon')}
+          onClick={handleNameChange}
+          nodeData={nodeData}
         />
         <CancelIcon
-          className={ iconClassName('CancelIcon') }
-          onClick={ cancelEditing }
-          nodeData={ nodeData }
+          className={iconClassName('CancelIcon')}
+          onClick={cancelEditing}
+          nodeData={nodeData}
         />
       </span>
     </span>
   );
 
-  const displayName = (
-    <span className='displayName'>
-      { name }
-    </span>
-  );
+  const displayName = <span className="displayName">{name}</span>;
 
   return (
-    <span className='EditableName flex'>
-      { isEditing ? editingName : displayName }
+    <span className="EditableName flex">
+      {isEditing ? editingName : displayName}
     </span>
   );
 };
@@ -74,4 +65,3 @@ EditableName.propTypes = {
 };
 
 export default EditableName;
-

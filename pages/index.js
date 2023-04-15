@@ -1,6 +1,5 @@
-import Head from 'next/head'
+import Head from 'next/head';
 // import styles from '@/styles/file.scss'
-
 
 export default function Home() {
   return (
@@ -11,9 +10,9 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main >
+      <main>
         <h1 className="text-3xl font-bold underline">A new Begining</h1>
       </main>
     </>
-  )
+  );
 }

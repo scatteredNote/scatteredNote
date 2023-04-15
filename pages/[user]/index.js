@@ -1,9 +1,7 @@
-
 export default function User() {
-
-  return (  
+  return (
     <>
       <div>User Editor</div>
     </>
-  )
+  );
 }

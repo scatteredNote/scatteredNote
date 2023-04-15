@@ -20,18 +20,18 @@ $bluegreen: rgb(0, 153, 115);
     display: inline-block;
     margin-right: $checkbox-margin-right;
   }
-  
+
   /* ---------- TreeNode ---------- */
   .TreeNode {
     padding: 2px 0;
-    
+
     // border: 1px solid red;
 
     .TreeNodeToolBar {
       margin-left: $toolbar-margin-left;
 
       svg {
-        padding: $toolbar-icon-padding
+        padding: $toolbar-icon-padding;
       }
     }
 
@@ -40,7 +40,6 @@ $bluegreen: rgb(0, 153, 115);
 
       svg {
         padding-top: 1px;
-       
       }
 
       &:not(.typeIconContainer) svg:hover {
@@ -69,11 +68,23 @@ $bluegreen: rgb(0, 153, 115);
 
   /* ---------- Icons ---------- */
   .icon:hover {
-    &.OKIcon { color: $green; };
-    &.CancelIcon { color: $red; };
-    &.EditIcon { color: $purple; };
-    &.DeleteIcon { color: $pink; };
-    &.AddFileIcon { color: $bluegreen; };
-    &.AddFolderIcon { color: $bluegreen; };
+    &.OKIcon {
+      color: $green;
+    }
+    &.CancelIcon {
+      color: $red;
+    }
+    &.EditIcon {
+      color: $purple;
+    }
+    &.DeleteIcon {
+      color: $pink;
+    }
+    &.AddFileIcon {
+      color: $bluegreen;
+    }
+    &.AddFolderIcon {
+      color: $bluegreen;
+    }
   }
 }

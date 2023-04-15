@@ -4,6 +4,6 @@ const removeImports = require('next-remove-imports')();
 
 const nextConfig = {
   reactStrictMode: true,
-}
+};
 
-module.exports = removeImports(nextConfig)
+module.exports = removeImports(nextConfig);

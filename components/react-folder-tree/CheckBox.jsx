@@ -1,7 +1,4 @@
-import React, {
-  useLayoutEffect,
-  useRef,
-} from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 const CheckBox = ({ status, onChange }) => {
@@ -16,13 +13,13 @@ const CheckBox = ({ status, onChange }) => {
   });
 
   return (
-    <div className='CheckBox'>
+    <div className="CheckBox">
       <input
-        className='checkboxDOM'
-        type='checkbox'
-        checked={ isChecked }
-        onChange={ onChange }
-        ref={ checkboxRef }
+        className="checkboxDOM"
+        type="checkbox"
+        checked={isChecked}
+        onChange={onChange}
+        ref={checkboxRef}
       />
     </div>
   );
