@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import * as commands from '@uiw/react-md-editor/lib/commands';
 import { getUsersData } from '@/libs/getUsersDirectory';
+import CreatableSelect from 'react-select/creatable';
 
 export async function getStaticPaths() {
   const fs = require('fs');
@@ -70,19 +71,26 @@ const t2 = (() => {
   return output;
 })();
 
+const options = [
+  { label: "economics", value: "Economics" },
+  { label: "machine", value: "Machine" },
+  { label: "philosophy", value: "Philosophy" }
+];
+
 export default function Editor({ data }) {
   const [value, setValue] = useState('**Hello world!!!**');
   const [isPublic, setIsPublic] = useState(true);
   const handleToggle = () => {
     setIsPublic(!isPublic);
   };
+  const [valueOp, setValueOp] = useState([]);
   const onTreeStateChange = (state, event) => console.log(state, event);
   return (
     <>
       <div className=" mx-auto w-11/12 mt-10 grid grid-cols-12 border-2">
         <div className="col-span-8 ">
           <section className="flex flex-col">
-            <h1>Grab Editor</h1>
+            <h1 className="text-[#00000] font-bold">Grab Editor</h1>
             <MDEditor
               value={value}
               onChange={setValue}
@@ -117,6 +125,52 @@ export default function Editor({ data }) {
               ]}
             />
           </section>
+          <section className="flex flex-col mt-4">
+            <h1 className="text-[#00000] font-bold">Note</h1>
+            <MDEditor
+              value={value}
+              onChange={setValue}
+              height={400}
+              commands={[
+                commands.bold,
+                commands.italic,
+                commands.strikethrough,
+                commands.hr,
+                commands.title,
+                commands.divider,
+                commands.link,
+                commands.quote,
+                commands.code,
+                commands.codeBlock,
+                commands.image,
+                commands.group([...t2], {
+                  name: 'language',
+                  groupName: 'language',
+                  buttonProps: { 'aria-label': 'Insert a language' },
+                  icon: <span>language</span>,
+                }),
+                commands.divider,
+                commands.orderedListCommand,
+                commands.unorderedListCommand,
+                commands.checkedListCommand,
+              ]}
+              extraCommands={[
+                commands.codeEdit,
+                commands.codePreview,
+                commands.codeLive,
+              ]}
+            />
+          </section>
+
+          <section className="flex flex-col mt-4 mb-4">
+            <h1 className="text-[#00000] font-bold">Tags</h1>
+            <CreatableSelect
+              isMulti options={options}
+              value={valueOp}
+              onChange={(newValue) => setValueOp(newValue)}
+            />
+          </section>
+
         </div>
         <div className="col-start-9 col-span-12 border-2 p-4">
           <h1 className="text-center text-[#00000] font-bold">Metadata</h1>
