@@ -3,7 +3,7 @@ import '@uiw/react-markdown-preview/markdown.css';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import * as commands from '@uiw/react-md-editor/lib/commands';
-import { getUsersData } from '@/libs/getUsersDirectory';
+import { generateDirectoryStructure, generateDirectoryFilese } from '@/libs/getUsersDirectory';
 import CreatableSelect from 'react-select/creatable';
 
 export async function getStaticPaths() {
@@ -21,10 +21,14 @@ export async function getStaticProps({ params }) {
   const path = require('path');
   const user = params.user;
   const userDir = path.join(process.cwd(), 'users', user);
-  const data = { name: user, children: getUsersData(userDir) };
+  const data = generateDirectoryStructure(userDir);
+  const directoryStructure = generateDirectoryFilese(userDir);
+  
+  // const data = { name: user, children: getUsersData(userDir) };
   return {
     props: {
       data,
+      directoryStructure,
     },
   };
 }
@@ -77,14 +81,17 @@ const options = [
   { label: "philosophy", value: "Philosophy" }
 ];
 
-export default function Editor({ data }) {
+export default function Editor({ data, directoryStructure }) {
   const [value, setValue] = useState('**Hello world!!!**');
   const [isPublic, setIsPublic] = useState(true);
   const handleToggle = () => {
     setIsPublic(!isPublic);
   };
   const [valueOp, setValueOp] = useState([]);
-  const onTreeStateChange = (state, event) => console.log(state, event);
+  const [mainTopic, setMainTopic] = useState()
+  const [subTopic, setSubTopic] = useState()
+  const [note, setNote] = useState()
+  console.log("mainTopic", mainTopic);
   return (
     <>
       <div className=" mx-auto w-11/12 mt-10 grid grid-cols-12 border-2">
@@ -206,7 +213,28 @@ export default function Editor({ data }) {
           </div>
 
           <div className="mt-4 w-full">
-            <FolderTree data={data} onChange={onTreeStateChange} />
+            <h1 className="text-[#00000] font-bold">Main Topic</h1>
+            <CreatableSelect
+                options={data}
+                value={mainTopic}
+                onChange={(newValue) => setMainTopic(newValue)}
+              />
+          </div>
+          <div className="mt-4 w-full">
+            <h1 className="text-[#00000] font-bold">Sub Topic</h1>
+            <CreatableSelect
+              options={mainTopic ? directoryStructure[mainTopic.label].directory: [] }
+                value={subTopic}
+                onChange={(newValue) => setSubTopic(newValue)}
+              />
+          </div>
+          <div className="mt-4 w-full">
+            <h1 className="text-[#00000] font-bold">Notes</h1>
+            <CreatableSelect
+                options={data}
+                value={mainTopic}
+                onChange={(newValue) => setMainTopic(newValue)}
+              />
           </div>
         </div>
       </div>
