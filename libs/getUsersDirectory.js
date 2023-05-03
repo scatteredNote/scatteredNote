@@ -57,9 +57,9 @@ export function generateDirectoryStructure(dirPath, keyPrefix = '') {
     if (isDirectory) {
       if (label.split('/').length > 4) {
         const shortenedKey = label.split('/').slice(-3).join('/');
-        result.push({ label: shortenedKey, value: `${label}/` });
+        result.push({ label: shortenedKey, value: `${label}` });
       } else {
-        result.push({ label, value: `${label}/` });
+        result.push({ label, value: `${label}` });
       }
       
       const subItems = generateDirectoryStructure(itemPath, `${label}/`);

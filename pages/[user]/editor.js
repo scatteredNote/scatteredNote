@@ -91,7 +91,29 @@ export default function Editor({ data, directoryStructure }) {
   const [mainTopic, setMainTopic] = useState()
   const [subTopic, setSubTopic] = useState()
   const [note, setNote] = useState()
-  console.log("mainTopic", mainTopic);
+
+  const notes = () => {
+    if (subTopic) {
+      if (directoryStructure[subTopic.value].files.length > 0) {
+        return directoryStructure[subTopic.value].files
+      } 
+      else {
+        return []
+      }
+    }
+   
+    if (mainTopic) {
+      if (directoryStructure[mainTopic.value].files.length > 0) {
+        return directoryStructure[mainTopic.value].files
+      } 
+      else {
+        return []
+      }
+    }
+    return []
+  }
+  console.log("directoryStructure", directoryStructure);
+  console.log("data", data)
   return (
     <>
       <div className=" mx-auto w-11/12 mt-10 grid grid-cols-12 border-2">
@@ -182,10 +204,40 @@ export default function Editor({ data, directoryStructure }) {
         <div className="col-start-9 col-span-12 border-2 p-4">
           <h1 className="text-center text-[#00000] font-bold">Metadata</h1>
 
-          <div className="flex items-center ">
+          <div className="mt-8 w-full">
+            <h1 className="text-[#00000] font-bold">Main Topic</h1>
+            <small><i>Use an Existing Topic  or create a new Topic by just typing out the name and click on the drop down selection "Create ..."</i></small>
+            <CreatableSelect
+                options={data}
+                value={mainTopic}
+                onChange={(newValue) => setMainTopic(newValue)}
+              />
+          </div>
+          <div className="mt-8 w-full">
+            <h1 className="text-[#00000] font-bold">Sub Topic</h1>
+            <small><i>Use an Existing subtopic or create a new subtopic by just typing out the name and click on the drop down selection "Create ..."</i></small>
+            <CreatableSelect
+              options={mainTopic ? directoryStructure[mainTopic.value].directory: [] }
+                value={subTopic}
+                onChange={(newValue) => setSubTopic(newValue)}
+              />
+          </div>
+          <div className="mt-8 w-full">
+            <h1 className="text-[#00000] font-bold">Notes</h1>
+            <small><i>Use an Existing Note  or create a new Note by just typing out the name and click on the drop down selection "Create ..."</i></small>
+            <CreatableSelect
+                options={notes()}
+                value={note}
+                onChange={(newValue) => setNote(newValue)}
+              />
+          </div>
+
+          <div className="flex items-center relative mt-8">
+            <small className='absolute top-0'><i>Make a new note public or private</i></small>
+            <br />
             <label
               htmlFor="toggle"
-              className="flex items-center cursor-pointer"
+              className="flex items-center cursor-pointer mt-10"
             >
               <div className="relative">
                 <input
@@ -210,31 +262,6 @@ export default function Editor({ data, directoryStructure }) {
                 {isPublic ? 'Public' : 'Private'}
               </div>
             </label>
-          </div>
-
-          <div className="mt-4 w-full">
-            <h1 className="text-[#00000] font-bold">Main Topic</h1>
-            <CreatableSelect
-                options={data}
-                value={mainTopic}
-                onChange={(newValue) => setMainTopic(newValue)}
-              />
-          </div>
-          <div className="mt-4 w-full">
-            <h1 className="text-[#00000] font-bold">Sub Topic</h1>
-            <CreatableSelect
-              options={mainTopic ? directoryStructure[mainTopic.label].directory: [] }
-                value={subTopic}
-                onChange={(newValue) => setSubTopic(newValue)}
-              />
-          </div>
-          <div className="mt-4 w-full">
-            <h1 className="text-[#00000] font-bold">Notes</h1>
-            <CreatableSelect
-                options={data}
-                value={mainTopic}
-                onChange={(newValue) => setMainTopic(newValue)}
-              />
           </div>
         </div>
       </div>
