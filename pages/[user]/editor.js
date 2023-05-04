@@ -29,6 +29,7 @@ export async function getStaticProps({ params }) {
     props: {
       data,
       directoryStructure,
+      user
     },
   };
 }
@@ -81,16 +82,17 @@ const options = [
   { label: "philosophy", value: "Philosophy" }
 ];
 
-export default function Editor({ data, directoryStructure }) {
+export default function Editor({ data, directoryStructure, user }) {
   const [value, setValue] = useState('**Hello world!!!**');
   const [isPublic, setIsPublic] = useState(true);
-  const handleToggle = () => {
-    setIsPublic(!isPublic);
-  };
   const [valueOp, setValueOp] = useState([]);
   const [mainTopic, setMainTopic] = useState()
   const [subTopic, setSubTopic] = useState()
   const [note, setNote] = useState()
+
+  const handleToggle = () => {
+    setIsPublic(!isPublic);
+  };
 
   const notes = () => {
     if (subTopic) {
@@ -112,8 +114,44 @@ export default function Editor({ data, directoryStructure }) {
     }
     return []
   }
-  console.log("directoryStructure", directoryStructure);
-  console.log("data", data)
+
+  const handleCommit = () => {
+    //get all necessary state
+    const data = {
+      MainTopic: mainTopic.value,
+      SubTopic: subTopic.label,
+      note: note.label,
+      grab: value,
+      views: value,
+      isPublic: isPublic,
+      user: user,
+      tags: valueOp.map((item) => item.value)
+    }
+
+    fetch("/api/commit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Failed to save note.");
+        }
+        console.log("Note saved successfully!");
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    
+  }
+  
+  //TODO:
+  // fetch users metadata from usermEtadata.json
+  // populate Tags with user tags
+  // set public default to from metadata if note ispublic is already set
+
   return (
     <>
       <div className=" mx-auto w-11/12 mt-10 grid grid-cols-12 border-2">
@@ -262,6 +300,15 @@ export default function Editor({ data, directoryStructure }) {
                 {isPublic ? 'Public' : 'Private'}
               </div>
             </label>
+          </div>
+
+          <div>
+            <button
+              className='px-4 py-2 bg-green-400 text-white rounded-md mt-8 mx-auto float-right'
+              onClick={()=> handleCommit()}
+            >
+              Commit
+            </button>
           </div>
         </div>
       </div>
