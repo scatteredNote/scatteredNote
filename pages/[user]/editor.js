@@ -130,7 +130,7 @@ export default function Editor({ data, directoryStructure, user }) {
     }
 
     fetch("/api/commit", {
-      method: "POST",
+      method: 'POST',
       headers: {
         "Content-Type": "application/json"
       },
@@ -245,7 +245,7 @@ export default function Editor({ data, directoryStructure, user }) {
 
           <div className="mt-8 w-full">
             <h1 className="text-[#00000] font-bold">Main Topic</h1>
-            <small><i>Use an Existing Topic  or create a new Topic by just typing out the name and click on the drop down selection "Create ..."</i></small>
+            <small><i>Use an Existing Topic  or create a new Topic by just typing out the name and click on the drop down selection &ldquo;Create ...&rdquo;</i></small>
             <CreatableSelect
                 options={data}
                 value={mainTopic}
@@ -254,7 +254,7 @@ export default function Editor({ data, directoryStructure, user }) {
           </div>
           <div className="mt-8 w-full">
             <h1 className="text-[#00000] font-bold">Sub Topic</h1>
-            <small><i>Use an Existing subtopic or create a new subtopic by just typing out the name and click on the drop down selection "Create ..."</i></small>
+            <small><i>Use an Existing subtopic or create a new subtopic by just typing out the name and click on the drop down selection &ldquo;Create ...&rdquo;</i></small>
             <CreatableSelect
               options={mainTopic ? directoryStructure[mainTopic.value].directory: [] }
                 value={subTopic}
@@ -263,7 +263,7 @@ export default function Editor({ data, directoryStructure, user }) {
           </div>
           <div className="mt-8 w-full">
             <h1 className="text-[#00000] font-bold">Notes</h1>
-            <small><i>Use an Existing Note  or create a new Note by just typing out the name and click on the drop down selection "Create ..."</i></small>
+            <small><i>Use an Existing Note  or create a new Note by just typing out the name and click on the drop down selection &ldquo;Create ...&rdquo;</i></small>
             <CreatableSelect
                 options={notes()}
                 value={note}
