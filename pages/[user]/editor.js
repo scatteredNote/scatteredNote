@@ -84,6 +84,7 @@ const options = [
 
 export default function Editor({ data, directoryStructure, user }) {
   const [value, setValue] = useState('**Hello world!!!**');
+  const [views, setViews] = useState('**Store Views!!!**');
   const [isPublic, setIsPublic] = useState(true);
   const [valueOp, setValueOp] = useState([]);
   const [mainTopic, setMainTopic] = useState()
@@ -122,7 +123,7 @@ export default function Editor({ data, directoryStructure, user }) {
       SubTopic: subTopic.label,
       note: note.label,
       grab: value,
-      views: value,
+      views: views,
       isPublic: isPublic,
       user: user,
       tags: valueOp.map((item) => item.value)
@@ -195,8 +196,8 @@ export default function Editor({ data, directoryStructure, user }) {
           <section className="flex flex-col mt-4">
             <h1 className="text-[#00000] font-bold">Note</h1>
             <MDEditor
-              value={value}
-              onChange={setValue}
+              value={views}
+              onChange={setViews}
               height={400}
               commands={[
                 commands.bold,
