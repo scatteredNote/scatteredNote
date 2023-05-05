@@ -13,7 +13,7 @@ export const getUsersData = (dirPath) => {
       });
       for (const fileOrDir of filesAndDirs) {
         if (fileOrDir.isFile()) {
-          userData.children.push({ name: fileOrDir.name });
+          userData.children.push({ name: fileOrDir.name, value: `${dirFullPath}/${fileOrDir.name}`.split("/users/")[1].replace(/^[^/]+\//, '') });
         } else if (fileOrDir.isDirectory()) {
           const subDirData = getDirDataRecursive(
             path.join(dirFullPath, fileOrDir.name)
@@ -32,7 +32,7 @@ export const getDirDataRecursive = (dirPath) => {
   const filesAndDirs = fs.readdirSync(dirPath, { withFileTypes: true });
   for (const fileOrDir of filesAndDirs) {
     if (fileOrDir.isFile()) {
-      dirData.children.push({ name: fileOrDir.name });
+      dirData.children.push({ name: fileOrDir.name, value: `${dirPath}/${fileOrDir.name}`.split("/users/")[1].replace(/^[^/]+\//, '') });
     } else if (fileOrDir.isDirectory()) {
       const subDirData = getDirDataRecursive(
         path.join(dirPath, fileOrDir.name)
@@ -132,3 +132,24 @@ export function generateDirectoryFilese(pathLink) {
 }
 
 
+export const getUsersDataContent = (dirPath) => {
+  let result = [];
+  const files = fs.readdirSync(dirPath);
+  files.forEach((file, index) => {
+    const filePath = path.join(dirPath, file);
+    const stat = fs.statSync(filePath);
+    if (stat.isDirectory()) {
+      const subDirFiles = getUsersDataContent(filePath);
+      if (subDirFiles.length > 0) {
+        result = result.concat(subDirFiles);
+       
+      }
+    } else {
+      if (path.extname(file) === '.json') {
+        let content = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        result.push({ id: result.length + 1, path: filePath.split("/users/")[1].replace(/^[^/]+\//, ''), content });
+      }
+    }
+  });
+  return result;
+};
