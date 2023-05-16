@@ -4,6 +4,7 @@ import { getUsersData, getUsersDataContent } from '@/libs/getUsersDirectory';
 import CreatableSelect from 'react-select/creatable';
 import { useState } from 'react';
 import MiniSearch from 'minisearch'
+import { Remarkable } from 'remarkable';
 
 export default function Index({ user, contentlist, tags, content }) {
   const [valueOp, setValueOp] = useState([]);
@@ -14,6 +15,8 @@ export default function Index({ user, contentlist, tags, content }) {
   });
 
   search.addAll(content);
+
+  const md = new Remarkable();
 
   const searchFunc = (e) => {
     if (e.key === 'Enter') {
@@ -69,8 +72,8 @@ export default function Index({ user, contentlist, tags, content }) {
               return (
                 <div key={index} className="w-[80%] p-4 rounded-lg border-2 mt-4">
                   <div className='text-2xl'>{item.path}</div>
-                  <div className='text-sm'>{item.grab }</div>
-                  <div className='text-sm mt-2'>{item.views}</div>
+                  <div className='text-sm bg-gray-200 outline-2' dangerouslySetInnerHTML={{__html: md.render(item.grab).substring(0, 60)}} />
+                  <div className='text-sm mt-2 bg-gray-200 outline-2' dangerouslySetInnerHTML={{__html: md.render(item.views).substring(0, 60)}} />
                 </div>
               )
             })}
