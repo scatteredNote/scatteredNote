@@ -1,13 +1,14 @@
-
-import DirectoryTree from '@/components/DirectoryTree';
-import { getUsersData, getUsersDataContent } from '@/libs/getUsersDirectory';
+import React from 'react'
+import { getUsersDataPath, getUsersDataContent, getUsersData } from '@/libs/getUsersDirectory';
 import CreatableSelect from 'react-select/creatable';
 import { useState } from 'react';
 import MiniSearch from 'minisearch'
 import { Remarkable } from 'remarkable';
+import DirectoryTree from '@/components/DirectoryTree';
 import Link from 'next/link';
 
-export default function Index({ user, contentlist, tags, content }) {
+
+export default function Index({ user, contentlist, tags, content, mainContent }) {
   const [valueOp, setValueOp] = useState([]);
   const [contentPage, setContentPage] = useState([]);
   const search = new MiniSearch({
@@ -32,6 +33,10 @@ export default function Index({ user, contentlist, tags, content }) {
       }
     }
   }
+
+  const handleLinkClick = () => {
+    setContentPage([]); // Clear the contentPage state
+  };
   
   return (
     <>
@@ -51,7 +56,7 @@ export default function Index({ user, contentlist, tags, content }) {
           <section className='mt-4'>
             {contentlist.map((item, index) => {
               return (
-                <DirectoryTree key={index} data={item} user={user} />
+                <DirectoryTree key={index} data={item} user={user} setContentPage={setContentPage} />
               )
             }
             )}
@@ -67,13 +72,27 @@ export default function Index({ user, contentlist, tags, content }) {
         </section>
         <section className='border-2 col-start-5 col-span-12 p-4'>
           Main Content
+
           
+          {contentPage.length === 0 && mainContent && (
+            <>
+              {mainContent.map((item, index) => {
+                return (
+                  <div key={index} className="w-[80%] p-4 mt-4">
+                    <div className=' rounded-xl border-2  w-fit p-4' dangerouslySetInnerHTML={{ __html: md.render(item.grab) }} />
+                    <div className=' ml-16  border-dashed border-l-2 p-4 w-4 h-full' />
+                    <div className=' rounded-xl border-2  w-fit p-4 ml-6 ' dangerouslySetInnerHTML={{__html: md.render(item.views)}} />
+                  </div>
+                )
+              }) }
+            </>
+          )}
           <div>
             {contentPage.map((item, index) => {
               return (
-
-                <Link href={`./${user}/notes/${item.path.split(".json")[0].replaceAll("/", "_")}`} key={index}><div key={index} className="w-[80%] p-4 rounded-lg border-2 mt-4">
-                  <div className='text-2xl'>{item.path}</div>
+                 <Link href={`/${user}/notes/${item.path.split(".json")[0].replaceAll("/", "_")}`} key={index} passHref>
+                  <div key={index} className="w-[80%] p-4 rounded-lg border-2 mt-4" onClick={handleLinkClick}>
+                    <div className='text-2xl'>{item.path}</div>
                     <div className='text-sm bg-gray-200 outline-2' dangerouslySetInnerHTML={{__html: md.render(item.grab).substring(0, 60)}} />
                     <div className='text-sm mt-2 bg-gray-200 outline-2' dangerouslySetInnerHTML={{__html: md.render(item.views).substring(0, 60)}} />
                   </div>
@@ -95,18 +114,25 @@ export async function getStaticPaths() {
   const fs = require('fs');
   const path = require('path');
   const users = fs.readdirSync(path.join(process.cwd(), 'users'));
-  const paths = users.map((user) => ({
-    params: { user: user },
-  }));
+  const paths = users.flatMap((user) => {
+    const userDir = path.join(process.cwd(), 'users', user);
+    const contentlist = getUsersDataPath(userDir);
+    console.log("Content List", contentlist);
+    const paths = contentlist.map((item) => ({
+      params: { user: user, slug: item.replaceAll("/", "_") }
+    }))
+    console.log("PATHS", paths);
+    return paths
 
+  })
   return { paths, fallback: false };
 }
-
 
 export async function getStaticProps({ params }) {
   const path = require('path');
   const fs = require('fs');
   const user = params.user;
+  const slug = params.slug.replaceAll("_", "/");
   const userDir = path.join(process.cwd(), 'users', user);
   const contentlist = getUsersData(userDir);
   let tags;
@@ -135,15 +161,21 @@ export async function getStaticProps({ params }) {
             tags 
         }))
   });
- 
 
+  // get body main content
+  const requestedContentPath = path.join(process.cwd(), 'users', user, `${slug}.json`);
+  let mainContent = null;
+  if (fs.existsSync(requestedContentPath)) {
+      mainContent =  JSON.parse(fs.readFileSync(requestedContentPath, 'utf-8'));
+  }
+ 
   return {
     props: {
       user,
       contentlist,
       tags,
-      content
+      content,
+      mainContent
     },
   };
 }
-

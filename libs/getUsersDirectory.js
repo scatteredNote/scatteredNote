@@ -153,3 +153,24 @@ export const getUsersDataContent = (dirPath) => {
   });
   return result;
 };
+
+export const getUsersDataPath = (dirPath) => {
+  let result = [];
+  const files = fs.readdirSync(dirPath);
+  files.forEach((file, index) => {
+    const filePath = path.join(dirPath, file);
+    const stat = fs.statSync(filePath);
+    if (stat.isDirectory()) {
+      const subDirFiles = getUsersDataPath(filePath);
+      if (subDirFiles.length > 0) {
+        result = result.concat(subDirFiles);
+       
+      }
+    } else {
+      if (path.extname(file) === '.json') {
+        result.push(filePath.split("/users/")[1].replace(/^[^/]+\//, '').split(".json")[0]);
+      }
+    }
+  });
+  return result;
+};
