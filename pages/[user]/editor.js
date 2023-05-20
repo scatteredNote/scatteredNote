@@ -11,7 +11,8 @@ import { useRouter } from 'next/router';
 export async function getStaticPaths() {
   const fs = require('fs');
   const path = require('path');
-  const users = fs.readdirSync(path.join(process.cwd(), 'users'));
+  const usersDir = path.join(process.cwd(), 'users');
+  const users = fs.existsSync(usersDir) ? fs.readdirSync(usersDir) : [];
   const paths = users.map((user) => ({
     params: { user: user },
   }));
@@ -23,6 +24,10 @@ export async function getStaticProps({ params }) {
   const path = require('path');
   const user = params.user;
   const userDir = path.join(process.cwd(), 'users', user);
+
+  if (!fs.existsSync(userDir)) {
+    return { notFound: true };
+  }
   const data = generateDirectoryStructure(userDir);
   const directoryStructure = generateDirectoryFilese(userDir);
   

@@ -113,7 +113,8 @@ export default function Index({ user, contentlist, tags, content, mainContent })
 export async function getStaticPaths() {
   const fs = require('fs');
   const path = require('path');
-  const users = fs.readdirSync(path.join(process.cwd(), 'users'));
+  const usersDir = path.join(process.cwd(), 'users');
+  const users = fs.existsSync(usersDir) ? fs.readdirSync(usersDir) : [];
   const paths = users.flatMap((user) => {
     const userDir = path.join(process.cwd(), 'users', user);
     const contentlist = getUsersDataPath(userDir);
@@ -134,6 +135,9 @@ export async function getStaticProps({ params }) {
   const user = params.user;
   const slug = params.slug.replaceAll("_", "/");
   const userDir = path.join(process.cwd(), 'users', user);
+  if (!fs.existsSync(userDir)) {
+    return { notFound: true };
+  }
   const contentlist = getUsersData(userDir);
   let tags;
 
