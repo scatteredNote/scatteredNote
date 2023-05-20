@@ -35,6 +35,22 @@ export async function createGithubFolder(user) {
             console.log(`Error creating user folder: ${userFolder}`);
             console.log(error);
           });
+        
+         octokit.repos.createOrUpdateFileContents({
+          owner: "steveoni",
+          repo: "testnote",
+          path: `userMeta/${user}.json`,
+          message: `Create userMeta/${user}.json`,
+          content: Buffer.from("{}").toString("base64"),
+        })
+          .then(() => {
+            console.log(`User folder created: ${userFolder}`);
+          })
+          .catch((error) => {
+            console.log(`Error creating user folder: ${userFolder}`);
+            console.log(error);
+          });
+        
       } else {
         console.log(`Error getting user folder: ${userFolder}`);
         console.log(error);
