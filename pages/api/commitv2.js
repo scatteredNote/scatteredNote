@@ -51,7 +51,7 @@ async function createDirectoryIfNotExists(octokit, directoryPath) {
   try {
     await octokit.repos.getContent({
       owner: "steveoni",
-      repo: "testnote",
+      repo: "scatteredNote",
       path: directoryPath,
     });
   } catch (error) {
@@ -59,7 +59,7 @@ async function createDirectoryIfNotExists(octokit, directoryPath) {
       // Directory doesn't exist, create it
       await octokit.repos.createOrUpdateFileContents({
         owner: "steveoni",
-        repo: "testnote",
+        repo: "scatteredNote",
         path: `${directoryPath}/.gitkeep`,
         message: `Create ${directoryPath}/.gitkeep`,
         content: Buffer.from("").toString("base64"),
@@ -74,7 +74,7 @@ async function createFileIfNotExists(octokit, filePath, content) {
   try {
     await octokit.repos.getContent({
       owner: "steveoni",
-      repo: "testnote",
+      repo: "scatteredNote",
       path: filePath,
     });
   } catch (error) {
@@ -82,7 +82,7 @@ async function createFileIfNotExists(octokit, filePath, content) {
       // File doesn't exist, create it
       await octokit.repos.createOrUpdateFileContents({
         owner: "steveoni",
-        repo: "testnote",
+        repo: "scatteredNote",
         path: filePath,
         message: `Create ${filePath}`,
         content: Buffer.from(content).toString("base64"),
@@ -96,7 +96,7 @@ async function createFileIfNotExists(octokit, filePath, content) {
 async function getFileContent(octokit, filePath) {
   const response = await octokit.repos.getContent({
     owner: "steveoni",
-    repo: "testnote",
+    repo: "scatteredNote",
     path: filePath,
   });
 
@@ -107,7 +107,7 @@ async function getFileContent(octokit, filePath) {
 async function updateFileContent(octokit, filePath, content) {
   const response = await octokit.repos.createOrUpdateFileContents({
     owner: "steveoni",
-    repo: "testnote",
+    repo: "scatteredNote",
     path: filePath,
     message: `Update ${filePath}`,
     content: Buffer.from(content).toString("base64"),
@@ -120,7 +120,7 @@ async function updateFileContent(octokit, filePath, content) {
 async function getFileSha(octokit, filePath) {
   const response = await octokit.repos.getContent({
     owner: "steveoni",
-    repo: "testnote",
+    repo: "scatteredNote",
     path: filePath,
   });
 
