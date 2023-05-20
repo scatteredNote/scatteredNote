@@ -142,7 +142,7 @@ export default function Editor({ data, directoryStructure, user }) {
       tags: valueOp.map((item) => item.value)
     }
 
-    fetch("/api/commit", {
+    fetch("/api/commitv2", {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
