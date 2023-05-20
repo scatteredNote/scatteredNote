@@ -22,6 +22,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const path = require('path');
+  const fs = require('fs');
   const user = params.user;
   const userDir = path.join(process.cwd(), 'users', user);
 
@@ -166,7 +167,7 @@ export default function Editor({ data, directoryStructure, user }) {
         setMainTopic(null);
         setSubTopic(null);
         setNote(null);
-        
+
       })
       .catch(error => {
         console.error(error);
