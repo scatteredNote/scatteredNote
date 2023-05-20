@@ -159,6 +159,14 @@ export default function Editor({ data, directoryStructure, user }) {
           throw new Error("Failed to save note.");
         }
         console.log("Note saved successfully!");
+        setIsPublic(true);
+        setValue('');
+        setViews('');
+        setValueOp([]);
+        setMainTopic(null);
+        setSubTopic(null);
+        setNote(null);
+        
       })
       .catch(error => {
         console.error(error);
