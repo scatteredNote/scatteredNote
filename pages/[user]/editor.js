@@ -5,6 +5,8 @@ import { useState } from 'react';
 import * as commands from '@uiw/react-md-editor/lib/commands';
 import { generateDirectoryStructure, generateDirectoryFilese } from '@/libs/getUsersDirectory';
 import CreatableSelect from 'react-select/creatable';
+import { useSession } from "next-auth/react";
+import { useRouter } from 'next/router';
 
 export async function getStaticPaths() {
   const fs = require('fs');
@@ -83,6 +85,9 @@ const options = [
 ];
 
 export default function Editor({ data, directoryStructure, user }) {
+  const { data: session, status } = useSession()
+  const loading = status === "loading"
+  const router = useRouter();
   const [value, setValue] = useState('**Hello world!!!**');
   const [views, setViews] = useState('**Store Views!!!**');
   const [isPublic, setIsPublic] = useState(true);
@@ -90,6 +95,14 @@ export default function Editor({ data, directoryStructure, user }) {
   const [mainTopic, setMainTopic] = useState()
   const [subTopic, setSubTopic] = useState()
   const [note, setNote] = useState()
+
+  if (loading) return <h1>Loading...</h1>
+
+  // if not session redirect to home page
+  if (!session) {
+    router.push('/'); // Redirect to home page if not authenticated
+    return null; // Render nothing whi
+  }
 
   const handleToggle = () => {
     setIsPublic(!isPublic);
