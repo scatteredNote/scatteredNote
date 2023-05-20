@@ -120,9 +120,15 @@ export async function getStaticProps({ params }) {
 
   if (fs.existsSync(fpath)) {
     tags = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'userMeta', `${user}.json`), "utf-8"))?.tags;
-    tags = tags.map((item, index) => {
-      return {label:item.toLowerCase(), value:item}
-    })
+    if (tags) {
+      tags = tags.map((item, index) => {
+        return {label:item.toLowerCase(), value:item}
+      })
+    }
+    else {
+      tags = null;
+    }
+    
   }
   else {
     tags = null
