@@ -355,6 +355,11 @@
   dependencies:
     "@floating-ui/core" "^1.2.6"
 
+"@fontsource/manrope@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/manrope/-/manrope-5.0.0.tgz#c572e8c7fd7406e562f0cc7fc5c98b377095aabf"
+  integrity sha512-+vqgGHW8cQd7v4MM2em9Djrj5Q4qt2ECQaTKvQT1CxbR7l7JcArInjh3L1pUsKjpOQWHLJg2LzP9R//PA5x03w==
+
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.8.tgz#03595ac2075a4dc0f191cc2131de14fbd7d410b9"

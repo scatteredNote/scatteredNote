@@ -11,6 +11,7 @@
     "lint:fix": "yarn lint -- --fix"
   },
   "dependencies": {
+    "@fontsource/manrope": "^5.0.0",
     "@octokit/rest": "^19.0.8",
     "@uiw/react-md-editor": "3.6.0",
     "eslint": "8.35.0",
