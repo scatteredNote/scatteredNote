@@ -4,6 +4,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Link from "next/link"
 import { useSession, signIn, signOut } from "next-auth/react"
+import NoteCardList from '@/components/NoteCardList'
 
 const Home =  () => {
   const { data: session, status } = useSession()
@@ -92,7 +93,7 @@ const Home =  () => {
       </section>
 
       {/* Hero */}
-      <section className='w-full h-fit border-b-4 border-dashed border-gray-300 pb-8'>
+      <section className='w-full h-fit border-b-2 border-dashed border-gray-300 pb-8'>
         <div className='mx-auto max-w-[75%] flex flex-col items-center py-4 font-manrope  pr-0 '>
           <div className=' font-extrabold text-[3.625rem] leading-[4.952rem] text-center'>Grab <span className='text-[#011687]'>contents</span> and <span className='text-[#011687]'>ideas</span> with ease as you go about your day.</div>
           <div className='font-normal text-[1.20rem] 2xl:text-[1.25rem] leading-[3rem] mt-8'>Make Note-taking a by-product of your main task without getting distracted from your current main goal.</div>
@@ -103,8 +104,18 @@ const Home =  () => {
               alt= "hero image"
             />
           </div>
-          <div className='mt-8 rounded-lg bg-custom1 text-white py-4 px-14 font-semibold text-[1.25rem] leading-[1.708rem]'>Get started for free!</div>
+          <div className='mt-8 rounded-lg bg-custom1 text-white py-4 px-14 font-semibold lg:text-[1.25rem] text-[1.05rem] lg:leading-[1.708rem] leading-[1.208rem]'>Get started for free!</div>
         </div>
+      </section>
+
+      {/* Goals and Objectives */}
+      <section className='mx-auto w-full pl-10 sm:pl-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8'>
+        <h3 className='text-center font-manrope font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Goals and Objectives</h3>
+        <NoteCardList />
+        <div className='flex flec-col items-center justify-center'>
+           <div className='mt-8 rounded-lg bg-custom1 text-white py-4 px-14 font-semibold lg:text-[1.25rem] text-[1.05rem] lg:leading-[1.708rem] leading-[1.208rem]'>Get started for free!</div>
+        </div>
+        
       </section>
 
     </section>
