@@ -212,6 +212,7 @@ const Home = () => {
       {/* Features */}
       <section className='mx-auto w-full pl-10 sm:pl-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8'>
         <h3 className='text-center font-manrope font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Features</h3>
+        
       </section>
 
     </section>
