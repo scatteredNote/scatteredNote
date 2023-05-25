@@ -7,7 +7,7 @@ import { useSession, signIn, signOut } from "next-auth/react"
 import NoteCardList from '@/components/NoteCardList'
 
 
-const Home =  () => {
+const Home = () => {
   const { data: session, status } = useSession()
   const loading = status === "loading"
 
@@ -102,7 +102,7 @@ const Home =  () => {
             <Image src='/heroimage.png'
               layout="fill"
               className="relative  w-full text-[#000000]"
-              alt= "hero image"
+              alt="hero image"
             />
           </div>
           <div className='mt-8 rounded-lg bg-custom1 text-white py-4 px-14 font-semibold lg:text-[1.25rem] text-[1.05rem] lg:leading-[1.708rem] leading-[1.208rem]'>Get started for free!</div>
@@ -114,76 +114,104 @@ const Home =  () => {
         <h3 className='text-center font-manrope font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Goals and Objectives</h3>
         <NoteCardList />
         <div className='flex flec-col items-center justify-center'>
-           <div className='mt-8 rounded-lg bg-custom1 text-white py-4 px-14 font-semibold lg:text-[1.25rem] text-[1.05rem] lg:leading-[1.708rem] leading-[1.208rem]'>Add to chrome</div>
+          <div className='mt-8 rounded-lg bg-custom1 text-white py-4 px-14 font-semibold lg:text-[1.25rem] text-[1.05rem] lg:leading-[1.708rem] leading-[1.208rem]'>Add to chrome</div>
         </div>
-        
+
       </section>
 
       {/* Basic Workflow */}
-      <section className='mx-auto w-full pl-10 sm:pl-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8'>
+      <section className='mx-auto w-full pl-10 sm:pl-0 lg:max-w-[80%] mt-8  pb-8 h-fit'>
         <h3 className='text-center font-manrope font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Basic Workflow</h3>
-        <div className='flex flex-col items-center justify-center font-manrope border-2'>
-          <div className='grid grid-cols-1 lg:grid-cols-2  w-full  h-[600px]'>
+        <div className='flex flex-col items-center justify-center font-manrope mt-20'>
+          <div className='grid grid-cols-1 lg:grid-cols-2  w-full  h-fit'>
             <div className='grid grid-rows-1 lg:grid-rows-3'>
               <h3 className=' row-start-1 row-end-1 font-bold text-[1.5rem] leading-[2.049rem] text-[#2E2F30]'>1. Activate Archive Editor</h3>
-              <div className='row-start-2 row-span-3 border-2  lg:block hidden'>
-                <div className='relative w-[60%] h-fit  p-0  mx-auto float-right mr-0 border-2'>
+              <div className='row-start-2 row-span-3 lg:block hidden'>
+                <div className='relative w-[60%] h-fit  p-0  mx-auto float-right mr-0 '>
                   <Image
                     src='/arrowk1.svg'
-                    width={300}
-                    height={300}
+                    width={600}
+                    height={0}
                     className="float-right"
                     alt="hero image"
                   />
                 </div>
-                
+
               </div>
 
             </div>
             <div className='grid grid-rows-1 lg:grid-rows-3 '>
               <div className='row-span-2 row-end-3 w-full h-full'>
-                <div className=' relative w-[80%] h-full '>
+                <div className=' relative w-[90%] h-full '>
                   <Image
-                  src='/workflow1.png'
-                  layout="fill"
-                  className="relative  w-full h-full text-[#000000] "
-                  alt="hero image"
-                />
-                </div>
-                
-              </div>
-            </div>
-            
-          </div>
-           {/* <div className='grid grid-cols-1 lg:grid-cols-2  w-full lg:h-[50vh] xl:h-[60vh]'>
-            <div className='grid grid-rows-1 lg:grid-rows-3 order-last'>
-              <h3 className=' row-start-1 row-end-1 font-bold text-[1.5rem] leading-[2.049rem] text-[#2E2F30] lg:text-right'>2. Commit Your Note</h3>
-              <div className='row-start-2 row-span-3 border-2 hidden lg:block'>
-                <div className='relative w-[60%] h-full p-0  mx-auto float-left lg:-ml-4 border-2'>
-                  <Image
-                    src='/arrowk2.svg'
+                    src='/imgwork.JPG'
                     layout="fill"
-                    className="relative  w-full h-[50%] text-[#000000]"
+                    className="relative  w-full h-full text-[#000000] rounded-xl "
                     alt="hero image"
                   />
                 </div>
-                
+
+              </div>
+            </div>
+
+          </div>
+          <div className='grid grid-cols-1 lg:grid-cols-2  w-full  h-fit'>
+            <div className='grid grid-rows-1 lg:grid-rows-3 order-last'>
+              <h3 className=' row-start-1 row-end-1 font-bold text-[1.5rem] leading-[2.049rem] text-[#2E2F30]'>2. Commit Your Note</h3>
+              <div className='row-start-2 row-span-3  lg:block hidden lg:-ml-16'>
+                <div className='relative w-[60%] h-fit  p-0  mx-auto float-left '>
+                  <Image
+                    src='/arrowk1.svg'
+                    width={600}
+                    height={250}
+                    className="float-left scale-x-[-1]"
+                    alt="hero image"
+                  />
+                </div>
+
               </div>
 
             </div>
-            <div className='grid grid-rows-1 lg:grid-rows-3'>
-              <div className='row-span-2 row-end-3 relative w-full h-full'>
-                <Image
-                  src='/workflow1.png'
-                  layout="fill"
-                  className="relative  w-full text-[#000000]"
-                  alt="hero image"
-                />
+            <div className='grid grid-rows-1 lg:grid-rows-3 '>
+              <div className='row-span-2 row-end-3 w-full h-full'>
+                <div className=' relative w-[90%] h-full '>
+                  <Image
+                    src='/imgwork.JPG'
+                    layout="fill"
+                    className="relative  w-full h-full text-[#000000] rounded-xl"
+                    alt="hero image"
+                  />
+                </div>
+
               </div>
             </div>
-            
-          </div> */}
+
+          </div>
+          <div className='grid grid-cols-1 lg:grid-cols-2  w-full  h-[500px] '>
+            <div className='grid grid-rows-1 '>
+              <h3 className=' row-span-1 font-bold text-[1.5rem] leading-[2.049rem] text-[#2E2F30]'>3. View Your Note</h3>
+            </div>
+            <div className='grid grid-rows-1 '>
+              <div className='row-span-1  w-full h-full'>
+                <div className=' relative w-[90%] h-full '>
+                  <Image
+                    src='/imgwork.JPG'
+                    layout="fill"
+                    className="relative  w-full h-full text-[#000000] rounded-xl"
+                    alt="hero image"
+                  />
+                </div>
+
+              </div>
+            </div>
+
+          </div>
         </div>
+      </section>
+
+      {/* Features */}
+      <section className='mx-auto w-full pl-10 sm:pl-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8'>
+        <h3 className='text-center font-manrope font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Features</h3>
       </section>
 
     </section>
