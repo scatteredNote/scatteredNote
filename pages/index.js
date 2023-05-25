@@ -79,7 +79,7 @@ const Home = () => {
   return (
     <section className=''>
       {/* Navbar */}
-      <section className=' w-full'>
+      <section className=' w-full lg:block hidden'>
         <div className='mx-auto max-w-[90%] flex items-center py-4 font-manrope  pr-0'>
           <div className=' bg-custom1 text-center px-8 py-4 text-white font-manrope font-medium'>Logo</div>
           <div className=' shrink w-[60%] grow flex justify-center gap-x-8 font-medium text-[1.125rem] leading-[1.537rem] text-custom1 '>
@@ -96,8 +96,8 @@ const Home = () => {
       {/* Hero */}
       <section className='w-full h-fit border-b-2 border-dashed border-gray-300 pb-8'>
         <div className='mx-auto max-w-[75%] flex flex-col items-center py-4 font-manrope  pr-0 '>
-          <div className=' font-extrabold text-[3.625rem] leading-[4.952rem] text-center'>Grab <span className='text-[#011687]'>contents</span> and <span className='text-[#011687]'>ideas</span> with ease as you go about your day.</div>
-          <div className='font-normal text-[1.20rem] 2xl:text-[1.25rem] leading-[3rem] mt-8'>Make Note-taking a by-product of your main task without getting distracted from your current main goal.</div>
+          <div className=' font-extrabold text-[2.625rem] lg:text-[3.625rem] lg:leading-[4.952rem] text-center'>Grab <span className='text-[#011687]'>contents</span> and <span className='text-[#011687]'>ideas</span> with ease as you go about your day.</div>
+          <div className='font-normal text-sm 2xl:text-[1.25rem] lg:leading-[3rem] mt-8'>Make Note-taking a by-product of your main task without getting distracted from your current main goal.</div>
           <div className='relative mt-8 2xl:w-[60%] 2xl:h-[45vh] w-[80%] h-[400px]'>
             <Image src='/heroimage.png'
               layout="fill"
@@ -110,7 +110,7 @@ const Home = () => {
       </section>
 
       {/* Goals and Objectives */}
-      <section className='mx-auto w-full pl-10 sm:pl-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8'>
+      <section className='mx-auto w-full  px-4 lg:px-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8'>
         <h3 className='text-center font-manrope font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Goals and Objectives</h3>
         <NoteCardList />
         <div className='flex flec-col items-center justify-center'>
@@ -120,10 +120,10 @@ const Home = () => {
       </section>
 
       {/* Basic Workflow */}
-      <section className='mx-auto w-full pl-10 sm:pl-0 lg:max-w-[80%] mt-8  pb-8 h-fit'>
+      <section className='mx-auto w-full sm:pl-0 lg:max-w-[80%] mt-8  pb-8 h-fit px-4 lg:px-0'>
         <h3 className='text-center font-manrope font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Basic Workflow</h3>
         <div className='flex flex-col items-center justify-center font-manrope mt-20'>
-          <div className='grid grid-cols-1 lg:grid-cols-2  w-full  h-fit'>
+          <div className='grid grid-cols-1 lg:grid-cols-2  w-full h-fit'>
             <div className='grid grid-rows-1 lg:grid-rows-3'>
               <h3 className=' row-start-1 row-end-1 font-bold text-[1.5rem] leading-[2.049rem] text-[#2E2F30]'>1. Activate Archive Editor</h3>
               <div className='row-start-2 row-span-3 lg:block hidden'>
@@ -140,9 +140,9 @@ const Home = () => {
               </div>
 
             </div>
-            <div className='grid grid-rows-1 lg:grid-rows-3 '>
+            <div className='grid grid-rows-1 lg:grid-rows-3 h-[300px] lg:h-full mt-8 lg:mt-0'>
               <div className='row-span-2 row-end-3 w-full h-full'>
-                <div className=' relative w-[90%] h-full '>
+                <div className=' relative w-full lg:w-[90%] h-full '>
                   <Image
                     src='/imgwork.JPG'
                     layout="fill"
@@ -155,8 +155,8 @@ const Home = () => {
             </div>
 
           </div>
-          <div className='grid grid-cols-1 lg:grid-cols-2  w-full  h-fit'>
-            <div className='grid grid-rows-1 lg:grid-rows-3 order-last'>
+          <div className='grid grid-cols-1 lg:grid-cols-2  w-full  h-fit mt-8 lg:mt-0'>
+            <div className='grid grid-rows-1 lg:grid-rows-3 lg:order-last'>
               <h3 className=' row-start-1 row-end-1 font-bold text-[1.5rem] leading-[2.049rem] text-[#2E2F30]'>2. Commit Your Note</h3>
               <div className='row-start-2 row-span-3  lg:block hidden lg:-ml-16'>
                 <div className='relative w-[60%] h-fit  p-0  mx-auto float-left '>
@@ -172,9 +172,9 @@ const Home = () => {
               </div>
 
             </div>
-            <div className='grid grid-rows-1 lg:grid-rows-3 '>
+            <div className='grid grid-rows-1 lg:grid-rows-3 h-[300px] lg:h-full mt-8 lg:mt-0'>
               <div className='row-span-2 row-end-3 w-full h-full'>
-                <div className=' relative w-[90%] h-full '>
+                <div className=' relative w-full lg:w-[90%] h-full '>
                   <Image
                     src='/imgwork.JPG'
                     layout="fill"
@@ -187,13 +187,13 @@ const Home = () => {
             </div>
 
           </div>
-          <div className='grid grid-cols-1 lg:grid-cols-2  w-full  h-[500px] '>
+          <div className='grid grid-cols-1 lg:grid-cols-2  w-full  lg:h-[500px] h-full mt-8 lg:mt-0'>
             <div className='grid grid-rows-1 '>
               <h3 className=' row-span-1 font-bold text-[1.5rem] leading-[2.049rem] text-[#2E2F30]'>3. View Your Note</h3>
             </div>
-            <div className='grid grid-rows-1 '>
+            <div className='grid grid-rows-1  h-[300px] lg:h-full mt-8 lg:mt-0'>
               <div className='row-span-1  w-full h-full'>
-                <div className=' relative w-[90%] h-full '>
+                <div className=' relative w-full lg:w-[90%] h-full '>
                   <Image
                     src='/imgwork.JPG'
                     layout="fill"
