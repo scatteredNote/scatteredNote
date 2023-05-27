@@ -5,6 +5,7 @@ import styles from '../styles/Home.module.css'
 import Link from "next/link"
 import { useSession, signIn, signOut } from "next-auth/react"
 import NoteCardList from '@/components/NoteCardList'
+import FeaturedCardList from '@/components/FeaturedCardList'
 
 
 const Home = () => {
@@ -95,10 +96,10 @@ const Home = () => {
 
       {/* Hero */}
       <section className='w-full h-fit border-b-2 border-dashed border-gray-300 pb-8'>
-        <div className='mx-auto max-w-[75%] flex flex-col items-center py-4 font-manrope  pr-0 '>
-          <div className=' font-extrabold text-[2.625rem] lg:text-[3.625rem] lg:leading-[4.952rem] text-center'>Grab <span className='text-[#011687]'>contents</span> and <span className='text-[#011687]'>ideas</span> with ease as you go about your day.</div>
-          <div className='font-normal text-sm 2xl:text-[1.25rem] lg:leading-[3rem] mt-8'>Make Note-taking a by-product of your main task without getting distracted from your current main goal.</div>
-          <div className='relative mt-8 2xl:w-[60%] 2xl:h-[45vh] w-[80%] h-[400px]'>
+        <div className='mx-auto w-full  lg:max-w-[75%] flex flex-col items-center py-4 font-manrope  pr-0 '>
+          <div className=' font-extrabold text-xl tracking-tight lg:text-[3.625rem] lg:leading-[4.952rem] text-center'>Grab <span className='text-[#011687]'>contents</span> and <span className='text-[#011687]'>ideas</span> with ease as you go about your day.</div>
+          <div className='font-normal text-md tracking-tight text-center  2xl:text-[1.25rem] lg:leading-[3rem] mt-8 px-2 lg:px-0'>Make Note-taking a by-product of your main task without getting distracted from your current main goal.</div>
+          <div className='relative mt-8 2xl:w-[60%] 2xl:h-[45vh] w-[80%] aspect-video h-[250px] sm:h-[400px]'>
             <Image src='/heroimage.png'
               layout="fill"
               className="relative  w-full text-[#000000]"
@@ -125,7 +126,7 @@ const Home = () => {
         <div className='flex flex-col items-center justify-center font-manrope mt-20'>
           <div className='grid grid-cols-1 lg:grid-cols-2  w-full h-fit'>
             <div className='grid grid-rows-1 lg:grid-rows-3'>
-              <h3 className=' row-start-1 row-end-1 font-bold text-[1.5rem] leading-[2.049rem] text-[#2E2F30]'>1. Activate Archive Editor</h3>
+              <h3 className=' row-start-1 row-end-1 font-bold text-lg tracking-tight lg:text-[1.5rem] lg:leading-[2.049rem] text-[#2E2F30]'>1. Activate Archive Editor</h3>
               <div className='row-start-2 row-span-3 lg:block hidden'>
                 <div className='relative w-[60%] h-fit  p-0  mx-auto float-right mr-0 '>
                   <Image
@@ -157,7 +158,7 @@ const Home = () => {
           </div>
           <div className='grid grid-cols-1 lg:grid-cols-2  w-full  h-fit mt-8 lg:mt-0'>
             <div className='grid grid-rows-1 lg:grid-rows-3 lg:order-last'>
-              <h3 className=' row-start-1 row-end-1 font-bold text-[1.5rem] leading-[2.049rem] text-[#2E2F30]'>2. Commit Your Note</h3>
+              <h3 className=' row-start-1 row-end-1 font-bold text-lg tracking-tight lg:text-[1.5rem] lg:leading-[2.049rem] text-[#2E2F30]'>2. Commit Your Note</h3>
               <div className='row-start-2 row-span-3  lg:block hidden lg:-ml-16'>
                 <div className='relative w-[60%] h-fit  p-0  mx-auto float-left '>
                   <Image
@@ -189,7 +190,7 @@ const Home = () => {
           </div>
           <div className='grid grid-cols-1 lg:grid-cols-2  w-full  lg:h-[500px] h-full mt-8 lg:mt-0'>
             <div className='grid grid-rows-1 '>
-              <h3 className=' row-span-1 font-bold text-[1.5rem] leading-[2.049rem] text-[#2E2F30]'>3. View Your Note</h3>
+              <h3 className=' row-span-1 font-bold text-lg tracking-tight lg:text-[1.5rem] lg:leading-[2.049rem] text-[#2E2F30]'>3. View Your Note</h3>
             </div>
             <div className='grid grid-rows-1  h-[300px] lg:h-full mt-8 lg:mt-0'>
               <div className='row-span-1  w-full h-full'>
@@ -210,9 +211,12 @@ const Home = () => {
       </section>
 
       {/* Features */}
-      <section className='mx-auto w-full pl-10 sm:pl-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8'>
-        <h3 className='text-center font-manrope font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Features</h3>
-        
+      <section className='font-manrope mx-auto w-full px-4 lg:px-0 sm:pl-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8'>
+        <h3 className='text-center  font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Features</h3>
+        <p className='font-normal text-lg tracking-tight lg:text-[1.25rem] lg:leading-[3rem] text-center mt-8'>Some features that are supported by Archive Creator</p>
+        <div className='mt-8 lg:mt-16'>
+          <FeaturedCardList />
+        </div>
       </section>
 
     </section>
