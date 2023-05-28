@@ -173,7 +173,7 @@ const Home = () => {
               </div>
 
             </div>
-            <div className='grid grid-rows-1 lg:grid-rows-3 h-[300px] lg:h-full mt-8 lg:mt-0'>
+            <div className='grid grid-rows-1 lg:grid-rows-3 h-[300px] lg:h-[600px] 2xl:h-full mt-8 lg:mt-0'>
               <div className='row-span-2 row-end-3 w-full h-full'>
                 <div className=' relative w-full lg:w-[90%] h-full '>
                   <Image
@@ -192,7 +192,7 @@ const Home = () => {
             <div className='grid grid-rows-1 '>
               <h3 className=' row-span-1 font-bold text-lg tracking-tight lg:text-[1.5rem] lg:leading-[2.049rem] text-[#2E2F30]'>3. View Your Note</h3>
             </div>
-            <div className='grid grid-rows-1  h-[300px] lg:h-full mt-8 lg:mt-0'>
+            <div className='grid grid-rows-1  h-[300px] lg:h-[400px]  2xl:h-full mt-8 lg:mt-0'>
               <div className='row-span-1  w-full h-full'>
                 <div className=' relative w-full lg:w-[90%] h-full '>
                   <Image
