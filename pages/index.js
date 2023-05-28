@@ -97,7 +97,7 @@ const Home = () => {
       {/* Hero */}
       <section className='w-full h-fit border-b-2 border-dashed border-gray-300 pb-8'>
         <div className='mx-auto w-full  lg:max-w-[75%] flex flex-col items-center py-4 font-manrope  pr-0 '>
-          <div className=' font-extrabold text-xl tracking-tight lg:text-[3.625rem] lg:leading-[4.952rem] text-center'>Grab <span className='text-[#011687]'>contents</span> and <span className='text-[#011687]'>ideas</span> with ease as you go about your day.</div>
+          <div className=' font-extrabold text-xl tracking-tight px-2 lg:px-0 lg:text-[3.625rem] lg:leading-[4.952rem] text-center'>Grab <span className='text-[#011687]'>contents</span> and <span className='text-[#011687]'>ideas</span> with ease as you go about your day.</div>
           <div className='font-normal text-md tracking-tight text-center  2xl:text-[1.25rem] lg:leading-[3rem] mt-8 px-2 lg:px-0'>Make Note-taking a by-product of your main task without getting distracted from your current main goal.</div>
           <div className='relative mt-8 2xl:w-[60%] 2xl:h-[45vh] w-[80%] aspect-video h-[250px] sm:h-[400px]'>
             <Image src='/heroimage.png'
@@ -216,6 +216,146 @@ const Home = () => {
         <p className='font-normal text-lg tracking-tight lg:text-[1.25rem] lg:leading-[3rem] text-center mt-8'>Some features that are supported by Archive Creator</p>
         <div className='mt-8 lg:mt-16'>
           <FeaturedCardList />
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section className='font-manrope mx-auto w-full px-4 lg:px-0 sm:pl-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8'>
+        <h3 className='text-center  font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Subscription Base </h3>
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-x-8 mt-8'>
+          <div className=' rounded-2xl flex flex-col px-4 lg:pl-8 py-10 border-2 h-[50vh]'>
+            <div className='flex items-center'>
+              <div className='flex justify-center items-center w-12 h-12 rounded-full bg-gray-100'>
+                  B
+              </div>
+              <div className='font-bold text-[1.75rem] leading-[2.391rem] text-[#2E2F30] text-center ml-8'>
+                Starter
+              </div>
+            </div>
+            <div className='flex items-center mt-8'>
+              <div className='w-[15%] self-start'>
+                <div className='flex justify-center items-center w-10 h-10 rounded-full bg-gray-100'>
+                  ÷
+                </div>
+              </div>
+              <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
+               Note history from 1 year 
+              </div>
+            </div>
+            <div className='flex items-center mt-8 '>
+              <div className='w-[15%] self-start'>
+                <div className='flex justify-center items-center w-10 h-10 rounded-full bg-gray-100'>
+                  ÷
+                </div>
+              </div>
+              
+              <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
+               Grab note from websites and make it easily accessible for every other member to see anytime they visit same site
+              </div>
+            </div>
+
+          </div>
+          <div className=' rounded-2xl flex flex-col px-4 lg:pl-8 py-10 border-2 h-[50vh] mt-8 lg:mt-0'>
+            <div className='flex items-center'>
+              <div className='flex justify-center items-center w-12 h-12 rounded-full bg-gray-100'>
+                  B
+              </div>
+              <div className='font-bold text-[1.75rem] leading-[2.391rem] text-[#2E2F30] text-center ml-8'>
+                Advanced
+              </div>
+            </div>
+            <div className='flex items-center mt-8'>
+              <div className='w-[15%] self-start'>
+                <div className='flex justify-center items-center w-10 h-10 rounded-full bg-gray-100'>
+                  ÷
+                </div>
+              </div>
+              <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
+                Note history from 2 months
+              </div>
+            </div>
+            <div className='flex items-center mt-8'>
+             <div className='w-[15%] self-start'>
+                <div className='flex justify-center items-center w-10 h-10 rounded-full bg-gray-100'>
+                  ÷
+                </div>
+              </div>
+              <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
+               Able to edit (update and delete) note
+              </div>
+            </div>
+            <div className='flex items-center mt-8'>
+             <div className='w-[15%] self-start'>
+                <div className='flex justify-center items-center w-10 h-10 rounded-full bg-gray-100'>
+                  ÷
+                </div>
+              </div>
+              <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
+               Customize templates
+              </div>
+            </div>
+            <div className='flex items-center mt-8'>
+             <div className='w-[15%] self-start'>
+                <div className='flex justify-center items-center w-10 h-10 rounded-full bg-gray-100'>
+                  ÷
+                </div>
+              </div>
+              <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
+               Grab more than pictures: videos and audio
+              </div>
+            </div>
+
+          </div>
+          <div className=' rounded-2xl flex flex-col px-4 lg:pl-8 py-10 border-2 h-[50vh] mt-8 lg:mt-0'>
+            <div className='flex items-center'>
+              <div className='flex justify-center items-center w-12 h-12 rounded-full bg-gray-100'>
+                  B
+              </div>
+              <div className='font-bold text-[1.75rem] leading-[2.391rem] text-[#2E2F30] text-center ml-8'>
+                Premium
+              </div>
+            </div>
+            <div className='flex items-center mt-8'>
+              <div className='w-[15%] self-start'>
+                <div className='flex justify-center items-center w-10 h-10 rounded-full bg-gray-100'>
+                  ÷
+                </div>
+              </div>
+              <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
+               Unlimited Note history 
+              </div>
+            </div>
+            <div className='flex items-center mt-8'>
+              <div className='w-[15%] self-start'>
+                <div className='flex justify-center items-center w-10 h-10 rounded-full bg-gray-100'>
+                  ÷
+                </div>
+              </div>
+              <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
+                Use of AI to summarize each note
+              </div>
+            </div>
+            <div className='flex items-center mt-8'>
+              <div className='w-[15%] self-start'>
+                <div className='flex justify-center items-center w-10 h-10 rounded-full bg-gray-100'>
+                  ÷
+                </div>
+              </div>
+              <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
+               Provide annotation for web base grabbed document
+              </div>
+            </div>
+            <div className='flex items-center mt-8'>
+              <div className='w-[15%] self-start'>
+                <div className='flex justify-center items-center w-10 h-10 rounded-full bg-gray-100'>
+                  ÷
+                </div>
+              </div>
+              <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
+                Create plugin to interface with GPT-X to make it create prediction using your 2nd brain has context
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
