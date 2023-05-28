@@ -223,12 +223,12 @@ const Home = () => {
       <section className='font-manrope mx-auto w-full px-4 lg:px-0 sm:pl-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8'>
         <h3 className='text-center  font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Subscription Base </h3>
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-x-8 mt-8'>
-          <div className=' rounded-2xl flex flex-col px-4 lg:pl-8 py-10 border-2 h-[50vh]'>
+          <div className=' rounded-2xl flex flex-col px-4 lg:pl-8 py-10 border-2 h-[50vh] lg:h-full'>
             <div className='flex items-center'>
               <div className='flex justify-center items-center w-12 h-12 rounded-full bg-gray-100'>
                   B
               </div>
-              <div className='font-bold text-[1.75rem] leading-[2.391rem] text-[#2E2F30] text-center ml-8'>
+              <div className='font-bold text-[1.75rem] leading-[2.391rem] text-[#2E2F30] text-center 2xl:ml-8 ml-4'>
                 Starter
               </div>
             </div>
@@ -255,12 +255,12 @@ const Home = () => {
             </div>
 
           </div>
-          <div className=' rounded-2xl flex flex-col px-4 lg:pl-8 py-10 border-2 h-[50vh] mt-8 lg:mt-0'>
+          <div className=' rounded-2xl flex flex-col px-4 lg:pl-8 py-10 border-2 h-[50vh] lg:h-full mt-8 lg:mt-0'>
             <div className='flex items-center'>
               <div className='flex justify-center items-center w-12 h-12 rounded-full bg-gray-100'>
                   B
               </div>
-              <div className='font-bold text-[1.75rem] leading-[2.391rem] text-[#2E2F30] text-center ml-8'>
+              <div className='font-bold text-[1.75rem] leading-[2.391rem] text-[#2E2F30] text-center 2xl:ml-8 ml-4'>
                 Advanced
               </div>
             </div>
@@ -306,12 +306,12 @@ const Home = () => {
             </div>
 
           </div>
-          <div className=' rounded-2xl flex flex-col px-4 lg:pl-8 py-10 border-2 h-[50vh] mt-8 lg:mt-0'>
+          <div className=' rounded-2xl flex flex-col px-4 lg:pl-8 py-10 border-2 h-fit mt-8 lg:mt-0'>
             <div className='flex items-center'>
               <div className='flex justify-center items-center w-12 h-12 rounded-full bg-gray-100'>
                   B
               </div>
-              <div className='font-bold text-[1.75rem] leading-[2.391rem] text-[#2E2F30] text-center ml-8'>
+              <div className='font-bold text-[1.75rem] leading-[2.391rem] text-[#2E2F30] text-center 2xl:ml-8 ml-4'>
                 Premium
               </div>
             </div>
@@ -355,6 +355,24 @@ const Home = () => {
                 Create plugin to interface with GPT-X to make it create prediction using your 2nd brain has context
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <section className='bg-[#434141]'>
+        <div className='flex flex-col lg:justify-center pl-8 lg:pl-0 lg:flex-row mx-auto w-full  lg:max-w-[75%] font-manrope pt-12 pb-8 gap-x-20'>
+          <div className='flex flex-col'>
+            <h3 className='font-semibold text-xl tracking-tight lg:text-[29.97px] lg:leading-[40.93px] text-[#F7F8F8]'>Quick Links</h3>
+            <Link href={"#"} className="font-normal text-[#F7F8F8] text-lg tracking-tight lg:text-[26.97px] lg:leading-[36.84px] mt-6">About</Link>
+            <Link href={"#"} className="font-normal text-[#F7F8F8] text-lg tracking-tight lg:text-[26.97px] lg:leading-[36.84px] mt-4">Contact</Link>
+            <Link href={"#"} className="font-normal text-[#F7F8F8] text-lg tracking-tight lg:text-[26.97px] lg:leading-[36.84px] mt-4">Features</Link>
+          </div>
+          <div className='flex flex-col  mt-10 lg:mt-0'>
+            <h3 className='font-semibold text-xl tracking-tight lg:text-[29.97px] lg:leading-[40.93px] text-[#F7F8F8] '>Keep up with us </h3>
+            <p className='mt-6 text-[#FCFCFC] font-normal'>
+              We know you&apos;ll love to find out more! Subscribe to our newsletter
+            </p>
           </div>
         </div>
       </section>
