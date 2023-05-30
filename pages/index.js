@@ -86,9 +86,9 @@ const Home = () => {
           <div className=' shrink w-[60%] grow flex justify-center gap-x-8 font-medium text-[1.125rem] leading-[1.537rem] text-custom1 '>
             <Link href={"#"}>Home</Link>
             <Link href="#">About</Link>
+            <Link href="#features">Features</Link>
             <Link href="#">Contact</Link>
             <Link href="#">Subscribe</Link>
-            <Link href="#">Features</Link>
           </div>
           <div className=' bg-custom1 text-center px-8 py-4 text-white font-manrope font-medium rounded-xl mx-auto float-right'>Login</div>
         </div>
@@ -112,7 +112,7 @@ const Home = () => {
 
       {/* Goals and Objectives */}
       <section className='mx-auto w-full  px-4 lg:px-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8'>
-        <h3 className='text-center font-manrope font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Goals and Objectives</h3>
+        <h3 className='text-center font-manrope font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-10 '>Goals and Objectives</h3>
         <NoteCardList />
         <div className='flex flec-col items-center justify-center'>
           <div className='mt-8 rounded-lg bg-custom1 text-white py-4 px-14 font-semibold lg:text-[1.25rem] text-[1.05rem] lg:leading-[1.708rem] leading-[1.208rem]'>Add to chrome</div>
@@ -211,7 +211,7 @@ const Home = () => {
       </section>
 
       {/* Features */}
-      <section className='font-manrope mx-auto w-full px-4 lg:px-0 sm:pl-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8'>
+      <section className='font-manrope mx-auto w-full px-4 lg:px-0 sm:pl-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8' id="features">
         <h3 className='text-center  font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Features</h3>
         <p className='font-normal text-lg tracking-tight lg:text-[1.25rem] lg:leading-[3rem] text-center mt-8'>Some features that are supported by Archive Creator</p>
         <div className='mt-8 lg:mt-16'>
