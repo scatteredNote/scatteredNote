@@ -96,10 +96,10 @@ const Home = () => {
 
       {/* Hero */}
       <section className='w-full h-fit border-b-2 border-dashed border-gray-300 pb-8'>
-        <div className='mx-auto w-full  lg:max-w-[75%] flex flex-col items-center py-4 font-manrope  pr-0 '>
+        <div className='mx-auto w-full  lg:max-w-7xl flex flex-col items-center py-4 font-manrope  pr-0 sm:px-6 md:px-8 '>
           <div className=' font-extrabold text-xl tracking-tight px-2 lg:px-0 lg:text-[3.625rem] lg:leading-[4.952rem] text-center'>Grab <span className='text-[#011687]'>contents</span> and <span className='text-[#011687]'>ideas</span> with ease as you go about your day.</div>
           <div className='font-normal text-md tracking-tight text-center  2xl:text-[1.25rem] lg:leading-[3rem] mt-8 px-2 lg:px-0'>Make Note-taking a by-product of your main task without getting distracted from your current main goal.</div>
-          <div className='relative mt-8 2xl:w-[60%] 2xl:h-[45vh] w-[80%] aspect-video h-[250px] sm:h-[400px]'>
+          <div className='relative mt-8 2xl:w-[60%] 2xl:h-[45vh] w-[80%] aspect-video h-[250px] sm:h-[450px]'>
             <Image src='/heroimage.png'
               layout="fill"
               className="relative  w-full text-[#000000]"
@@ -111,7 +111,7 @@ const Home = () => {
       </section>
 
       {/* Goals and Objectives */}
-      <section className='mx-auto w-full  px-4 lg:px-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8'>
+      <section className='mx-auto w-full px-4 lg:max-w-7xl mt-8 border-b-2 border-dashed border-gray-300 pb-8 sm:px-6 md:px-8 '>
         <h3 className='text-center font-manrope font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-10 '>Goals and Objectives</h3>
         <NoteCardList />
         <div className='flex flec-col items-center justify-center'>
@@ -121,7 +121,7 @@ const Home = () => {
       </section>
 
       {/* Basic Workflow */}
-      <section className='mx-auto w-full sm:pl-0 lg:max-w-[80%] mt-8  pb-8 h-fit px-4 lg:px-0'>
+      <section className='mx-auto w-full sm:pl-0 lg:max-w-7xl mt-8  pb-8 h-fit px-4 sm:px-6 md:px-8 '>
         <h3 className='text-center font-manrope font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Basic Workflow</h3>
         <div className='flex flex-col items-center justify-center font-manrope mt-20'>
           <div className='grid grid-cols-1 lg:grid-cols-2  w-full h-fit'>
@@ -141,9 +141,9 @@ const Home = () => {
               </div>
 
             </div>
-            <div className='grid grid-rows-1 lg:grid-rows-3 h-[300px] lg:h-full mt-8 lg:mt-0'>
+            <div className='grid grid-rows-1 lg:grid-rows-3 h-[300px] sm:h-[400px] lg:h-full mt-8 lg:mt-0'>
               <div className='row-span-2 row-end-3 w-full h-full'>
-                <div className=' relative w-full lg:w-[90%] h-full '>
+                <div className=' relative w-full  lg:w-[90%] h-full '>
                   <Image
                     src='/imgwork.JPG'
                     layout="fill"
@@ -173,7 +173,7 @@ const Home = () => {
               </div>
 
             </div>
-            <div className='grid grid-rows-1 lg:grid-rows-3 h-[300px] lg:h-[600px] 2xl:h-full mt-8 lg:mt-0'>
+            <div className='grid grid-rows-1 lg:grid-rows-3 h-[300px] sm:h-[400px] lg:h-[600px] 2xl:h-full mt-8 lg:mt-0'>
               <div className='row-span-2 row-end-3 w-full h-full'>
                 <div className=' relative w-full lg:w-[90%] h-full '>
                   <Image
@@ -192,7 +192,7 @@ const Home = () => {
             <div className='grid grid-rows-1 '>
               <h3 className=' row-span-1 font-bold text-lg tracking-tight lg:text-[1.5rem] lg:leading-[2.049rem] text-[#2E2F30]'>3. View Your Note</h3>
             </div>
-            <div className='grid grid-rows-1  h-[300px] lg:h-[400px]  2xl:h-full mt-8 lg:mt-0'>
+            <div className='grid grid-rows-1  h-[300px] sm:h-[400px] lg:h-[400px]  2xl:h-full mt-8 lg:mt-0'>
               <div className='row-span-1  w-full h-full'>
                 <div className=' relative w-full lg:w-[90%] h-full '>
                   <Image
@@ -211,7 +211,7 @@ const Home = () => {
       </section>
 
       {/* Features */}
-      <section className='font-manrope mx-auto w-full px-4 lg:px-0 sm:pl-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8' id="features">
+      <section className='font-manrope mx-auto w-full px-4 sm:px-6 md:px-8  sm:pl-0 lg:max-w-7xl mt-8 border-b-2 border-dashed border-gray-300 pb-8' id="features">
         <h3 className='text-center  font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Features</h3>
         <p className='font-normal text-lg tracking-tight lg:text-[1.25rem] lg:leading-[3rem] text-center mt-8'>Some features that are supported by Archive Creator</p>
         <div className='mt-8 lg:mt-16'>
@@ -220,7 +220,7 @@ const Home = () => {
       </section>
 
       {/* Pricing */}
-      <section className='font-manrope mx-auto w-full px-4 lg:px-0 sm:pl-0 lg:max-w-[80%] mt-8 border-b-2 border-dashed border-gray-300 pb-8'>
+      <section className='font-manrope mx-auto w-full px-4 sm:px-6 md:px-8  sm:pl-0 lg:max-w-7xl mt-8 border-b-2 border-dashed border-gray-300 pb-8'>
         <h3 className='text-center  font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Subscription Base </h3>
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-x-8 mt-8'>
           <div className=' rounded-2xl flex flex-col px-4 lg:pl-8 py-10 border-2 h-[50vh] lg:h-full'>
@@ -361,7 +361,7 @@ const Home = () => {
 
       {/* Footer */}
       <section className='bg-[#434141]'>
-        <div className='flex flex-col lg:justify-center pl-8 lg:pl-0 lg:flex-row mx-auto w-full  lg:max-w-[75%] font-manrope pt-12 pb-8 gap-x-20'>
+        <div className='flex flex-col lg:justify-center pl-8 lg:pl-0 lg:flex-row mx-auto w-full  lg:max-w-7xl font-manrope pt-12 pb-8 gap-x-20'>
           <div className='flex flex-col'>
             <h3 className='font-semibold text-xl tracking-tight lg:text-[29.97px] lg:leading-[40.93px] text-[#F7F8F8]'>Quick Links</h3>
             <Link href={"#"} className="font-normal text-[#F7F8F8] text-lg tracking-tight lg:text-[26.97px] lg:leading-[36.84px] mt-6">About</Link>
