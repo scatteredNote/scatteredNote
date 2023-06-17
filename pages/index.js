@@ -90,7 +90,44 @@ const Home = () => {
             <Link href="#">Contact</Link>
             <Link href="#">Subscribe</Link>
           </div>
-          <div className=' bg-custom1 text-center px-8 py-4 text-white font-manrope font-medium rounded-xl mx-auto float-right'>Login</div>
+          <div className=' bg-custom1 text-center px-8 py-4 text-white font-manrope font-medium rounded-xl mx-auto float-right'>
+            {!session && (
+              <a
+                href={`/api/auth/signin`}
+                onClick={(e) => {
+                  e.preventDefault()
+                  signIn()
+                }}
+              >
+                Login
+              </a>
+            )}
+            {session?.user && (
+              <>
+                {/* {session.user.image && (
+                <span
+                  style={{ backgroundImage: `url('${session.user.image}')` }}
+                  className={styles.avatar}
+                />
+              )}
+              <span className={styles.signedInText}>
+                <small>Signed in as</small>
+                <br />
+                <strong>{session.user.email ?? session.user.name}</strong>
+              </span> */}
+                <a
+                  href={`/api/auth/signout`}
+                  className={styles.button}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    signOut()
+                  }}
+                >
+                  Log out
+                </a>
+              </>
+            )}
+          </div>
         </div>
       </section>
 
@@ -226,7 +263,7 @@ const Home = () => {
           <div className=' rounded-2xl flex flex-col px-4 lg:pl-8 py-10 border-2 h-[50vh] lg:h-full'>
             <div className='flex items-center'>
               <div className='flex justify-center items-center w-12 h-12 rounded-full bg-gray-100'>
-                  B
+                B
               </div>
               <div className='font-bold text-[1.75rem] leading-[2.391rem] text-[#2E2F30] text-center 2xl:ml-8 ml-4'>
                 Starter
@@ -239,7 +276,7 @@ const Home = () => {
                 </div>
               </div>
               <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
-               Note history from 1 year 
+                Note history from 1 year
               </div>
             </div>
             <div className='flex items-center mt-8 '>
@@ -248,9 +285,9 @@ const Home = () => {
                   ÷
                 </div>
               </div>
-              
+
               <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
-               Grab note from websites and make it easily accessible for every other member to see anytime they visit same site
+                Grab note from websites and make it easily accessible for every other member to see anytime they visit same site
               </div>
             </div>
 
@@ -258,7 +295,7 @@ const Home = () => {
           <div className=' rounded-2xl flex flex-col px-4 lg:pl-8 py-10 border-2 h-[50vh] lg:h-full mt-8 lg:mt-0'>
             <div className='flex items-center'>
               <div className='flex justify-center items-center w-12 h-12 rounded-full bg-gray-100'>
-                  B
+                B
               </div>
               <div className='font-bold text-[1.75rem] leading-[2.391rem] text-[#2E2F30] text-center 2xl:ml-8 ml-4'>
                 Advanced
@@ -275,33 +312,33 @@ const Home = () => {
               </div>
             </div>
             <div className='flex items-center mt-8'>
-             <div className='w-[15%] self-start'>
+              <div className='w-[15%] self-start'>
                 <div className='flex justify-center items-center w-10 h-10 rounded-full bg-gray-100'>
                   ÷
                 </div>
               </div>
               <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
-               Able to edit (update and delete) note
+                Able to edit (update and delete) note
               </div>
             </div>
             <div className='flex items-center mt-8'>
-             <div className='w-[15%] self-start'>
+              <div className='w-[15%] self-start'>
                 <div className='flex justify-center items-center w-10 h-10 rounded-full bg-gray-100'>
                   ÷
                 </div>
               </div>
               <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
-               Customize templates
+                Customize templates
               </div>
             </div>
             <div className='flex items-center mt-8'>
-             <div className='w-[15%] self-start'>
+              <div className='w-[15%] self-start'>
                 <div className='flex justify-center items-center w-10 h-10 rounded-full bg-gray-100'>
                   ÷
                 </div>
               </div>
               <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
-               Grab more than pictures: videos and audio
+                Grab more than pictures: videos and audio
               </div>
             </div>
 
@@ -309,7 +346,7 @@ const Home = () => {
           <div className=' rounded-2xl flex flex-col px-4 lg:pl-8 py-10 border-2 h-fit mt-8 lg:mt-0'>
             <div className='flex items-center'>
               <div className='flex justify-center items-center w-12 h-12 rounded-full bg-gray-100'>
-                  B
+                B
               </div>
               <div className='font-bold text-[1.75rem] leading-[2.391rem] text-[#2E2F30] text-center 2xl:ml-8 ml-4'>
                 Premium
@@ -322,7 +359,7 @@ const Home = () => {
                 </div>
               </div>
               <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
-               Unlimited Note history 
+                Unlimited Note history
               </div>
             </div>
             <div className='flex items-center mt-8'>
@@ -342,7 +379,7 @@ const Home = () => {
                 </div>
               </div>
               <div className='w-[60%] shrink grow font-semibold text-md tracking-tight 2xl:text-[1.125rem] 2xl:leading-[2.25rem] text-[#353A3F] t ml-4'>
-               Provide annotation for web base grabbed document
+                Provide annotation for web base grabbed document
               </div>
             </div>
             <div className='flex items-center mt-8'>
