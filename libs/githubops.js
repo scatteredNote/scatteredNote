@@ -97,3 +97,76 @@ export async function generateDirectoryStructure(path, keyPrefix = '') {
     throw new Error('Failed to generate directory structure.');
   }
 }
+
+async function getDirectoryTree(directoryPath) {
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
+
+  const result = {};
+
+  const walk = async (dirPath, obj) => {
+    const response = await octokit.rest.repos.getContent({
+      owner: "scatteredNote",
+      repo: "scatteredNote",
+      path: dirPath,
+    });
+
+    obj.directory = [];
+    obj.files = [];
+
+    for (const item of response.data) {
+      if (item.type === "dir") {
+        const directoryPath = path.join(dirPath, item.name);
+        const directoryObj = {
+          directory: [],
+          files: [],
+        };
+        obj.directory.push(item.name);
+        obj[item.name] = directoryObj;
+        await walk(directoryPath, directoryObj);
+      } else {
+        obj.files.push(item.name);
+      }
+    }
+  };
+
+  await walk(directoryPath, result);
+  return result;
+}
+
+function formatDirectoryTree(directoryTree) {
+  const formattedTree = {};
+
+  const processDir = (dirObj, tree, parentKey = "") => {
+    const currentPath = parentKey ? `${parentKey}/${dirObj}` : dirObj;
+    const currentObj = tree[dirObj];
+    formattedTree[currentPath] = {
+      directory: currentObj.directory.map((dir) => ({
+        label: dir,
+        value: `${currentPath}/${dir}`,
+      })),
+      files: currentObj.files.map((file) => ({
+        label: file,
+        value: `${currentPath}/${file}`,
+      })),
+    };
+    currentObj.directory.forEach((dir) => {
+      processDir(dir, currentObj, currentPath);
+    });
+  };
+
+  Object.keys(directoryTree).forEach((dir) => {
+    if (dir !== "directory" && dir !== "files") {
+      processDir(dir, directoryTree);
+    }
+  });
+
+  return formattedTree;
+}
+
+export async function generateDirectoryFilese(directoryPath) {
+  const directoryTree = await getDirectoryTree(directoryPath);
+  const formattedTree = formatDirectoryTree(directoryTree);
+  return formattedTree;
+}
