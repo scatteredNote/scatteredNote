@@ -4,7 +4,7 @@ import GithubProvider from "next-auth/providers/github"
 import { createGithubFolder } from "../../../libs/githubops";
 import fs from 'fs';
 
-export default NextAuth({
+export const authOptions = {
     theme: {
         colorScheme: "light",
         buttonText: "#fb923c",
@@ -28,9 +28,28 @@ export default NextAuth({
             else {
                 await createGithubFolder(profile.email.split("@")[0].toLowerCase());
             }
-            
+
             // Return true to allow the sign-in process to continue
             return true;
         },
-  },
-})
+        async jwt({ token, user, account, profile }) {
+            if (account) {
+                token.accessToken = account.access_token
+                token.id = profile.id
+                token.username = profile?.login ? profile.login : profile.email.split("@")[0].toLowerCase()
+            }
+
+            return token
+        },
+        async session({ session, token, user }) {
+            session.accessToken = token.accessToken
+            session.user.id = token.id
+            session.user.username = token.username
+
+            return session
+        },
+    },
+}
+
+
+export default NextAuth(authOptions)
