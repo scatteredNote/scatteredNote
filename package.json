@@ -14,6 +14,7 @@
     "@fontsource/manrope": "^5.0.0",
     "@octokit/rest": "^19.0.8",
     "@uiw/react-md-editor": "3.6.0",
+    "cors": "^2.8.5",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.1",
     "minisearch": "^6.0.1",
