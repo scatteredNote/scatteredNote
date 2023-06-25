@@ -1,50 +1,60 @@
 import { Octokit } from "@octokit/rest";
+import { getToken } from "next-auth/jwt"
+import { cors, runMiddleware } from "../../libs/middleware"
 
 
 export default async function handler(req, res) {
-  const { MainTopic, SubTopic, note, grab, views, tags, user, isPublic } = req.body;
+  await runMiddleware(req, res, cors)
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  if (token) {
+    const { MainTopic, SubTopic, note, grab, views, tags, user, isPublic } = req.body;
 
-  try {
-    const octokit = new Octokit({
-      auth: process.env.GITHUB_TOKEN, // Add your GitHub access token here
-    });
+    try {
+      const octokit = new Octokit({
+        auth: process.env.GITHUB_TOKEN, // Add your GitHub access token here
+      });
 
-    // Create main topic directory if it doesn't exist
-    const mainTopicPath = `users/${user}/${MainTopic}`;
-    await createDirectoryIfNotExists(octokit, mainTopicPath);
+      // Create main topic directory if it doesn't exist
+      const mainTopicPath = `users/${user}/${MainTopic}`;
+      await createDirectoryIfNotExists(octokit, mainTopicPath);
 
-    // Create subtopic directory if it doesn't exist
-    const subTopicPath = SubTopic ? `${mainTopicPath}/${SubTopic}` : mainTopicPath;
-    await createDirectoryIfNotExists(octokit, subTopicPath);
+      // Create subtopic directory if it doesn't exist
+      const subTopicPath = SubTopic ? `${mainTopicPath}/${SubTopic}` : mainTopicPath;
+      await createDirectoryIfNotExists(octokit, subTopicPath);
 
-    // Create note file if it doesn't exist
-    const noteFilePath = note.includes("json") ? `${subTopicPath}/${note}` : `${subTopicPath}/${note}.json`;
-    await createFileIfNotExists(octokit, noteFilePath, "[]");
+      // Create note file if it doesn't exist
+      const noteFilePath = note.includes("json") ? `${subTopicPath}/${note}` : `${subTopicPath}/${note}.json`;
+      await createFileIfNotExists(octokit, noteFilePath, "[]");
 
-    // Add grab, views, and tags to note file
-    const noteFileContent = await getFileContent(octokit, noteFilePath);
-    const noteFile = JSON.parse(noteFileContent);
-    noteFile.push({ grab, views, tags });
-    await updateFileContent(octokit, noteFilePath, JSON.stringify(noteFile));
+      // Add grab, views, and tags to note file
+      const noteFileContent = await getFileContent(octokit, noteFilePath);
+      const noteFile = JSON.parse(noteFileContent);
+      noteFile.push({ grab, views, tags });
+      await updateFileContent(octokit, noteFilePath, JSON.stringify(noteFile));
 
-    // Add tags to usermeta/user.json
-    const userMetaPath = `userMeta/${user}.json`;
-    const userMetaContent = await getFileContent(octokit, userMetaPath);
-    const userMeta = JSON.parse(userMetaContent);
-    if (!userMeta.tags) userMeta.tags = [];
-    userMeta.tags = [...new Set([...userMeta?.tags, ...tags])];
-    await updateFileContent(octokit, userMetaPath, JSON.stringify(userMeta));
+      // Add tags to usermeta/user.json
+      const userMetaPath = `userMeta/${user}.json`;
+      const userMetaContent = await getFileContent(octokit, userMetaPath);
+      const userMeta = JSON.parse(userMetaContent);
+      if (!userMeta.tags) userMeta.tags = [];
+      userMeta.tags = [...new Set([...userMeta?.tags, ...tags])];
+      await updateFileContent(octokit, userMetaPath, JSON.stringify(userMeta));
 
-    // Add note file path to usermeta/user.json to specify isPublic
-    const notePublic = `${MainTopic}/${SubTopic}/${note.includes("json") ? note : `${note}.json`}`;
-    userMeta[notePublic] = isPublic;
-    await updateFileContent(octokit, userMetaPath, JSON.stringify(userMeta));
+      // Add note file path to usermeta/user.json to specify isPublic
+      const notePublic = `${MainTopic}/${SubTopic}/${note.includes("json") ? note : `${note}.json`}`;
+      userMeta[notePublic] = isPublic;
+      await updateFileContent(octokit, userMetaPath, JSON.stringify(userMeta));
 
-    res.status(200).json({ success: true });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, error: "Failed to save note." });
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, error: "Failed to save note." });
+    }
   }
+  else {
+    res.status(401).json({ error: 'Unauthorized' })
+  }
+
 }
 
 async function createDirectoryIfNotExists(octokit, directoryPath) {
