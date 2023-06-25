@@ -1,5 +1,5 @@
 import { Octokit } from "@octokit/rest";
-
+const path = require('path');
 
 export async function createGithubFolder(user) {
   const octokit = new Octokit({
@@ -126,7 +126,10 @@ async function getDirectoryTree(directoryPath) {
         obj[item.name] = directoryObj;
         await walk(directoryPath, directoryObj);
       } else {
-        obj.files.push(item.name);
+        // check if item is a .json file
+        if (item.name.split('.').pop() === 'json') {
+          obj.files.push(item.name);
+        }
       }
     }
   };
