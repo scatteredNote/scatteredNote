@@ -173,3 +173,43 @@ export async function generateDirectoryFilese(directoryPath) {
   const formattedTree = formatDirectoryTree(directoryTree);
   return formattedTree;
 }
+
+export const getUsersData = async (dirPath) => {
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
+
+  try {
+    const response = await octokit.repos.getContent({
+      owner: "scatteredNote",
+      repo: "data",
+      path: dirPath,
+    });
+
+    const usersData = [];
+    const content = response.data;
+
+    for (const item of content) {
+      if (item.type === "dir") {
+        const userData = { name: item.name, children: [] };
+        const subDirPath = path.join(dirPath, item.name);
+        const subDirContent = await getUsersData(subDirPath);
+        userData.children = subDirContent;
+        usersData.push(userData);
+      } else if (item.type === "file") {
+        const filePath = path.join(dirPath, item.name);
+        const fileValue = filePath.split("/users/")[1].replace(/^[^/]+\//, '');
+        usersData.push({ name: item.name, value: fileValue });
+      }
+    }
+
+    return usersData;
+  } catch (error) {
+    console.error("Error retrieving users' data:", error);
+    return [];
+  }
+};
+
+
+
+
