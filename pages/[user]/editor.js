@@ -31,7 +31,7 @@ export async function getStaticProps({ params }) {
   }
   const data = generateDirectoryStructure(userDir);
   const directoryStructure = generateDirectoryFilese(userDir);
-  
+
   // const data = { name: user, children: getUsersData(userDir) };
   return {
     props: {
@@ -115,19 +115,19 @@ export default function Editor({ data, directoryStructure, user }) {
   };
 
   const notes = () => {
-    if (subTopic) {
+    if (subTopic && directoryStructure[subTopic.value]) {
       if (directoryStructure[subTopic.value].files.length > 0) {
         return directoryStructure[subTopic.value].files
-      } 
+      }
       else {
         return []
       }
     }
-   
-    if (mainTopic) {
+
+    if (mainTopic && directoryStructure[mainTopic.value]) {
       if (directoryStructure[mainTopic.value].files.length > 0) {
         return directoryStructure[mainTopic.value].files
-      } 
+      }
       else {
         return []
       }
@@ -172,9 +172,9 @@ export default function Editor({ data, directoryStructure, user }) {
       .catch(error => {
         console.error(error);
       });
-    
+
   }
-  
+
   //TODO:
   // fetch users metadata from usermEtadata.json
   // populate Tags with user tags
@@ -274,28 +274,28 @@ export default function Editor({ data, directoryStructure, user }) {
             <h1 className="text-[#00000] font-bold">Main Topic</h1>
             <small><i>Use an Existing Topic  or create a new Topic by just typing out the name and click on the drop down selection &ldquo;Create ...&rdquo;</i></small>
             <CreatableSelect
-                options={data}
-                value={mainTopic}
-                onChange={(newValue) => setMainTopic(newValue)}
-              />
+              options={data}
+              value={mainTopic}
+              onChange={(newValue) => setMainTopic(newValue)}
+            />
           </div>
           <div className="mt-8 w-full">
             <h1 className="text-[#00000] font-bold">Sub Topic</h1>
             <small><i>Use an Existing subtopic or create a new subtopic by just typing out the name and click on the drop down selection &ldquo;Create ...&rdquo;</i></small>
             <CreatableSelect
-              options={mainTopic ? directoryStructure[mainTopic.value].directory: [] }
-                value={subTopic}
-                onChange={(newValue) => setSubTopic(newValue)}
-              />
+              options={mainTopic && directoryStructure[mainTopic.value] ? directoryStructure[mainTopic.value].directory : []}
+              value={subTopic}
+              onChange={(newValue) => setSubTopic(newValue)}
+            />
           </div>
           <div className="mt-8 w-full">
             <h1 className="text-[#00000] font-bold">Notes</h1>
             <small><i>Use an Existing Note  or create a new Note by just typing out the name and click on the drop down selection &ldquo;Create ...&rdquo;</i></small>
             <CreatableSelect
-                options={notes()}
-                value={note}
-                onChange={(newValue) => setNote(newValue)}
-              />
+              options={notes()}
+              value={note}
+              onChange={(newValue) => setNote(newValue)}
+            />
           </div>
 
           <div className="flex items-center relative mt-8">
@@ -314,14 +314,12 @@ export default function Editor({ data, directoryStructure, user }) {
                   onChange={handleToggle}
                 />
                 <div
-                  className={`block ${
-                    isPublic ? 'bg-green-400' : 'bg-gray-600'
-                  } w-14 h-8 rounded-full transition duration-300`}
+                  className={`block ${isPublic ? 'bg-green-400' : 'bg-gray-600'
+                    } w-14 h-8 rounded-full transition duration-300`}
                 ></div>
                 <div
-                  className={`dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition duration-300 ${
-                    isPublic ? 'transform translate-x-full' : ''
-                  }`}
+                  className={`dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition duration-300 ${isPublic ? 'transform translate-x-full' : ''
+                    }`}
                 ></div>
               </div>
               <div className="ml-3 text-gray-700 font-medium">
@@ -333,7 +331,7 @@ export default function Editor({ data, directoryStructure, user }) {
           <div>
             <button
               className='px-4 py-2 bg-green-400 text-white rounded-md mt-8 mx-auto float-right'
-              onClick={()=> handleCommit()}
+              onClick={() => handleCommit()}
             >
               Commit
             </button>
