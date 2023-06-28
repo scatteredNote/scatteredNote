@@ -1,6 +1,22 @@
 const fs = require('fs');
 const path = require('path');
 
+export const getDirDataRecursive = (dirPath) => {
+  const dirData = { name: path.basename(dirPath), children: [] };
+  const filesAndDirs = fs.readdirSync(dirPath, { withFileTypes: true });
+  for (const fileOrDir of filesAndDirs) {
+    if (fileOrDir.isFile()) {
+      dirData.children.push({ name: fileOrDir.name, value: `${dirPath}/${fileOrDir.name}`.split("/users/")[1].replace(/^[^/]+\//, '') });
+    } else if (fileOrDir.isDirectory()) {
+      const subDirData = getDirDataRecursive(
+        path.join(dirPath, fileOrDir.name)
+      );
+      dirData.children.push(subDirData);
+    }
+  }
+  return dirData;
+};
+
 export const getUsersData = (dirPath) => {
   const usersData = [];
   const dirs = fs.readdirSync(dirPath, { withFileTypes: true });
@@ -27,33 +43,19 @@ export const getUsersData = (dirPath) => {
   return usersData;
 };
 
-export const getDirDataRecursive = (dirPath) => {
-  const dirData = { name: path.basename(dirPath), children: [] };
-  const filesAndDirs = fs.readdirSync(dirPath, { withFileTypes: true });
-  for (const fileOrDir of filesAndDirs) {
-    if (fileOrDir.isFile()) {
-      dirData.children.push({ name: fileOrDir.name, value: `${dirPath}/${fileOrDir.name}`.split("/users/")[1].replace(/^[^/]+\//, '') });
-    } else if (fileOrDir.isDirectory()) {
-      const subDirData = getDirDataRecursive(
-        path.join(dirPath, fileOrDir.name)
-      );
-      dirData.children.push(subDirData);
-    }
-  }
-  return dirData;
-};
+
 
 
 export function generateDirectoryStructure(dirPath, keyPrefix = '') {
   const items = fs.readdirSync(dirPath, { withFileTypes: true });
   const result = [];
-  
+
   for (const item of items) {
     const itemPath = path.join(dirPath, item.name);
     const isDirectory = item.isDirectory();
     const label = keyPrefix + item.name;
     const value = isDirectory ? `${label}/` : label;
-    
+
     if (isDirectory) {
       if (label.split('/').length > 4) {
         const shortenedKey = label.split('/').slice(-3).join('/');
@@ -61,12 +63,12 @@ export function generateDirectoryStructure(dirPath, keyPrefix = '') {
       } else {
         result.push({ label, value: `${label}` });
       }
-      
+
       const subItems = generateDirectoryStructure(itemPath, `${label}/`);
       result.push(...subItems);
     }
   }
-  
+
   return result;
 }
 
@@ -105,7 +107,7 @@ function formatDirectoryTree(directoryTree) {
   const formattedTree = {};
 
   const processDir = (dirObj, tree, parentKey = '') => {
-    const currentPath = parentKey ? `${parentKey}/${dirObj}` : dirObj; 
+    const currentPath = parentKey ? `${parentKey}/${dirObj}` : dirObj;
     const currentObj = tree[dirObj];
     formattedTree[currentPath] = {
       directory: currentObj.directory.map((dir) => ({ label: dir, value: `${currentPath}/${dir}` })),
@@ -142,7 +144,7 @@ export const getUsersDataContent = (dirPath) => {
       const subDirFiles = getUsersDataContent(filePath);
       if (subDirFiles.length > 0) {
         result = result.concat(subDirFiles);
-       
+
       }
     } else {
       if (path.extname(file) === '.json') {
@@ -164,7 +166,7 @@ export const getUsersDataPath = (dirPath) => {
       const subDirFiles = getUsersDataPath(filePath);
       if (subDirFiles.length > 0) {
         result = result.concat(subDirFiles);
-       
+
       }
     } else {
       if (path.extname(file) === '.json') {

@@ -210,6 +210,80 @@ export const getUsersData = async (dirPath) => {
   }
 };
 
+export const getUsersDataContent = async (dirPath, count = 0) => {
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
+
+  let result = [];
+  const files = await octokit.repos.getContent({
+    owner: "scatteredNote",
+    repo: "data",
+    path: dirPath,
+  });
+  count = count;
+
+  for (const file of files.data) {
+    if (file.type === 'file') {
+      const filePath = path.join(dirPath, file.name);
+      const contentResponse = await octokit.repos.getContent({
+        owner: "scatteredNote",
+        repo: "data",
+        path: filePath,
+      });
+      const content = Buffer.from(
+        contentResponse.data.content,
+        'base64'
+      ).toString('utf-8');
+      if (path.extname(file.name) === '.json') {
+        count++;
+        result.push({
+          id: count,
+          path: filePath.split('users/')[1].replace(/^[^/]+\//, ''),
+          content: JSON.parse(content),
+        });
+      }
+    } else if (file.type === 'dir') {
+      const subDirFiles = await getUsersDataContent(file.path, count);
+      if (subDirFiles.length > 0) {
+        result = result.concat(subDirFiles);
+      }
+      count = subDirFiles.length;
+    }
+  }
+
+  return result;
+};
 
 
+export const getUsersDataPath = async (dirPath) => {
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
+
+  let result = [];
+  const files = await octokit.repos.getContent({
+    owner: "scatteredNote",
+    repo: "data",
+    path: dirPath,
+  });
+
+  for (const file of files.data) {
+    if (file.type === 'file') {
+      const filePath = path.join(dirPath, file.name);
+      if (path.extname(file.name) === '.json') {
+        result.push(
+          filePath.split('users/')[1].replace(/^[^/]+\//, '').split('.json')[0]
+        );
+      }
+    } else if (file.type === 'dir') {
+      const subDirFiles = await getUsersDataPath(file.path);
+      if (subDirFiles.length > 0) {
+        result = result.concat(subDirFiles);
+      }
+    }
+  }
+
+  return result;
+};
 
