@@ -41,10 +41,16 @@ export default async function handler(req, res) {
       await updateFileContent(octokit, userMetaPath, JSON.stringify(userMeta));
 
       // Add note file path to usermeta/user.json to specify isPublic
-      const notePublic = `${MainTopic}/${SubTopic}/${note.includes("json") ? note : `${note}.json`}`;
-      userMeta[notePublic] = isPublic;
+      userMeta[noteFilePath] = isPublic;
       await updateFileContent(octokit, userMetaPath, JSON.stringify(userMeta));
 
+      await res.revalidate(`/${user}/notes`);
+      if (noteFilePath.includes("json")) {
+        await res.revalidate(`/${user}/notes/${noteFilePath.split(".json")[0].replaceAll("/", "_")}`);
+      }
+      else {
+        await res.revalidate(`/${user}/notes/${noteFilePath.replaceAll("/", "_")}`);
+      }
       res.status(200).json({ success: true });
     } catch (error) {
       console.error(error);
@@ -61,7 +67,7 @@ async function createDirectoryIfNotExists(octokit, directoryPath) {
   try {
     await octokit.repos.getContent({
       owner: "scatteredNote",
-      repo: "scatteredNote",
+      repo: "data",
       path: directoryPath,
     });
   } catch (error) {
@@ -69,7 +75,7 @@ async function createDirectoryIfNotExists(octokit, directoryPath) {
       // Directory doesn't exist, create it
       await octokit.repos.createOrUpdateFileContents({
         owner: "scatteredNote",
-        repo: "scatteredNote",
+        repo: "data",
         path: `${directoryPath}/.gitkeep`,
         message: `Create ${directoryPath}/.gitkeep`,
         content: Buffer.from("").toString("base64"),
@@ -84,7 +90,7 @@ async function createFileIfNotExists(octokit, filePath, content) {
   try {
     await octokit.repos.getContent({
       owner: "scatteredNote",
-      repo: "scatteredNote",
+      repo: "data",
       path: filePath,
     });
   } catch (error) {
@@ -92,7 +98,7 @@ async function createFileIfNotExists(octokit, filePath, content) {
       // File doesn't exist, create it
       await octokit.repos.createOrUpdateFileContents({
         owner: "scatteredNote",
-        repo: "scatteredNote",
+        repo: "data",
         path: filePath,
         message: `Create ${filePath}`,
         content: Buffer.from(content).toString("base64"),
@@ -106,7 +112,7 @@ async function createFileIfNotExists(octokit, filePath, content) {
 async function getFileContent(octokit, filePath) {
   const response = await octokit.repos.getContent({
     owner: "scatteredNote",
-    repo: "scatteredNote",
+    repo: "data",
     path: filePath,
   });
 
@@ -117,7 +123,7 @@ async function getFileContent(octokit, filePath) {
 async function updateFileContent(octokit, filePath, content) {
   const response = await octokit.repos.createOrUpdateFileContents({
     owner: "scatteredNote",
-    repo: "scatteredNote",
+    repo: "data",
     path: filePath,
     message: `Update ${filePath}`,
     content: Buffer.from(content).toString("base64"),
@@ -130,7 +136,7 @@ async function updateFileContent(octokit, filePath, content) {
 async function getFileSha(octokit, filePath) {
   const response = await octokit.repos.getContent({
     owner: "scatteredNote",
-    repo: "scatteredNote",
+    repo: "data",
     path: filePath,
   });
 
