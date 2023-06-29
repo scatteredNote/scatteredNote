@@ -1,5 +1,7 @@
 import React from 'react'
-import { getUsersDataPath, getUsersDataContent, getUsersData } from '@/libs/getUsersDirectory';
+import { Octokit } from "@octokit/rest";
+import { getUsersDataPath, getUsersDataContent, getUsersData } from '@/libs/githubops';
+// import { getUsersDataPath, getUsersDataContent, getUsersData } from '@/libs/getUsersDirectory';
 import CreatableSelect from 'react-select/creatable';
 import { useState } from 'react';
 import MiniSearch from 'minisearch'
@@ -37,7 +39,7 @@ export default function Index({ user, contentlist, tags, content, mainContent })
   const handleLinkClick = () => {
     setContentPage([]); // Clear the contentPage state
   };
-  
+
   return (
     <>
       <div className='grid grid-cols-12'>
@@ -45,7 +47,7 @@ export default function Index({ user, contentlist, tags, content, mainContent })
         <section className='border-2 col-start-1 col-span-4 p-4'>
           <h1 className=' text-2xl bg-gradient-to-r from-violet-500 to-fuchsia-500 inline-block text-transparent bg-clip-text'>Memory<i className='font-bold'>X</i></h1>
           <div><i className='ml-2 font-bold text-xs'>In Peace with Forgetting</i></div>
-          
+
           <section className='mt-4'>
             <input type="text" placeholder="Search.." className='w-full rounded-lg border-2 p-2'
               onKeyPress={searchFunc}
@@ -73,7 +75,7 @@ export default function Index({ user, contentlist, tags, content, mainContent })
         <section className='border-2 col-start-5 col-span-12 p-4'>
           Main Content
 
-          
+
           {contentPage.length === 0 && mainContent && (
             <>
               {mainContent.map((item, index) => {
@@ -81,20 +83,20 @@ export default function Index({ user, contentlist, tags, content, mainContent })
                   <div key={index} className="w-[80%] p-4 mt-4">
                     <div className=' rounded-xl border-2  w-fit p-4' dangerouslySetInnerHTML={{ __html: md.render(item.grab) }} />
                     <div className=' ml-16  border-dashed border-l-2 p-4 w-4 h-full' />
-                    <div className=' rounded-xl border-2  w-fit p-4 ml-6 ' dangerouslySetInnerHTML={{__html: md.render(item.views)}} />
+                    <div className=' rounded-xl border-2  w-fit p-4 ml-6 ' dangerouslySetInnerHTML={{ __html: md.render(item.views) }} />
                   </div>
                 )
-              }) }
+              })}
             </>
           )}
           <div>
             {contentPage.map((item, index) => {
               return (
-                 <Link href={`/${user}/notes/${item.path.split(".json")[0].replaceAll("/", "_")}`} key={index} passHref>
+                <Link href={`/${user}/notes/${item.path.split(".json")[0].replaceAll("/", "_")}`} key={index} passHref>
                   <div key={index} className="w-[80%] p-4 rounded-lg border-2 mt-4" onClick={handleLinkClick}>
                     <div className='text-2xl'>{item.path}</div>
-                    <div className='text-sm bg-gray-200 outline-2' dangerouslySetInnerHTML={{__html: md.render(item.grab).substring(0, 60)}} />
-                    <div className='text-sm mt-2 bg-gray-200 outline-2' dangerouslySetInnerHTML={{__html: md.render(item.views).substring(0, 60)}} />
+                    <div className='text-sm bg-gray-200 outline-2' dangerouslySetInnerHTML={{ __html: md.render(item.grab).substring(0, 60) }} />
+                    <div className='text-sm mt-2 bg-gray-200 outline-2' dangerouslySetInnerHTML={{ __html: md.render(item.views).substring(0, 60) }} />
                   </div>
                 </Link>
               )
@@ -109,70 +111,115 @@ export default function Index({ user, contentlist, tags, content, mainContent })
 }
 
 
-
 export async function getStaticPaths() {
-  const fs = require('fs');
-  const path = require('path');
-  const usersDir = path.join(process.cwd(), 'users');
-  const users = fs.existsSync(usersDir) ? fs.readdirSync(usersDir) : [];
-  const paths = users.flatMap((user) => {
-    const userDir = path.join(process.cwd(), 'users', user);
-    const contentlist = getUsersDataPath(userDir);
-    console.log("Content List", contentlist);
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
+  const usersDir = 'users';
+  const users = await octokit.repos.getContent({
+    owner: "scatteredNote",
+    repo: "data",
+    path: usersDir,
+  });
+  const paths = (await Promise.all(users.data.map(async (user) => {
+    const userDir = `users/${user.name}`;
+    const contentlist = await getUsersDataPath(userDir);
     const paths = contentlist.map((item) => ({
-      params: { user: user, slug: item.replaceAll("/", "_") }
-    }))
-    console.log("PATHS", paths);
-    return paths
-
-  })
+      params: { user: user.name, slug: item.replaceAll("/", "_") }
+    }));
+    return paths;
+  }))).flat();
   return { paths, fallback: false };
 }
 
+
 export async function getStaticProps({ params }) {
-  const path = require('path');
-  const fs = require('fs');
   const user = params.user;
   const slug = params.slug.replaceAll("_", "/");
-  const userDir = path.join(process.cwd(), 'users', user);
-  if (!fs.existsSync(userDir)) {
-    return { notFound: true };
+  const userDir = `/users/${user}`
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
+  try {
+    await octokit.repos.getContent({
+      owner: 'scatteredNote',
+      repo: 'data',
+      path: userDir,
+    });
+  } catch (error) {
+    if (error.status === 404) {
+      return { notFound: true };
+    }
+    // Handle other errors if needed
   }
-  const contentlist = getUsersData(userDir);
-  let tags;
+  const contentlist = await getUsersData(userDir);
+  const filePath = `userMeta/${user}.json`;
+  let tags = null;
+  try {
+    const response = await octokit.repos.getContent({
+      owner: 'scatteredNote',
+      repo: 'data',
+      path: filePath,
+    });
 
-  let fpath = path.join(process.cwd(), 'userMeta', `${user}.json`)
+    if (response.data && response.data.content) {
+      const content = Buffer.from(response.data.content, "base64").toString("utf-8");
+      const jsonContent = JSON.parse(content);
+      tags = jsonContent?.tags;
 
-  if (fs.existsSync(fpath)) {
-    tags = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'userMeta', `${user}.json`), "utf-8"))?.tags;
-    tags = tags.map((item, index) => {
-      return {label:item.toLowerCase(), value:item}
-    })
+      if (tags) {
+        tags = tags.map((item) => ({
+          label: item.toLowerCase(),
+          value: item,
+        }));
+      }
+    }
+  } catch (error) {
+    if (error.status === 404) {
+      // File does not exist
+      tags = [];
+    } else {
+      // Handle other errors
+      console.error("Error retrieving file:", error);
+    }
   }
-  else {
-    tags = null
-  }
 
-  let content = getUsersDataContent(userDir)
+  let content = await getUsersDataContent(userDir)
   let i = 0;
   content = content.flatMap(({ id, path, content }) => {
-    
-    return content.map(({ grab, views, tags }, index) => ({ 
-            id: i++, 
-            path, 
-            grab, 
-            views, 
-            tags 
-        }))
+    if (content.length > 0) {
+      return content.map(({ grab, views, tags }, index) => ({
+        id: i++,
+        path,
+        grab,
+        views,
+        tags
+      }))
+    }
+    return {
+      id: i++,
+      path,
+    }
   });
 
-  // get body main content
-  const requestedContentPath = path.join(process.cwd(), 'users', user, `${slug}.json`);
+  const requestedContentPath = `users/${user}/${slug}.json`; // Relative path to the requested content
   let mainContent = null;
-  if (fs.existsSync(requestedContentPath)) {
-      mainContent =  JSON.parse(fs.readFileSync(requestedContentPath, 'utf-8'));
+
+  try {
+    const response = await octokit.repos.getContent({
+      owner: 'scatteredNote',
+      repo: 'data',
+      path: requestedContentPath,
+    });
+
+    if (response.data.type === "file") {
+      const content = Buffer.from(response.data.content, "base64").toString("utf-8");
+      mainContent = JSON.parse(content);
+    }
+  } catch (error) {
+    console.error("Error retrieving content:", error);
   }
- 
+
   return {
     props: {
       user,

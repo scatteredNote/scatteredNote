@@ -67,7 +67,7 @@ export async function generateDirectoryStructure(path, keyPrefix = '') {
   try {
     const response = await octokit.repos.getContent({
       owner: "scatteredNote",
-      repo: "scatteredNote",
+      repo: "data",
       path: path,
     });
 
@@ -108,7 +108,7 @@ async function getDirectoryTree(directoryPath) {
   const walk = async (dirPath, obj) => {
     const response = await octokit.rest.repos.getContent({
       owner: "scatteredNote",
-      repo: "scatteredNote",
+      repo: "data",
       path: dirPath,
     });
 

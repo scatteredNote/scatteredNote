@@ -3,34 +3,55 @@ import '@uiw/react-markdown-preview/markdown.css';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import * as commands from '@uiw/react-md-editor/lib/commands';
-import { generateDirectoryStructure, generateDirectoryFilese } from '@/libs/getUsersDirectory';
+import { generateDirectoryStructure, generateDirectoryFilese } from '@/libs/githubops';
 import CreatableSelect from 'react-select/creatable';
 import { useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
+import { Octokit } from "@octokit/rest";
 
 export async function getStaticPaths() {
-  const fs = require('fs');
-  const path = require('path');
-  const usersDir = path.join(process.cwd(), 'users');
-  const users = fs.existsSync(usersDir) ? fs.readdirSync(usersDir) : [];
-  const paths = users.map((user) => ({
-    params: { user: user },
-  }));
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
+  const usersDir = 'users'; // Assuming 'users' is a directory in your GitHub repository
+
+  const users = await octokit.repos.getContent({
+    owner: "scatteredNote",
+    repo: "data",
+    path: usersDir,
+  });
+
+  const paths = users.data
+    .filter((file) => file.type === 'dir')
+    .map((dir) => ({
+      params: { user: dir.name },
+    }));
 
   return { paths, fallback: false };
 }
 
 export async function getStaticProps({ params }) {
-  const path = require('path');
-  const fs = require('fs');
   const user = params.user;
-  const userDir = path.join(process.cwd(), 'users', user);
+  const userDir = `/users/${user}`
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
 
-  if (!fs.existsSync(userDir)) {
-    return { notFound: true };
+  try {
+    await octokit.repos.getContent({
+      owner: 'scatteredNote',
+      repo: 'data',
+      path: userDir,
+    });
+  } catch (error) {
+    if (error.status === 404) {
+      return { notFound: true };
+    }
+    // Handle other errors if needed
   }
-  const data = generateDirectoryStructure(userDir);
-  const directoryStructure = generateDirectoryFilese(userDir);
+
+  const data = await generateDirectoryStructure(userDir);
+  const directoryStructure = await generateDirectoryFilese(userDir);
 
   // const data = { name: user, children: getUsersData(userDir) };
   return {

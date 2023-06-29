@@ -1,6 +1,7 @@
 
 import DirectoryTree from '@/components/DirectoryTree';
-import { getUsersData, getUsersDataContent } from '@/libs/getUsersDirectory';
+import { Octokit } from "@octokit/rest";
+import { getUsersData, getUsersDataContent } from '@/libs/githubops';
 import CreatableSelect from 'react-select/creatable';
 import { useState } from 'react';
 import MiniSearch from 'minisearch'
@@ -32,15 +33,15 @@ export default function Index({ user, contentlist, tags, content }) {
       }
     }
   }
-  
+
   return (
     <>
       <div className='grid grid-cols-12'>
 
         <section className='border-2 col-start-1 col-span-4 p-4'>
-          <h1 className=' text-2xl bg-gradient-to-r from-violet-500 to-fuchsia-500 inline-block text-transparent bg-clip-text'>Memory<i className='font-bold'>X</i></h1>
+          <h1 className=' text-2xl bg-gradient-to-r from-violet-500 to-fuchsia-500 inline-block text-transparent bg-clip-text'>Scattered<i className='font-bold'>Note</i></h1>
           <div><i className='ml-2 font-bold text-xs'>In Peace with Forgetting</i></div>
-          
+
           <section className='mt-4'>
             <input type="text" placeholder="Search.." className='w-full rounded-lg border-2 p-2'
               onKeyPress={searchFunc}
@@ -67,16 +68,16 @@ export default function Index({ user, contentlist, tags, content }) {
         </section>
         <section className='border-2 col-start-5 col-span-12 p-4'>
           Main Content
-          
+
           <div>
             {contentPage.map((item, index) => {
               return (
 
-                <Link href={`./${user}/notes/${item.path.split(".json")[0].replaceAll("/", "_")}`} key={index}><div key={index} className="w-[80%] p-4 rounded-lg border-2 mt-4">
+                <Link href={`/${user}/notes/${item.path.split(".json")[0].replaceAll("/", "_")}`} key={index}><div key={index} className="w-[80%] p-4 rounded-lg border-2 mt-4">
                   <div className='text-2xl'>{item.path}</div>
-                    <div className='text-sm bg-gray-200 outline-2' dangerouslySetInnerHTML={{__html: md.render(item.grab).substring(0, 60)}} />
-                    <div className='text-sm mt-2 bg-gray-200 outline-2' dangerouslySetInnerHTML={{__html: md.render(item.views).substring(0, 60)}} />
-                  </div>
+                  <div className='text-sm bg-gray-200 outline-2' dangerouslySetInnerHTML={{ __html: md.render(item?.grab).substring(0, 60) }} />
+                  <div className='text-sm mt-2 bg-gray-200 outline-2' dangerouslySetInnerHTML={{ __html: md.render(item?.views).substring(0, 60) }} />
+                </div>
                 </Link>
               )
             })}
@@ -92,61 +93,94 @@ export default function Index({ user, contentlist, tags, content }) {
 
 
 export async function getStaticPaths() {
-  const fs = require('fs');
-  const path = require('path');
-  const usersDir = path.join(process.cwd(), 'users');
-  const users = fs.existsSync(usersDir) ? fs.readdirSync(usersDir) : [];
-  const paths = users.map((user) => ({
-    params: { user: user },
-  }));
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
+  const usersDir = 'users';
+  const users = await octokit.repos.getContent({
+    owner: "scatteredNote",
+    repo: "data",
+    path: usersDir,
+  });
+
+  const paths = users.data
+    .filter((file) => file.type === 'dir')
+    .map((dir) => ({
+      params: { user: dir.name },
+    }));
 
   return { paths, fallback: false };
 }
 
 
 export async function getStaticProps({ params }) {
-  const path = require('path');
-  const fs = require('fs');
   const user = params.user;
-  const userDir = path.join(process.cwd(), 'users', user);
+  const userDir = `/users/${user}`
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
 
-  if (!fs.existsSync(userDir)) {
-    return { notFound: true };
-  }
-  const contentlist = getUsersData(userDir);
-  let tags;
-
-  let fpath = path.join(process.cwd(), 'userMeta', `${user}.json`)
-
-  if (fs.existsSync(fpath)) {
-    tags = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'userMeta', `${user}.json`), "utf-8"))?.tags;
-    if (tags) {
-      tags = tags.map((item, index) => {
-        return {label:item.toLowerCase(), value:item}
-      })
+  try {
+    await octokit.repos.getContent({
+      owner: 'scatteredNote',
+      repo: 'data',
+      path: userDir,
+    });
+  } catch (error) {
+    if (error.status === 404) {
+      return { notFound: true };
     }
-    else {
+    // Handle other errors if needed
+  }
+  const contentlist = await getUsersData(userDir);
+  const filePath = `userMeta/${user}.json`;
+  let tags = null;
+  try {
+    const response = await octokit.repos.getContent({
+      owner: 'scatteredNote',
+      repo: 'data',
+      path: filePath,
+    });
+
+    if (response.data && response.data.content) {
+      const content = Buffer.from(response.data.content, "base64").toString("utf-8");
+      const jsonContent = JSON.parse(content);
+      tags = jsonContent?.tags;
+
+      if (tags) {
+        tags = tags.map((item) => ({
+          label: item.toLowerCase(),
+          value: item,
+        }));
+      }
+    }
+  } catch (error) {
+    if (error.status === 404) {
+      // File does not exist
       tags = null;
+    } else {
+      // Handle other errors
+      console.error("Error retrieving file:", error);
     }
-    
-  }
-  else {
-    tags = null
   }
 
-  let content = getUsersDataContent(userDir)
+  let content = await getUsersDataContent(userDir)
   let i = 0;
   content = content.flatMap(({ id, path, content }) => {
-    
-    return content.map(({ grab, views, tags }, index) => ({ 
-            id: i++, 
-            path, 
-            grab, 
-            views, 
-            tags 
-        }))
+    if (content.length > 0) {
+      return content.map(({ grab, views, tags }, index) => ({
+        id: i++,
+        path,
+        grab,
+        views,
+        tags
+      }))
+    }
+    return {
+      id: i++,
+      path,
+    }
   });
- 
 
   return {
     props: {
