@@ -41,15 +41,16 @@ export default async function handler(req, res) {
       await updateFileContent(octokit, userMetaPath, JSON.stringify(userMeta));
 
       // Add note file path to usermeta/user.json to specify isPublic
-      userMeta[noteFilePath] = isPublic;
+      let noteFilePath2 = noteFilePath.split("/").slice(2);
+      userMeta[noteFilePath2.join("/")] = isPublic;
       await updateFileContent(octokit, userMetaPath, JSON.stringify(userMeta));
 
       await res.revalidate(`/${user}/notes`);
       if (noteFilePath.includes("json")) {
-        await res.revalidate(`/${user}/notes/${noteFilePath.split(".json")[0].replaceAll("/", "_")}`);
+        await res.revalidate(`/${user}/notes/${noteFilePath2.join("_").split(".json")[0]}`);
       }
       else {
-        await res.revalidate(`/${user}/notes/${noteFilePath.replaceAll("/", "_")}`);
+        await res.revalidate(`/${user}/notes/${noteFilePath2.join("_")}`);
       }
       res.status(200).json({ success: true });
     } catch (error) {
