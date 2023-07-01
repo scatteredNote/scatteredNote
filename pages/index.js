@@ -6,6 +6,7 @@ import Link from "next/link"
 import { useSession, signIn, signOut } from "next-auth/react"
 import NoteCardList from '@/components/NoteCardList'
 import FeaturedCardList from '@/components/FeaturedCardList'
+import NavbarMobile from '@/components/NavbarMobile'
 
 
 const Home = () => {
@@ -80,17 +81,19 @@ const Home = () => {
   return (
     <section className=''>
       {/* Navbar */}
-      <section className=' w-full lg:block hidden'>
-        <div className='mx-auto max-w-[90%] flex items-center py-4 font-manrope  pr-0'>
+      <section className=' w-full'>
+        <div className='mx-auto max-w-full lg:max-w-[90%] flex items-center py-4 font-manrope  pr-0'>
+          <NavbarMobile />
           <div className=' bg-custom1 text-center px-8 py-4 text-white font-manrope font-medium'>Logo</div>
-          <div className=' shrink w-[60%] grow flex justify-center gap-x-8 font-medium text-[1.125rem] leading-[1.537rem] text-custom1 '>
+
+          <div className='hidden relative  shrink w-[60%] grow lg:block lg:flex justify-center gap-x-8 font-medium text-[1.125rem] leading-[1.537rem] text-custom1 '>
             <Link href={"#"}>Home</Link>
             <Link href="#">About</Link>
             <Link href="#features">Features</Link>
             <Link href="#">Contact</Link>
             <Link href="#">Subscribe</Link>
           </div>
-          <div className=' bg-custom1 text-center px-8 py-4 text-white font-manrope font-medium rounded-xl mx-auto float-right'>
+          <div className=' bg-custom1 text-center px-8 py-4 text-white font-manrope font-medium rounded-xl ml-auto'>
             {!session && (
               <a
                 href={`/api/auth/signin`}
