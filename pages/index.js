@@ -7,82 +7,18 @@ import { useSession, signIn, signOut } from "next-auth/react"
 import NoteCardList from '@/components/NoteCardList'
 import FeaturedCardList from '@/components/FeaturedCardList'
 import NavbarMobile from '@/components/NavbarMobile'
+import ProfileBar from '@/components/ProfileBar'
 
 
 const Home = () => {
   const { data: session, status } = useSession()
   const loading = status === "loading"
 
-  // return (
-  //   <header>
-  //     <noscript>
-  //       <style>{`.nojs-show { opacity: 1; top: 0; }`}</style>
-  //     </noscript>
-  //     {/* <div className={styles.signedInStatus}>
-  //       <p
-  //         className={`nojs-show ${
-  //           !session && loading ? styles.loading : styles.loaded
-  //         }`}
-  //       >
-  //         {!session && (
-  //           <>
-  //             <span className={styles.notSignedInText}>
-  //               You are not signed in
-  //             </span>
-  //             <a
-  //               href={`/api/auth/signin`}
-  //               className={styles.buttonPrimary}
-  //               onClick={(e) => {
-  //                 e.preventDefault()
-  //                 signIn()
-  //               }}
-  //             >
-  //               Sign in
-  //             </a>
-  //           </>
-  //         )}
-  //         {session?.user && (
-  //           <>
-  //             {session.user.image && (
-  //               <span
-  //                 style={{ backgroundImage: `url('${session.user.image}')` }}
-  //                 className={styles.avatar}
-  //               />
-  //             )}
-  //             <span className={styles.signedInText}>
-  //               <small>Signed in as</small>
-  //               <br />
-  //               <strong>{session.user.email ?? session.user.name}</strong>
-  //             </span>
-  //             <a
-  //               href={`/api/auth/signout`}
-  //               className={styles.button}
-  //               onClick={(e) => {
-  //                 e.preventDefault()
-  //                 signOut()
-  //               }}
-  //             >
-  //               Sign out
-  //             </a>
-  //           </>
-  //         )}
-  //       </p>
-  //     </div> */}
-
-  //     <section >
-  //       <div className='mx-auto '>
-
-  //       </div>
-  //     </section>
-
-  //   </header>
-  // )
-
   return (
     <section className=''>
       {/* Navbar */}
       <section className=' w-full'>
-        <div className='mx-auto max-w-full lg:max-w-[90%] flex items-center py-4 font-manrope  pr-0'>
+        <div className='mx-auto max-w-full sm:max-w-screen-md lg:max-w-[90%] flex items-center py-4 font-manrope  pr-0'>
           <NavbarMobile />
           <div className=' bg-custom1 text-center px-8 py-4 text-white font-manrope font-medium'>Logo</div>
 
@@ -93,44 +29,22 @@ const Home = () => {
             <Link href="#">Contact</Link>
             <Link href="#">Subscribe</Link>
           </div>
-          <div className=' bg-custom1 text-center px-8 py-4 text-white font-manrope font-medium rounded-xl ml-auto'>
-            {!session && (
-              <a
-                href={`/api/auth/signin`}
-                onClick={(e) => {
-                  e.preventDefault()
-                  signIn()
-                }}
-              >
-                Login
-              </a>
-            )}
-            {session?.user && (
-              <>
-                {/* {session.user.image && (
-                <span
-                  style={{ backgroundImage: `url('${session.user.image}')` }}
-                  className={styles.avatar}
-                />
-              )}
-              <span className={styles.signedInText}>
-                <small>Signed in as</small>
-                <br />
-                <strong>{session.user.email ?? session.user.name}</strong>
-              </span> */}
+          {session && <ProfileBar user={session.user} />}
+          {!session && (
+            <div className=' bg-custom1 text-center px-8 py-4 text-white font-manrope font-medium rounded-xl ml-auto'>
+              {!session && (
                 <a
-                  href={`/api/auth/signout`}
-                  className={styles.button}
+                  href={`/api/auth/signin`}
                   onClick={(e) => {
                     e.preventDefault()
-                    signOut()
+                    signIn()
                   }}
                 >
-                  Log out
+                  Login
                 </a>
-              </>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
       </section>
 

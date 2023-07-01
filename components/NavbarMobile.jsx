@@ -31,7 +31,7 @@ export default function NavbarMobile() {
             >
               <Popover.Panel className="absolute">
                 <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 pr-4 pl-2 py-2 bg-white">
-                  <div className="relative grid gap-4 bg-white">
+                  <div className="relative grid gap-4 bg-white text-sm leading-tight">
                     <Link href={"#"}>Home</Link>
                     <Link href="#">About</Link>
                     <Link href="#features">Features</Link>
