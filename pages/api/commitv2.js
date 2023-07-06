@@ -45,6 +45,18 @@ export default async function handler(req, res) {
       userMeta[noteFilePath2.join("/")] = isPublic;
       await updateFileContent(octokit, userMetaPath, JSON.stringify(userMeta));
 
+      // Add website url to web/website.json
+      const { websiteUrl } = req.body;
+      if (websiteUrl) {
+        const websitePath = `web/website.json`;
+        const websiteContent = await getFileContent(octokit, websitePath);
+        const website = JSON.parse(websiteContent);
+        if (!website[websiteUrl]) website[websiteUrl] = [];
+        website[websiteUrl].push(noteFilePath);
+        await updateFileContent(octokit, websitePath, JSON.stringify(website));
+      }
+
+
       await res.revalidate(`/${user}/notes`);
       if (noteFilePath.includes("json")) {
         await res.revalidate(`/${user}/notes/${noteFilePath2.join("_").split(".json")[0]}`);
