@@ -41,7 +41,8 @@ export default function ProfileBar({ user }) {
               <Popover.Panel className="absolute z-10 mt-2 flex w-screen max-w-max -translate-x-3">
                 <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 pr-4 pl-2 py-2  bg-white">
                   <div className="relative grid gap-4 bg-white w-fit whitespace-nowrap text-sm leading-tight">
-                    <Link href="#">Notes</Link>
+                    <Link href={`/${user.username}/notes`}>Notes</Link>
+                    <Link href={`/${user.username}/editor`}>Editor</Link>
                     <a
                       href={`/api/auth/signout`}
                       onClick={(e) => {

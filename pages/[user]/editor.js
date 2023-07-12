@@ -8,6 +8,7 @@ import CreatableSelect from 'react-select/creatable';
 import { useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
 import { Octokit } from "@octokit/rest";
+import Nav from '@/components/NavBar'
 
 export async function getStaticPaths() {
   const octokit = new Octokit({
@@ -203,10 +204,11 @@ export default function Editor({ data, directoryStructure, user }) {
 
   return (
     <>
-      <div className=" mx-auto w-11/12 mt-10 grid grid-cols-12 border-2">
+      <Nav />
+      <div className=" mx-auto w-11/12 mt-10 grid grid-cols-12 rounded-lg p-4 bg-slate-900 text-slate-400">
         <div className="col-span-8 ">
           <section className="flex flex-col">
-            <h1 className="text-[#00000] font-bold">Grab Editor</h1>
+            <h1 className="font-bold tracking-light text-2xl mb-2 text-slate-200">Grab Editor</h1>
             <MDEditor
               value={value}
               onChange={setValue}
@@ -242,7 +244,7 @@ export default function Editor({ data, directoryStructure, user }) {
             />
           </section>
           <section className="flex flex-col mt-4">
-            <h1 className="text-[#00000] font-bold">Note</h1>
+            <h1 className="font-bold tracking-light text-2xl mb-2 text-slate-200">Note</h1>
             <MDEditor
               value={views}
               onChange={setViews}
@@ -279,47 +281,59 @@ export default function Editor({ data, directoryStructure, user }) {
           </section>
 
           <section className="flex flex-col mt-4 mb-4">
-            <h1 className="text-[#00000] font-bold">Tags</h1>
-            <CreatableSelect
-              isMulti options={options}
-              value={valueOp}
-              onChange={(newValue) => setValueOp(newValue)}
-            />
+            <h1 className="font-bold tracking-light text-2xl mb-2 text-slate-200">Tags</h1>
+            <div className='w-full ' style={{ all: "initial" }}>
+              <CreatableSelect
+                isMulti options={options}
+                value={valueOp}
+                onChange={(newValue) => setValueOp(newValue)}
+              />
+            </div>
+
           </section>
 
         </div>
-        <div className="col-start-9 col-span-12 border-2 p-4">
-          <h1 className="text-center text-[#00000] font-bold">Metadata</h1>
+        <div className="col-start-9 col-span-12 p-4 pl-8 pr-2">
+          <h1 className="text-center font-extrabold tracking-light text-2xl mb-2 text-slate-200">Metadata</h1>
 
           <div className="mt-8 w-full">
-            <h1 className="text-[#00000] font-bold">Main Topic</h1>
+            <h1 className="font-bold tracking-light text-2xl mb-2 text-slate-200">Main Topic</h1>
             <small><i>Use an Existing Topic  or create a new Topic by just typing out the name and click on the drop down selection &ldquo;Create ...&rdquo;</i></small>
-            <CreatableSelect
-              options={data}
-              value={mainTopic}
-              onChange={(newValue) => setMainTopic(newValue)}
-            />
+            <div className='w-full ' style={{ all: "initial" }}>
+              <CreatableSelect
+                options={data}
+                value={mainTopic}
+                onChange={(newValue) => setMainTopic(newValue)}
+              />
+            </div>
+
           </div>
           <div className="mt-8 w-full">
-            <h1 className="text-[#00000] font-bold">Sub Topic</h1>
+            <h1 className="font-bold tracking-light text-2xl mb-2 text-slate-200">Sub Topic</h1>
             <small><i>Use an Existing subtopic or create a new subtopic by just typing out the name and click on the drop down selection &ldquo;Create ...&rdquo;</i></small>
-            <CreatableSelect
-              options={mainTopic && directoryStructure[mainTopic.value] ? directoryStructure[mainTopic.value].directory : []}
-              value={subTopic}
-              onChange={(newValue) => setSubTopic(newValue)}
-            />
+            <div className='w-full ' style={{ all: "initial" }}>
+              <CreatableSelect
+                options={mainTopic && directoryStructure[mainTopic.value] ? directoryStructure[mainTopic.value].directory : []}
+                value={subTopic}
+                onChange={(newValue) => setSubTopic(newValue)}
+              />
+            </div>
+
           </div>
           <div className="mt-8 w-full">
-            <h1 className="text-[#00000] font-bold">Notes</h1>
+            <h1 className="font-bold tracking-light text-2xl mb-2 text-slate-200">Notes</h1>
             <small><i>Use an Existing Note  or create a new Note by just typing out the name and click on the drop down selection &ldquo;Create ...&rdquo;</i></small>
-            <CreatableSelect
-              options={notes()}
-              value={note}
-              onChange={(newValue) => setNote(newValue)}
-            />
+            <div className='w-full ' style={{ all: "initial" }}>
+              <CreatableSelect
+                options={notes()}
+                value={note}
+                onChange={(newValue) => setNote(newValue)}
+              />
+            </div>
+
           </div>
 
-          <div className="flex items-center relative mt-8">
+          {/* <div className="flex items-center relative mt-8">
             <small className='absolute top-0'><i>Make a new note public or private</i></small>
             <br />
             <label
@@ -347,7 +361,7 @@ export default function Editor({ data, directoryStructure, user }) {
                 {isPublic ? 'Public' : 'Private'}
               </div>
             </label>
-          </div>
+          </div> */}
 
           <div>
             <button
