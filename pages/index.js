@@ -51,7 +51,7 @@ const Home = () => {
       {/* Hero */}
       <section className='w-full h-fit border-b-2 border-dashed border-gray-300 pb-8'>
         <div className='mx-auto w-full  lg:max-w-7xl flex flex-col items-center py-4 font-manrope  pr-0 sm:px-6 md:px-8 '>
-          <div className=' font-extrabold text-xl tracking-tight px-2 lg:px-0 lg:text-[3.625rem] lg:leading-[4.952rem] text-center'>Grab <span className='text-[#011687]'>contents</span> and <span className='text-[#011687]'>ideas</span> with ease as you go about your day.</div>
+          <div className=' font-extrabold text-xl tracking-tight px-2 lg:px-0 lg:text-[3.625rem] lg:leading-[4.952rem] text-center'>Grab <span className='text-[#011687]'>Contents</span> and take <span className='text-[#011687]'>Notes</span> with ease as you go about your day.</div>
           <div className='font-normal text-md tracking-tight text-center  2xl:text-[1.25rem] lg:leading-[3rem] mt-8 px-2 lg:px-0'>Make Note-taking a by-product of your main task without getting distracted from your current main goal.</div>
           <div className='relative mt-8 2xl:w-[60%] 2xl:h-[45vh] w-[80%] aspect-video h-[250px] sm:h-[450px]'>
             <Image src='/heroimage.png'
