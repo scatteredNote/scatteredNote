@@ -11,7 +11,7 @@ export async function createGithubFolder(user) {
   // Check if user folder exists in repo
   octokit.repos.getContent({
     owner: "scatteredNote",
-    repo: "scatteredNote",
+    repo: "data",
     path: userFolder,
   })
     .then(() => {
@@ -23,7 +23,7 @@ export async function createGithubFolder(user) {
       if (error.status === 404) {
         octokit.repos.createOrUpdateFileContents({
           owner: "scatteredNote",
-          repo: "scatteredNote",
+          repo: "data",
           path: userFolder,
           message: `Create ${userFolder}/README.md`,
           content: Buffer.from("").toString("base64"),
@@ -38,7 +38,7 @@ export async function createGithubFolder(user) {
 
         octokit.repos.createOrUpdateFileContents({
           owner: "scatteredNote",
-          repo: "scatteredNote",
+          repo: "data",
           path: `userMeta/${user}.json`,
           message: `Create userMeta/${user}.json`,
           content: Buffer.from("{}").toString("base64"),
