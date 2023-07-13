@@ -3,10 +3,16 @@ import DirectoryTree from '@/components/DirectoryTree';
 import { Octokit } from "@octokit/rest";
 import { getUsersData, getUsersDataContent } from '@/libs/githubops';
 import CreatableSelect from 'react-select/creatable';
-import { useState } from 'react';
+import { useState, useEffect } from "react";
 import MiniSearch from 'minisearch'
 import { Remarkable } from 'remarkable';
 import Link from 'next/link';
+import Nav from '@/components/NavBar'
+import SearchPortal, { SearchField } from "@/components/SearchPortal";
+import {
+  KBarProvider,
+  KBarContext
+} from "kbar";
 
 export default function Index({ user, contentlist, tags, content }) {
   const [valueOp, setValueOp] = useState([]);
@@ -17,6 +23,13 @@ export default function Index({ user, contentlist, tags, content }) {
   });
 
   search.addAll(content);
+
+  const [modifierKey, setModifierKey] = useState();
+
+  useEffect(() => {
+    const isMac = /(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgent);
+    setModifierKey(isMac ? "⌘" : "Ctrl ");
+  }, []);
 
   const md = new Remarkable();
 
@@ -34,58 +47,64 @@ export default function Index({ user, contentlist, tags, content }) {
     }
   }
 
+
   return (
     <>
-      <div className='grid grid-cols-12'>
-
-        <section className='border-2 col-start-1 col-span-4 p-4'>
-          <h1 className=' text-2xl bg-gradient-to-r from-violet-500 to-fuchsia-500 inline-block text-transparent bg-clip-text'>Scattered<i className='font-bold'>Note</i></h1>
-          <div><i className='ml-2 font-bold text-xs'>In Peace with Forgetting</i></div>
-
-          <section className='mt-4'>
-            <input type="text" placeholder="Search.." className='w-full rounded-lg border-2 p-2'
-              onKeyPress={searchFunc}
-            />
+      <KBarProvider >
+        <SearchPortal data={content} />
+        <Nav />
+        <div className='grid grid-cols-12 mx-auto w-11/12 mt-10'>
+          <section className='border-2 col-start-1 col-span-4 p-4'>
+            {/* <section className='mt-4'>
+              <input type="text" placeholder="Search.." className='w-full rounded-lg border-2 p-2'
+                onKeyPress={searchFunc}
+              />
+            </section> */}
+            <KBarContext>
+              {({ query }) => (
+                <SearchField modifierKey={modifierKey} onOpen={query?.toggle} />
+              )}
+            </KBarContext>
+            <br />
+            <hr />
+            <section className='mt-4'>
+              {contentlist.map((item, index) => {
+                return (
+                  <DirectoryTree key={index} data={item} user={user} />
+                )
+              }
+              )}
+            </section>
+            <hr />
+            <section className='mt-4'>
+              <CreatableSelect
+                isMulti options={tags}
+                value={valueOp}
+                onChange={(newValue) => setValueOp(newValue)}
+              />
+            </section>
           </section>
-          <br />
-          <hr />
-          <section className='mt-4'>
-            {contentlist.map((item, index) => {
-              return (
-                <DirectoryTree key={index} data={item} user={user} />
-              )
-            }
-            )}
+          <section className='border-2 col-start-5 col-span-12 p-4'>
+            Main Content
+
+            <div>
+              {contentPage.map((item, index) => {
+                return (
+
+                  <Link href={`/${user}/notes/${item.path.split(".json")[0].replaceAll("/", "_")}`} key={index}><div key={index} className="w-[80%] p-4 rounded-lg border-2 mt-4">
+                    <div className='text-2xl'>{item.path}</div>
+                    <div className='text-sm bg-gray-200 outline-2' dangerouslySetInnerHTML={{ __html: md.render(item?.grab).substring(0, 60) }} />
+                    <div className='text-sm mt-2 bg-gray-200 outline-2' dangerouslySetInnerHTML={{ __html: md.render(item?.views).substring(0, 60) }} />
+                  </div>
+                  </Link>
+                )
+              })}
+            </div>
           </section>
-          <hr />
-          <section className='mt-4'>
-            <CreatableSelect
-              isMulti options={tags}
-              value={valueOp}
-              onChange={(newValue) => setValueOp(newValue)}
-            />
-          </section>
-        </section>
-        <section className='border-2 col-start-5 col-span-12 p-4'>
-          Main Content
-
-          <div>
-            {contentPage.map((item, index) => {
-              return (
-
-                <Link href={`/${user}/notes/${item.path.split(".json")[0].replaceAll("/", "_")}`} key={index}><div key={index} className="w-[80%] p-4 rounded-lg border-2 mt-4">
-                  <div className='text-2xl'>{item.path}</div>
-                  <div className='text-sm bg-gray-200 outline-2' dangerouslySetInnerHTML={{ __html: md.render(item?.grab).substring(0, 60) }} />
-                  <div className='text-sm mt-2 bg-gray-200 outline-2' dangerouslySetInnerHTML={{ __html: md.render(item?.views).substring(0, 60) }} />
-                </div>
-                </Link>
-              )
-            })}
-          </div>
-        </section>
 
 
-      </div>
+        </div>
+      </KBarProvider>
     </>
   )
 }
@@ -181,6 +200,8 @@ export async function getStaticProps({ params }) {
       path,
     }
   });
+
+
 
   return {
     props: {

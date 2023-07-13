@@ -203,7 +203,7 @@ export default function Editor({ data, directoryStructure, user }) {
   // set public default to from metadata if note ispublic is already set
 
   return (
-    <>
+    <div className=''>
       <Nav />
       <div className=" mx-auto w-11/12 mt-10 grid grid-cols-12 rounded-lg p-4 bg-slate-900 text-slate-400">
         <div className="col-span-8 ">
@@ -373,6 +373,6 @@ export default function Editor({ data, directoryStructure, user }) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     });
     const { user, slug } = req.query;
     const userDir = `/users/${user}/${slug}.json`;
-    console.log(userDir);
+
     try {
       const response = await octokit.repos.getContent({
         owner: 'scatteredNote',
