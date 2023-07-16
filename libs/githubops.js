@@ -287,3 +287,40 @@ export const getUsersDataPath = async (dirPath) => {
   return result;
 };
 
+
+export const getTags = async (user) => {
+  const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
+  const filePath = `userMeta/${user}.json`;
+  let tags = [];
+  try {
+    const response = await octokit.repos.getContent({
+      owner: 'scatteredNote',
+      repo: 'data',
+      path: filePath,
+    });
+
+    if (response.data && response.data.content) {
+      const content = Buffer.from(response.data.content, "base64").toString("utf-8");
+      const jsonContent = JSON.parse(content);
+      tags = jsonContent?.tags;
+
+      if (tags) {
+        tags = tags.map((item) => ({
+          label: item.toLowerCase(),
+          value: item,
+        }));
+      }
+    }
+  } catch (error) {
+    if (error.status === 404) {
+      // File does not exist
+      tags = []
+    } else {
+      // Handle other errors
+      console.error("Error retrieving file:", error);
+    }
+  }
+  return tags
+}
