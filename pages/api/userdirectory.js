@@ -1,4 +1,4 @@
-import { generateDirectoryStructure, generateDirectoryFilese } from "../../libs/githubops"
+import { generateDirectoryStructure, generateDirectoryFilese, getTags } from "../../libs/githubops"
 import { cors, runMiddleware } from "../../libs/middleware"
 
 
@@ -11,7 +11,8 @@ export default async function handler(req, res) {
   try {
     const data = await generateDirectoryStructure(userDir);
     const directoryStructure = await generateDirectoryFilese(userDir);
-    const response = { data, directoryStructure }
+    const tags = await getTags(username)
+    const response = { data, directoryStructure, tags }
     res.status(200).json(response);
   } catch (error) {
     console.error(error);
