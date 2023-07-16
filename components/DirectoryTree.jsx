@@ -10,15 +10,15 @@ export default function DirectoryTree({ data, user, isChild, setContentPage }) {
   };
 
   const handleLinkClick = () => {
-    setContentPage([]); // Clear the contentPage state
+    //setContentPage([]); // Clear the contentPage state
   };
 
   return (
-    <div>
+    <div className='text-gray-700'>
       {isDirectory && (
-        <div onClick={handleToggle} className={`flex items-center py-1 ${isChild ? "ml-2" : "ml-0"}`}>
+        <div onClick={handleToggle} className={`flex items-center py-1 text-gray-400 ${isChild ? "ml-2" : "ml-0"}`}>
 
-          <span className='text-md font-medium hover:text-gray-1000 text-gray-900'>{data.name}</span>
+          <span className='text-md font-medium hover:text-gray-1000 !text-gray-400'>{data.name}</span>
           <span className='ml-auto w-6'>{isExpanded ? (
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -33,8 +33,8 @@ export default function DirectoryTree({ data, user, isChild, setContentPage }) {
         </div>
       )}
       {!isDirectory && (
-        <div className='ml-2 text-sm font-medium hover:text-gray-1000 text-gray-900 border-l-2'>
-          <Link href={`/${user}/notes/${data.value.split(".json")[0].replaceAll("/", "_")}`} className="ml-2"><button onClick={handleLinkClick}>{data.name}</button></Link>
+        <div className='ml-2 text-sm font-medium  hover:text-gray-900 border-l-[1px] border-l-gray-300'>
+          <Link href={`/${user}/notes/${data.value.split(".json")[0].replaceAll("/", "_")}`} className="ml-2 text-gray-400"><button onClick={handleLinkClick}>{data.name}</button></Link>
         </div>
       )}
       {isDirectory && isExpanded && (
