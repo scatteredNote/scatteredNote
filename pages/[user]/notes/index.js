@@ -1,7 +1,7 @@
 
 import DirectoryTree from '@/components/DirectoryTree';
 import { Octokit } from "@octokit/rest";
-import { getUsersData, getUsersDataContent } from '@/libs/githubops';
+import { getTags, getUsersData, getUsersDataContent } from '@/libs/githubops';
 import CreatableSelect from 'react-select/creatable';
 import { useState, useEffect } from "react";
 import MiniSearch from 'minisearch'
@@ -49,12 +49,12 @@ export default function Index({ user, contentlist, tags, content }) {
 
 
   return (
-    <>
+    <section className='h-[100vh] backdrop-blur-sm backdrop-saturate-200 bg-black/90 font-manrope'>
       <KBarProvider >
         <SearchPortal data={content} />
         <Nav />
-        <div className='grid grid-cols-12 mx-auto w-11/12 mt-10'>
-          <section className='border-2 col-start-1 col-span-4 p-4'>
+        {content.length > 0 ? <div className='grid grid-cols-12 mx-auto max-w-screen-xl px-4 py-10 md:py-10 mt-10 '>
+          <section className='border-r-2 border-gray-400 col-start-1 col-span-4 p-4'>
             {/* <section className='mt-4'>
               <input type="text" placeholder="Search.." className='w-full rounded-lg border-2 p-2'
                 onKeyPress={searchFunc}
@@ -66,7 +66,6 @@ export default function Index({ user, contentlist, tags, content }) {
               )}
             </KBarContext>
             <br />
-            <hr />
             <section className='mt-4'>
               {contentlist.map((item, index) => {
                 return (
@@ -75,7 +74,6 @@ export default function Index({ user, contentlist, tags, content }) {
               }
               )}
             </section>
-            <hr />
             <section className='mt-4'>
               <CreatableSelect
                 isMulti options={tags}
@@ -84,7 +82,7 @@ export default function Index({ user, contentlist, tags, content }) {
               />
             </section>
           </section>
-          <section className='border-2 col-start-5 col-span-12 p-4'>
+          <section className='border-r-2 border-gray-400 col-start-5 col-span-10 p-4 '>
             Main Content
 
             <div>
@@ -103,9 +101,9 @@ export default function Index({ user, contentlist, tags, content }) {
           </section>
 
 
-        </div>
+        </div> : <h1 className='text-lg text-white tracking-wide'>No Notes Added</h1>}
       </KBarProvider>
-    </>
+    </section>
   )
 }
 
@@ -152,37 +150,7 @@ export async function getStaticProps({ params }) {
     // Handle other errors if needed
   }
   const contentlist = await getUsersData(userDir);
-  const filePath = `userMeta/${user}.json`;
-  let tags = null;
-  try {
-    const response = await octokit.repos.getContent({
-      owner: 'scatteredNote',
-      repo: 'data',
-      path: filePath,
-    });
-
-    if (response.data && response.data.content) {
-      const content = Buffer.from(response.data.content, "base64").toString("utf-8");
-      const jsonContent = JSON.parse(content);
-      tags = jsonContent?.tags;
-
-      if (tags) {
-        tags = tags.map((item) => ({
-          label: item.toLowerCase(),
-          value: item,
-        }));
-      }
-    }
-  } catch (error) {
-    if (error.status === 404) {
-      // File does not exist
-      tags = null;
-    } else {
-      // Handle other errors
-      console.error("Error retrieving file:", error);
-    }
-  }
-
+  let tags = await getTags(user);
   let content = await getUsersDataContent(userDir)
   let i = 0;
   content = content.flatMap(({ id, path, content }) => {
