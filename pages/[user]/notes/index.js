@@ -14,7 +14,7 @@ import {
   KBarContext
 } from "kbar";
 
-export default function Index({ user, contentlist, tags, content }) {
+export default function Index({ user, contentlist, tags, content, mainContent }) {
   const [valueOp, setValueOp] = useState([]);
   const [contentPage, setContentPage] = useState([]);
   const search = new MiniSearch({
@@ -52,7 +52,7 @@ export default function Index({ user, contentlist, tags, content }) {
     <section className='h-[100vh] backdrop-blur-sm backdrop-saturate-200 bg-black/90 font-manrope'>
       <KBarProvider >
         <SearchPortal data={content} />
-        <Nav />
+        <Nav dark={true} />
         {content.length > 0 ? <div className='grid grid-cols-12 mx-auto max-w-screen-xl px-4 py-10 md:py-10 mt-10 '>
           <section className='border-r-2 border-gray-400 col-start-1 col-span-4 p-4'>
             {/* <section className='mt-4'>
@@ -74,30 +74,19 @@ export default function Index({ user, contentlist, tags, content }) {
               }
               )}
             </section>
-            <section className='mt-4'>
-              <CreatableSelect
-                isMulti options={tags}
-                value={valueOp}
-                onChange={(newValue) => setValueOp(newValue)}
-              />
-            </section>
           </section>
-          <section className='border-r-2 border-gray-400 col-start-5 col-span-10 p-4 '>
-            Main Content
-
-            <div>
-              {contentPage.map((item, index) => {
-                return (
-
-                  <Link href={`/${user}/notes/${item.path.split(".json")[0].replaceAll("/", "_")}`} key={index}><div key={index} className="w-[80%] p-4 rounded-lg border-2 mt-4">
-                    <div className='text-2xl'>{item.path}</div>
-                    <div className='text-sm bg-gray-200 outline-2' dangerouslySetInnerHTML={{ __html: md.render(item?.grab).substring(0, 60) }} />
-                    <div className='text-sm mt-2 bg-gray-200 outline-2' dangerouslySetInnerHTML={{ __html: md.render(item?.views).substring(0, 60) }} />
-                  </div>
-                  </Link>
-                )
-              })}
-            </div>
+          <section className='border-r-2 border-gray-400 col-start-5 col-span-10 p-4 text-white'>
+            {mainContent.content.map((item, index) => {
+              return (
+                <div key={index} className="w-full p-4 mt-4">
+                  {item.grab.includes("youtu.be") ? <div className=' rounded-xl  w-full p-4 bg-white text-black'>
+                    <iframe width="100%" height="315" src={`https://www.youtube.com/embed/${item.grab.split("/").pop().replace("t=", "start=")}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                  </div> : <div className=' rounded-xl  w-full p-4 bg-white text-black' dangerouslySetInnerHTML={{ __html: md.render(item.grab) }} />}
+                  <div className=' ml-16  border-dashed border-l-2 p-4 w-4 h-full' />
+                  <div className=' rounded-xl  w-full p-4 ml-6 bg-black text-white' dangerouslySetInnerHTML={{ __html: md.render(item.views) }} />
+                </div>
+              )
+            })}
           </section>
 
 
@@ -152,6 +141,7 @@ export async function getStaticProps({ params }) {
   const contentlist = await getUsersData(userDir);
   let tags = await getTags(user);
   let content = await getUsersDataContent(userDir)
+  const mainContent = content[0]
   let i = 0;
   content = content.flatMap(({ id, path, content }) => {
     if (content.length > 0) {
@@ -176,7 +166,8 @@ export async function getStaticProps({ params }) {
       user,
       contentlist,
       tags,
-      content
+      content,
+      mainContent
     },
   };
 }
