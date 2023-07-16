@@ -4,7 +4,7 @@ import { useSession, signIn, signOut } from "next-auth/react"
 import Link from "next/link"
 
 
-export default function Nav({ }) {
+export default function Nav({ dark }) {
   const { data: session, status } = useSession()
   const loading = status === "loading"
 
@@ -14,14 +14,14 @@ export default function Nav({ }) {
         <NavbarMobile />
         <div className=' bg-custom1 text-center px-8 py-4 text-white font-manrope font-medium'><Link href="/">Logo</Link></div>
 
-        <div className='hidden relative  shrink w-[60%] grow lg:block lg:flex justify-center gap-x-8 font-medium text-[1.125rem] leading-[1.537rem] text-custom1 '>
+        <div className={`hidden relative  shrink w-[60%] grow lg:block lg:flex justify-center gap-x-8 font-medium text-[1.125rem] leading-[1.537rem] ${dark ? "text-white" : "text-custom1"}  `}>
           <Link href={"#"}>Home</Link>
           <Link href="#">About</Link>
           <Link href="#features">Features</Link>
           <Link href="#">Contact</Link>
           <Link href="#">Subscribe</Link>
         </div>
-        {session && <ProfileBar user={session.user} />}
+        {session && <ProfileBar user={session.user} dark={dark} />}
         {!session && (
           <div className=' bg-custom1 text-center px-8 py-4 text-white font-manrope font-medium rounded-xl ml-auto'>
             {!session && (
