@@ -3,7 +3,7 @@ import '@uiw/react-markdown-preview/markdown.css';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import * as commands from '@uiw/react-md-editor/lib/commands';
-import { generateDirectoryStructure, generateDirectoryFilese } from '@/libs/githubops';
+import { generateDirectoryStructure, generateDirectoryFilese, getTags } from '@/libs/githubops';
 import CreatableSelect from 'react-select/creatable';
 import { useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
@@ -53,13 +53,14 @@ export async function getStaticProps({ params }) {
 
   const data = await generateDirectoryStructure(userDir);
   const directoryStructure = await generateDirectoryFilese(userDir);
+  const tags = await getTags(user)
 
-  // const data = { name: user, children: getUsersData(userDir) };
   return {
     props: {
       data,
       directoryStructure,
-      user
+      user,
+      tags
     },
   };
 }
@@ -112,7 +113,7 @@ const options = [
   { label: "philosophy", value: "Philosophy" }
 ];
 
-export default function Editor({ data, directoryStructure, user }) {
+export default function Editor({ data, directoryStructure, user, tags }) {
   const { data: session, status } = useSession()
   const loading = status === "loading"
   const router = useRouter();
@@ -203,9 +204,9 @@ export default function Editor({ data, directoryStructure, user }) {
   // set public default to from metadata if note ispublic is already set
 
   return (
-    <div className=''>
-      <Nav />
-      <div className=" mx-auto w-11/12 mt-10 grid grid-cols-12 rounded-lg p-4 bg-slate-900 text-slate-400">
+    <div className='backdrop-blur-sm backdrop-saturate-200 bg-black/90'>
+      <Nav dark={true} />
+      <div className=" mx-auto w-11/12 mt-10 grid grid-cols-12 rounded-lg p-4  text-slate-400">
         <div className="col-span-8 ">
           <section className="flex flex-col">
             <h1 className="font-bold tracking-light text-2xl mb-2 text-slate-200">Grab Editor</h1>
@@ -284,7 +285,7 @@ export default function Editor({ data, directoryStructure, user }) {
             <h1 className="font-bold tracking-light text-2xl mb-2 text-slate-200">Tags</h1>
             <div className='w-full ' style={{ all: "initial" }}>
               <CreatableSelect
-                isMulti options={options}
+                isMulti options={tags}
                 value={valueOp}
                 onChange={(newValue) => setValueOp(newValue)}
               />
