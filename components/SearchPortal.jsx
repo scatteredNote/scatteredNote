@@ -30,12 +30,11 @@ export default function SearchPortal({ data }) {
           name: `${val.path.split("/").slice(1, -1).join("/")}sep;${val.grab.slice(0, 50)}sep;${val.views.slice(0, 50)}`,
           keywords: (val.tags ? val.tags.join(" ") : ""),
           section: val.path.split("/")[0],
-          perform: () => router.push(`${router.asPath}/${val.path.split(".json")[0].replaceAll("/", "_")}`),
+          perform: () => router.push(`${router.asPath.split("/").slice(0, 3).join("/")}/${val.path.split(".json")[0].replaceAll("/", "_")}`),
         })
       }
 
     })
-    console.log("searchJson", data)
 
     setSearchActions(searchJson)
   }, []);
@@ -93,7 +92,7 @@ function RenderResults() {
             className={`flex flex-col w-full px-4 py-2 text-left text-white  hover:bg-gray-800 ${active ? "bg-gray-800" : ""
               }`}
           >
-            <div className="bg-slate-400 text-slate-200 text-right w-full pr-2">{`/${item.name.split("sep;")[0]}`}</div>
+            <div className="bg-slate-400 text-sm h-fit text-slate-200 text-right w-full pr-2">{`/${item.name.split("sep;")[0]}`}</div>
             <div className="mt-2">grab: {item.name.split("sep;")[1]}</div>
             <div className="mt-2">views: {item.name.split("sep;")[2]}</div>
           </div>
