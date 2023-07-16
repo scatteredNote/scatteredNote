@@ -11,7 +11,7 @@ export default function Nav({ dark }) {
   return (
     <section className=' w-full'>
       <div className='mx-auto max-w-full sm:max-w-screen-md lg:max-w-[90%] flex items-center py-4 font-manrope  pr-0'>
-        <NavbarMobile />
+        <NavbarMobile dark={dark} />
         <div className=' bg-custom1 text-center px-8 py-4 text-white font-manrope font-medium'><Link href="/">Logo</Link></div>
 
         <div className={`hidden relative  shrink w-[60%] grow lg:block lg:flex justify-center gap-x-8 font-medium text-[1.125rem] leading-[1.537rem] ${dark ? "text-white" : "text-custom1"}  `}>

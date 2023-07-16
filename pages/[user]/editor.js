@@ -206,8 +206,8 @@ export default function Editor({ data, directoryStructure, user, tags }) {
   return (
     <div className='backdrop-blur-sm backdrop-saturate-200 bg-black/90'>
       <Nav dark={true} />
-      <div className=" mx-auto w-11/12 mt-10 grid grid-cols-12 rounded-lg p-4  text-slate-400">
-        <div className="col-span-8 ">
+      <div className=" mx-auto w-11/12 mt-10 grid grid-cols-1 md:grid-cols-12  rounded-lg p-4  text-slate-400">
+        <div className="order-2 md:order-1 md:col-span-8 ">
           <section className="flex flex-col">
             <h1 className="font-bold tracking-light text-2xl mb-2 text-slate-200">Grab Editor</h1>
             <MDEditor
@@ -293,9 +293,18 @@ export default function Editor({ data, directoryStructure, user, tags }) {
 
           </section>
 
+          <div>
+            <button
+              className='px-4 py-2 bg-green-400 text-white rounded-md mt-8 mx-auto float-right block md:hidden'
+              onClick={() => handleCommit()}
+            >
+              Commit
+            </button>
+          </div>
+
         </div>
-        <div className="col-start-9 col-span-12 p-4 pl-8 pr-2">
-          <h1 className="text-center font-extrabold tracking-light text-2xl mb-2 text-slate-200">Metadata</h1>
+        <div className="order-1 p-0 md:order-2 md:col-start-9 md:col-span-12  md:pl-8 md:pr-2 mb-6">
+          <h1 className="hidden md:block md:text-center font-extrabold tracking-light text-2xl mb-2 text-slate-200">Metadata</h1>
 
           <div className="mt-8 w-full">
             <h1 className="font-bold tracking-light text-2xl mb-2 text-slate-200">Main Topic</h1>
@@ -366,7 +375,7 @@ export default function Editor({ data, directoryStructure, user, tags }) {
 
           <div>
             <button
-              className='px-4 py-2 bg-green-400 text-white rounded-md mt-8 mx-auto float-right'
+              className='px-4 py-2 bg-green-400 text-white rounded-md mt-8 mx-auto float-right hidden md:block'
               onClick={() => handleCommit()}
             >
               Commit
