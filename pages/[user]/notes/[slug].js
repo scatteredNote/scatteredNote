@@ -1,13 +1,19 @@
 import React from 'react'
 import { Octokit } from "@octokit/rest";
-import { getUsersDataPath, getUsersDataContent, getUsersData } from '@/libs/githubops';
+import { getUsersDataPath, getUsersDataContent, getUsersData, getTags } from '@/libs/githubops';
 // import { getUsersDataPath, getUsersDataContent, getUsersData } from '@/libs/getUsersDirectory';
 import CreatableSelect from 'react-select/creatable';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MiniSearch from 'minisearch'
 import { Remarkable } from 'remarkable';
 import DirectoryTree from '@/components/DirectoryTree';
 import Link from 'next/link';
+import Nav from '@/components/NavBar'
+import SearchPortal, { SearchField } from "@/components/SearchPortal";
+import {
+  KBarProvider,
+  KBarContext
+} from "kbar";
 
 
 export default function Index({ user, contentlist, tags, content, mainContent }) {
@@ -19,6 +25,13 @@ export default function Index({ user, contentlist, tags, content, mainContent })
   });
 
   search.addAll(content);
+
+  const [modifierKey, setModifierKey] = useState();
+
+  useEffect(() => {
+    const isMac = /(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgent);
+    setModifierKey(isMac ? "⌘" : "Ctrl ");
+  }, []);
 
   const md = new Remarkable();
 
@@ -41,72 +54,43 @@ export default function Index({ user, contentlist, tags, content, mainContent })
   };
 
   return (
-    <>
-      <div className='grid grid-cols-12'>
-
-        <section className='border-2 col-start-1 col-span-4 p-4'>
-          <h1 className=' text-2xl bg-gradient-to-r from-violet-500 to-fuchsia-500 inline-block text-transparent bg-clip-text'>Memory<i className='font-bold'>X</i></h1>
-          <div><i className='ml-2 font-bold text-xs'>In Peace with Forgetting</i></div>
-
-          <section className='mt-4'>
-            <input type="text" placeholder="Search.." className='w-full rounded-lg border-2 p-2'
-              onKeyPress={searchFunc}
-            />
-          </section>
-          <br />
-          <hr />
-          <section className='mt-4'>
-            {contentlist.map((item, index) => {
-              return (
-                <DirectoryTree key={index} data={item} user={user} setContentPage={setContentPage} />
-              )
-            }
-            )}
-          </section>
-          <hr />
-          <section className='mt-4'>
-            <CreatableSelect
-              isMulti options={tags}
-              value={valueOp}
-              onChange={(newValue) => setValueOp(newValue)}
-            />
-          </section>
-        </section>
-        <section className='border-2 col-start-5 col-span-12 p-4'>
-          Main Content
-
-
-          {contentPage.length === 0 && mainContent && (
-            <>
-              {mainContent.map((item, index) => {
+    <section className='h-[100vh] backdrop-blur-sm backdrop-saturate-200 bg-black/90 font-manrope'>
+      <KBarProvider >
+        <SearchPortal data={content} />
+        <Nav dark={true} />
+        <div className='grid grid-cols-12 mx-auto max-w-screen-xl px-4 py-10 md:py-10 mt-10 '>
+          <section className='border-r-2 border-gray-400 col-start-1 col-span-4 p-4 max-h-screen overflow-y-auto'>
+            <KBarContext>
+              {({ query }) => (
+                <SearchField modifierKey={modifierKey} onOpen={query?.toggle} />
+              )}
+            </KBarContext>
+            <br />
+            <section className='mt-4'>
+              {contentlist.map((item, index) => {
                 return (
-                  <div key={index} className="w-[80%] p-4 mt-4">
-                    <div className=' rounded-xl border-2  w-fit p-4' dangerouslySetInnerHTML={{ __html: md.render(item.grab) }} />
-                    <div className=' ml-16  border-dashed border-l-2 p-4 w-4 h-full' />
-                    <div className=' rounded-xl border-2  w-fit p-4 ml-6 ' dangerouslySetInnerHTML={{ __html: md.render(item.views) }} />
-                  </div>
+                  <DirectoryTree key={index} data={item} user={user} />
                 )
-              })}
-            </>
-          )}
-          <div>
-            {contentPage.map((item, index) => {
+              }
+              )}
+            </section>
+          </section>
+          <section className='border-r-2 border-gray-400 col-start-5 col-span-10 p-4 text-white'>
+            {mainContent.map((item, index) => {
               return (
-                <Link href={`/${user}/notes/${item.path.split(".json")[0].replaceAll("/", "_")}`} key={index} passHref>
-                  <div key={index} className="w-[80%] p-4 rounded-lg border-2 mt-4" onClick={handleLinkClick}>
-                    <div className='text-2xl'>{item.path}</div>
-                    <div className='text-sm bg-gray-200 outline-2' dangerouslySetInnerHTML={{ __html: md.render(item.grab).substring(0, 60) }} />
-                    <div className='text-sm mt-2 bg-gray-200 outline-2' dangerouslySetInnerHTML={{ __html: md.render(item.views).substring(0, 60) }} />
-                  </div>
-                </Link>
+                <div key={index} className="w-full p-4 mt-4">
+                  {item.grab.includes("youtu.be") ? <div className=' rounded-xl  w-full p-4 bg-white text-black'>
+                    <iframe width="100%" height="315" src={`https://www.youtube.com/embed/${item.grab.split("/").pop().replace("t=", "start=")}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+                  </div> : <div className=' rounded-xl  w-full p-4 bg-white text-black' dangerouslySetInnerHTML={{ __html: md.render(item.grab) }} />}
+                  <div className=' ml-16  border-dashed border-l-2 p-4 w-4 h-full' />
+                  <div className=' rounded-xl  w-full p-4 ml-6 bg-black text-white' dangerouslySetInnerHTML={{ __html: md.render(item.views) }} />
+                </div>
               )
             })}
-          </div>
-        </section>
-
-
-      </div>
-    </>
+          </section>
+        </div>
+      </KBarProvider>
+    </section>
   )
 }
 
@@ -153,36 +137,7 @@ export async function getStaticProps({ params }) {
     // Handle other errors if needed
   }
   const contentlist = await getUsersData(userDir);
-  const filePath = `userMeta/${user}.json`;
-  let tags = null;
-  try {
-    const response = await octokit.repos.getContent({
-      owner: 'scatteredNote',
-      repo: 'data',
-      path: filePath,
-    });
-
-    if (response.data && response.data.content) {
-      const content = Buffer.from(response.data.content, "base64").toString("utf-8");
-      const jsonContent = JSON.parse(content);
-      tags = jsonContent?.tags;
-
-      if (tags) {
-        tags = tags.map((item) => ({
-          label: item.toLowerCase(),
-          value: item,
-        }));
-      }
-    }
-  } catch (error) {
-    if (error.status === 404) {
-      // File does not exist
-      tags = [];
-    } else {
-      // Handle other errors
-      console.error("Error retrieving file:", error);
-    }
-  }
+  let tags = await getTags(user);
 
   let content = await getUsersDataContent(userDir)
   let i = 0;
