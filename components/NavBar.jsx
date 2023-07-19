@@ -15,11 +15,10 @@ export default function Nav({ dark }) {
         <div className=' bg-custom1 text-center px-8 py-4 text-white font-manrope font-medium'><Link href="/">Logo</Link></div>
 
         <div className={`hidden relative  shrink w-[60%] grow lg:block lg:flex justify-center gap-x-8 font-medium text-[1.125rem] leading-[1.537rem] ${dark ? "text-white" : "text-custom1"}  `}>
-          <Link href={"#"}>Home</Link>
-          <Link href="#">About</Link>
-          <Link href="#features">Features</Link>
-          <Link href="#">Contact</Link>
-          <Link href="#">Subscribe</Link>
+          <Link href={"/"} scroll={false}>Home</Link>
+          <Link href="/#about" smooth>About</Link>
+          <Link href="/#features" smooth >Features</Link>
+          <Link href="/#pricing" smooth>Subscribe</Link>
         </div>
         {session && <ProfileBar user={session.user} dark={dark} />}
         {!session && (
