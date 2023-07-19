@@ -196,7 +196,7 @@ export const getUsersData = async (dirPath) => {
         const subDirContent = await getUsersData(subDirPath);
         userData.children = subDirContent;
         usersData.push(userData);
-      } else if (item.type === "file") {
+      } else if (item.type === "file" && item.name.split('.').pop() === 'json') {
         const filePath = path.join(dirPath, item.name);
         const fileValue = filePath.split("/users/")[1].replace(/^[^/]+\//, '');
         usersData.push({ name: item.name, value: fileValue });
