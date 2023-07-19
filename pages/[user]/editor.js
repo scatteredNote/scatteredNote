@@ -204,7 +204,7 @@ export default function Editor({ data, directoryStructure, user, tags }) {
   // set public default to from metadata if note ispublic is already set
 
   return (
-    <div className='backdrop-blur-sm backdrop-saturate-200 bg-black/90'>
+    <div className='h-full backdrop-blur-sm backdrop-saturate-200 bg-black/90'>
       <Nav dark={true} />
       <div className=" mx-auto w-11/12 mt-10 grid grid-cols-1 md:grid-cols-12  rounded-lg p-4  text-slate-400">
         <div className="order-2 md:order-1 md:col-span-8 ">

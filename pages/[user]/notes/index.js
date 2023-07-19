@@ -49,7 +49,7 @@ export default function Index({ user, contentlist, tags, content, mainContent })
 
 
   return (
-    <section className='h-[100vh] backdrop-blur-sm backdrop-saturate-200 bg-black/90 font-manrope'>
+    <section className='backdrop-blur-sm backdrop-saturate-200 bg-black/90 font-manrope  min-h-screen'>
       <KBarProvider >
         <SearchPortal data={content} />
         <Nav dark={true} />
@@ -75,7 +75,7 @@ export default function Index({ user, contentlist, tags, content, mainContent })
               )}
             </section>
           </section>
-          <section className='border-r-2 border-gray-400 col-start-5 col-span-10 p-4 text-white'>
+          <section className='col-start-5 col-span-10 p-4 text-white'>
             {mainContent.content.map((item, index) => {
               return (
                 <div key={index} className="w-full p-4 mt-4">
