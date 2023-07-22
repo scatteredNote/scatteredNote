@@ -165,7 +165,7 @@ export default function Editor({ data, directoryStructure, user, tags }) {
       setErr(null)
       const data = {
         MainTopic: mainTopic.value,
-        SubTopic: subTopic.label,
+        SubTopic: subTopic?.label,
         note: note.label,
         grab: value,
         views: views,
