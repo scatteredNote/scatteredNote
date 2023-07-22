@@ -124,6 +124,7 @@ export default function Editor({ data, directoryStructure, user, tags }) {
   const [mainTopic, setMainTopic] = useState()
   const [subTopic, setSubTopic] = useState()
   const [note, setNote] = useState()
+  const [err, setErr] = useState(null)
 
   if (loading) return <h1>Loading...</h1>
 
@@ -160,41 +161,47 @@ export default function Editor({ data, directoryStructure, user, tags }) {
 
   const handleCommit = () => {
     //get all necessary state
-    const data = {
-      MainTopic: mainTopic.value,
-      SubTopic: subTopic.label,
-      note: note.label,
-      grab: value,
-      views: views,
-      isPublic: isPublic,
-      user: user,
-      tags: valueOp.map((item) => item.value)
-    }
+    if (mainTopic?.label && note?.label) {
+      setErr(null)
+      const data = {
+        MainTopic: mainTopic.value,
+        SubTopic: subTopic.label,
+        note: note.label,
+        grab: value,
+        views: views,
+        isPublic: isPublic,
+        user: user,
+        tags: valueOp.map((item) => item.value)
+      }
 
-    fetch("/api/commitv2", {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Failed to save note.");
-        }
-        console.log("Note saved successfully!");
-        setIsPublic(true);
-        setValue('');
-        setViews('');
-        setValueOp([]);
-        setMainTopic(null);
-        setSubTopic(null);
-        setNote(null);
-
+      fetch("/api/commitv2", {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
       })
-      .catch(error => {
-        console.error(error);
-      });
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Failed to save note.");
+          }
+          console.log("Note saved successfully!");
+          setIsPublic(true);
+          setValue('');
+          setViews('');
+          setValueOp([]);
+          setMainTopic(null);
+          setSubTopic(null);
+          setNote(null);
+
+        })
+        .catch(error => {
+          console.error(error);
+        });
+
+    } else {
+      setErr("Please select a Main Topic and Note")
+    }
 
   }
 
@@ -304,6 +311,7 @@ export default function Editor({ data, directoryStructure, user, tags }) {
 
         </div>
         <div className="order-1 p-0 md:order-2 md:col-start-9 md:col-span-12  md:pl-8 md:pr-2 mb-6">
+          {err && <div className="prose mt-8 bg-red-400 text-white p-4 mx-auto w-[90%]">{err}</div>}
           <h1 className="hidden md:block md:text-center font-extrabold tracking-light text-2xl mb-2 text-slate-200">Metadata</h1>
 
           <div className="mt-8 w-full">
