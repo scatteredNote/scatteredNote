@@ -38,32 +38,32 @@ const features = [
     image: '/note-white.svg',
     reversed: true
   },
-  {
-    title: 'History revision',
-    description: 'Review the history of your grabs or note. in the premium package, perspective can be edited and you can see how your perspective changes over time',
-    image: '/note-white.svg',
-    reversed: false
-  },
-  {
-    title: 'Notes display customization',
-    description: 'Decide how you want your information to be displayed, what colors, fonts suite you.',
-    image: '/note-white.svg',
-    reversed: true
-  },
+  // {
+  //   title: 'History revision',
+  //   description: 'Review the history of your grabs or note. in the premium package, perspective can be edited and you can see how your perspective changes over time',
+  //   image: '/note-white.svg',
+  //   reversed: false
+  // },
+  // {
+  //   title: 'Notes display customization',
+  //   description: 'Decide how you want your information to be displayed, what colors, fonts suite you.',
+  //   image: '/note-white.svg',
+  //   reversed: true
+  // },
 
 
 
- ]
+]
 
 export default function FeaturedCardList() {
   return (
     <>
       <div className=' '>
         {features.map((feature, index) => (
-        <FeaturesCards key={index} title={feature.title} description={feature.description} image={feature.image} reversed={feature.reversed} />
-      ))}
+          <FeaturesCards key={index} title={feature.title} description={feature.description} image={feature.image} reversed={feature.reversed} />
+        ))}
       </div>
-      
+
     </>
   )
 }
