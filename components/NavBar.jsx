@@ -18,7 +18,7 @@ export default function Nav({ dark }) {
           <Link href={"/"} scroll={false}>Home</Link>
           <Link href="/#about" smooth>About</Link>
           <Link href="/#features" smooth >Features</Link>
-          <Link href="/#pricing" smooth>Subscribe</Link>
+          <Link href="/contribute" smooth>Contribute</Link>
         </div>
         {session && <ProfileBar user={session.user} dark={dark} />}
         {!session && (

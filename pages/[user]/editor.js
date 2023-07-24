@@ -1,7 +1,7 @@
 import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import * as commands from '@uiw/react-md-editor/lib/commands';
 import { generateDirectoryStructure, generateDirectoryFilese, getTags } from '@/libs/githubops';
 import CreatableSelect from 'react-select/creatable';
@@ -125,6 +125,7 @@ export default function Editor({ data, directoryStructure, user, tags }) {
   const [subTopic, setSubTopic] = useState()
   const [note, setNote] = useState()
   const [err, setErr] = useState(null)
+  const commitRef = useRef(null)
 
   if (loading) return <h1>Loading...</h1>
 
@@ -160,9 +161,11 @@ export default function Editor({ data, directoryStructure, user, tags }) {
   }
 
   const handleCommit = () => {
+    console.log("Metadata", mainTopic, note)
     //get all necessary state
     if (mainTopic?.label && note?.label) {
       setErr(null)
+      commitRef.current.textContent = 'Committing...';
       const data = {
         MainTopic: mainTopic.value,
         SubTopic: subTopic?.label,
@@ -185,7 +188,7 @@ export default function Editor({ data, directoryStructure, user, tags }) {
           if (!response.ok) {
             throw new Error("Failed to save note.");
           }
-          console.log("Note saved successfully!");
+          commitRef.current.textContent = 'Committed';
           setIsPublic(true);
           setValue('');
           setViews('');
@@ -196,10 +199,13 @@ export default function Editor({ data, directoryStructure, user, tags }) {
 
         })
         .catch(error => {
+          commitRef.current.textContent = 'Failed';
+          commitRef.current.style.backgroundColor = 'red';
           console.error(error);
         });
 
     } else {
+      console.log("Please select a Main Topic and Note")
       setErr("Please select a Main Topic and Note")
     }
 
@@ -302,6 +308,7 @@ export default function Editor({ data, directoryStructure, user, tags }) {
 
           <div>
             <button
+              ref={commitRef}
               className='px-4 py-2 bg-green-400 text-white rounded-md mt-8 mx-auto float-right block md:hidden'
               onClick={() => handleCommit()}
             >
@@ -383,6 +390,7 @@ export default function Editor({ data, directoryStructure, user, tags }) {
 
           <div>
             <button
+              ref={commitRef}
               className='px-4 py-2 bg-green-400 text-white rounded-md mt-8 mx-auto float-right hidden md:block'
               onClick={() => handleCommit()}
             >
