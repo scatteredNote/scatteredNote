@@ -17,8 +17,8 @@ export async function getStaticPaths() {
   const usersDir = 'users'; // Assuming 'users' is a directory in your GitHub repository
 
   const users = await octokit.repos.getContent({
-    owner: "scatteredNote",
-    repo: "data",
+    owner: process.env.REPO_OWNER,
+    repo: process.env.REPO_NAME,
     path: usersDir,
   });
 
@@ -40,8 +40,8 @@ export async function getStaticProps({ params }) {
 
   try {
     await octokit.repos.getContent({
-      owner: 'scatteredNote',
-      repo: 'data',
+      owner: process.env.REPO_OWNER,
+      repo: process.env.REPO_NAME,
       path: userDir,
     });
   } catch (error) {

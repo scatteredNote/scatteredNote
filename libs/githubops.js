@@ -10,8 +10,8 @@ export async function createGithubFolder(user) {
 
   // Check if user folder exists in repo
   octokit.repos.getContent({
-    owner: "scatteredNote",
-    repo: "data",
+    owner: process.env.REPO_OWNER,
+    repo: process.env.REPO_NAME,
     path: userFolder,
   })
     .then(() => {
@@ -22,8 +22,8 @@ export async function createGithubFolder(user) {
       // User folder does not exist
       if (error.status === 404) {
         octokit.repos.createOrUpdateFileContents({
-          owner: "scatteredNote",
-          repo: "data",
+          owner: process.env.REPO_OWNER,
+          repo: process.env.REPO_NAME,
           path: userFolder,
           message: `Create ${userFolder}/README.md`,
           content: Buffer.from("").toString("base64"),
@@ -37,8 +37,8 @@ export async function createGithubFolder(user) {
           });
 
         octokit.repos.createOrUpdateFileContents({
-          owner: "scatteredNote",
-          repo: "data",
+          owner: process.env.REPO_OWNER,
+          repo: process.env.REPO_NAME,
           path: `userMeta/${user}.json`,
           message: `Create userMeta/${user}.json`,
           content: Buffer.from("{}").toString("base64"),
@@ -66,8 +66,8 @@ export async function generateDirectoryStructure(path, keyPrefix = '') {
 
   try {
     const response = await octokit.repos.getContent({
-      owner: "scatteredNote",
-      repo: "data",
+      owner: process.env.REPO_OWNER,
+      repo: process.env.REPO_NAME,
       path: path,
     });
 
@@ -107,8 +107,8 @@ async function getDirectoryTree(directoryPath) {
 
   const walk = async (dirPath, obj) => {
     const response = await octokit.rest.repos.getContent({
-      owner: "scatteredNote",
-      repo: "data",
+      owner: process.env.REPO_OWNER,
+      repo: process.env.REPO_NAME,
       path: dirPath,
     });
 
@@ -181,8 +181,8 @@ export const getUsersData = async (dirPath) => {
 
   try {
     const response = await octokit.repos.getContent({
-      owner: "scatteredNote",
-      repo: "data",
+      owner: process.env.REPO_OWNER,
+      repo: process.env.REPO_NAME,
       path: dirPath,
     });
 
@@ -217,8 +217,8 @@ export const getUsersDataContent = async (dirPath, count = 0) => {
 
   let result = [];
   const files = await octokit.repos.getContent({
-    owner: "scatteredNote",
-    repo: "data",
+    owner: process.env.REPO_OWNER,
+    repo: process.env.REPO_NAME,
     path: dirPath,
   });
   count = count;
@@ -227,8 +227,8 @@ export const getUsersDataContent = async (dirPath, count = 0) => {
     if (file.type === 'file') {
       const filePath = path.join(dirPath, file.name);
       const contentResponse = await octokit.repos.getContent({
-        owner: "scatteredNote",
-        repo: "data",
+        owner: process.env.REPO_OWNER,
+        repo: process.env.REPO_NAME,
         path: filePath,
       });
       const content = Buffer.from(
@@ -263,8 +263,8 @@ export const getUsersDataPath = async (dirPath) => {
 
   let result = [];
   const files = await octokit.repos.getContent({
-    owner: "scatteredNote",
-    repo: "data",
+    owner: process.env.REPO_OWNER,
+    repo: process.env.REPO_NAME,
     path: dirPath,
   });
 
@@ -296,8 +296,8 @@ export const getTags = async (user) => {
   let tags = [];
   try {
     const response = await octokit.repos.getContent({
-      owner: 'scatteredNote',
-      repo: 'data',
+      owner: process.env.REPO_OWNER,
+      repo: process.env.REPO_NAME,
       path: filePath,
     });
 

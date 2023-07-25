@@ -101,8 +101,8 @@ export async function getStaticPaths() {
   });
   const usersDir = 'users';
   const users = await octokit.repos.getContent({
-    owner: "scatteredNote",
-    repo: "data",
+    owner: process.env.REPO_OWNER,
+    repo: process.env.REPO_NAME,
     path: usersDir,
   });
   const paths = (await Promise.all(users.data.map(async (user) => {
@@ -126,8 +126,8 @@ export async function getStaticProps({ params }) {
   });
   try {
     await octokit.repos.getContent({
-      owner: 'scatteredNote',
-      repo: 'data',
+      owner: process.env.REPO_OWNER,
+      repo: process.env.REPO_NAME,
       path: userDir,
     });
   } catch (error) {
@@ -162,8 +162,8 @@ export async function getStaticProps({ params }) {
 
   try {
     const response = await octokit.repos.getContent({
-      owner: 'scatteredNote',
-      repo: 'data',
+      owner: process.env.REPO_OWNER,
+      repo: process.env.REPO_NAME,
       path: requestedContentPath,
     });
 
