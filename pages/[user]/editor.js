@@ -161,7 +161,6 @@ export default function Editor({ data, directoryStructure, user, tags }) {
   }
 
   const handleCommit = () => {
-    console.log("Metadata", mainTopic, note)
     //get all necessary state
     if (mainTopic?.label && note?.label) {
       setErr(null)
