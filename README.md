@@ -1,1 +1,3 @@
-## ScatteredNote (Augmented Brain)
+## ScatteredNote 
+
+![app banner](./public/images/logox.png)
