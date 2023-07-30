@@ -64,7 +64,7 @@ export default async function handler(req, res) {
       else {
         await res.revalidate(`/${user}/notes/${noteFilePath2.join("_")}`);
       }
-      res.status(200).json({ success: true });
+      res.status(200).json({ success: true, revalidated: true });
     } catch (error) {
       console.error(error);
       res.status(500).json({ success: false, error: "Failed to save note." });

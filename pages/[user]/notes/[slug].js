@@ -1,13 +1,10 @@
 import React from 'react'
 import { Octokit } from "@octokit/rest";
 import { getUsersDataPath, getUsersDataContent, getUsersData, getTags } from '@/libs/githubops';
-// import { getUsersDataPath, getUsersDataContent, getUsersData } from '@/libs/getUsersDirectory';
-import CreatableSelect from 'react-select/creatable';
 import { useState, useEffect } from 'react';
 import MiniSearch from 'minisearch'
 import { Remarkable } from 'remarkable';
 import DirectoryTree from '@/components/DirectoryTree';
-import Link from 'next/link';
 import Nav from '@/components/NavBar'
 import SearchPortal, { SearchField } from "@/components/SearchPortal";
 import {
@@ -113,7 +110,7 @@ export async function getStaticPaths() {
     }));
     return paths;
   }))).flat();
-  return { paths, fallback: false };
+  return { paths, fallback: 'blocking' };
 }
 
 
