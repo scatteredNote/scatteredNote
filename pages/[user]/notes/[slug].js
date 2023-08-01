@@ -51,7 +51,7 @@ export default function Index({ user, contentlist, tags, content, mainContent })
   };
 
   return (
-    <section className='h-[100vh] backdrop-blur-sm backdrop-saturate-200 bg-black/90 font-manrope'>
+    <section className='min-h-screen backdrop-blur-sm backdrop-saturate-200 bg-black/90 font-manrope'>
       <KBarProvider >
         <SearchPortal data={content} />
         <Nav dark={true} />
