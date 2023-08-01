@@ -180,5 +180,6 @@ export async function getStaticProps({ params }) {
       content,
       mainContent
     },
+    revalidate: 10,
   };
 }
