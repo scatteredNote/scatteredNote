@@ -56,9 +56,8 @@ export default async function handler(req, res) {
         await updateFileContent(octokit, websitePath, JSON.stringify(website));
       }
 
-
-      await res.revalidate(`/${user}/notes`);
       //revalidate is having lot of cache miss
+      // await res.revalidate(`/${user}/notes`);
       // if (noteFilePath.includes("json")) {
       //   await res.revalidate(`/${user}/notes/${noteFilePath2.join("_").split(".json")[0]}`);
       // }
