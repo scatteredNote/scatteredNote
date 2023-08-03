@@ -35,7 +35,6 @@ export default function NavbarMobile({ dark }) {
                     <Link href={"/"} scroll={false}>Home</Link>
                     <Link href="/#about" smooth>About</Link>
                     <Link href="/#features" smooth >Features</Link>
-                    <Link href="/contribute" smooth>Contribute</Link>
                   </div>
                 </div>
 
