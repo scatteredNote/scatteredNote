@@ -2,7 +2,6 @@ import React from 'react'
 import { Octokit } from "@octokit/rest";
 import { getUsersDataPath, getUsersDataContent, getUsersData, getTags } from '@/libs/githubops';
 import { useState, useEffect } from 'react';
-import MiniSearch from 'minisearch'
 import { Remarkable } from 'remarkable';
 import DirectoryTree from '@/components/DirectoryTree';
 import Nav from '@/components/NavBar'
@@ -13,16 +12,7 @@ import {
 } from "kbar";
 
 
-export default function Index({ user, contentlist, tags, content, mainContent }) {
-  const [valueOp, setValueOp] = useState([]);
-  const [contentPage, setContentPage] = useState([]);
-  const search = new MiniSearch({
-    fields: ['path', 'grab', 'views', 'tags'],
-    storeFields: ['path', 'grab', 'views', 'tags']
-  });
-
-  search.addAll(content);
-
+export default function Index({ user, contentlist, content, mainContent }) {
   const [modifierKey, setModifierKey] = useState();
 
   useEffect(() => {
@@ -31,24 +21,6 @@ export default function Index({ user, contentlist, tags, content, mainContent })
   }, []);
 
   const md = new Remarkable();
-
-  const searchFunc = (e) => {
-    if (e.key === 'Enter') {
-      if (valueOp.length > 0) {
-        const tags = valueOp.map((item) => item.value);
-        const results = search.search(e.target.value, { filter: (id, filters) => tags.some((tag) => id.tags.includes(tag)) });
-        setContentPage(results);
-      }
-      else {
-        const results = search.search(e.target.value);
-        setContentPage(results);
-      }
-    }
-  }
-
-  const handleLinkClick = () => {
-    setContentPage([]); // Clear the contentPage state
-  };
 
   return (
     <section className='min-h-screen backdrop-blur-sm backdrop-saturate-200 bg-black/90 font-manrope'>
@@ -134,7 +106,7 @@ export async function getStaticProps({ params }) {
     // Handle other errors if needed
   }
   const contentlist = await getUsersData(userDir);
-  let tags = await getTags(user);
+  // let tags = await getTags(user);
 
   let content = await getUsersDataContent(userDir)
   let i = 0;
@@ -176,7 +148,6 @@ export async function getStaticProps({ params }) {
     props: {
       user,
       contentlist,
-      tags,
       content,
       mainContent
     },
