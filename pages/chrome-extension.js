@@ -11,7 +11,7 @@ export default function chrome() {
         <article>
           Could not publish the extension to chrome market app because my country is not in the list of countries for billing re I will describe how to install the extension manually.
 
-          <li>Download the extension from <a href="https://github.com/scatteredNote/scatterednotechrome/raw/main/build.zip" className='text-blue-500'>here</a> and then unzip</li>
+          <li>Download the extension from <a href="https://github.com/scatteredNote/scatterednote-chrome/raw/main/build.zip" className='text-blue-500'>here</a> and then unzip</li>
           <li>visit <q>chrome://extension</q> in your chrome browser</li>
           <li className="list-disc">Enable developer mode</li>
           <img src='./developer.png' alt='developer mode' />
@@ -21,6 +21,9 @@ export default function chrome() {
 
           <img src='./extension.png' alt='developer mode' />
           <li>That&apos;s all</li>
+
+          <strong>Note:</strong> Make sure to login to your account before using the extension
+          And for more instructions on how to use the extension visit <a href="https://github.com/scatteredNote/scatterednote-chrome#readme" target='_blank' rel='noreferrer' className='text-blue-500'>here</a>
         </article>
       </div>
     </>
