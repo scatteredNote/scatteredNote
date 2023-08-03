@@ -149,7 +149,7 @@ const Home = () => {
 
       {/* Footer */}
       <section className='bg-[#434141]'>
-        <div className='flex  lg:justify-center pl-8 lg:pl-0  mx-auto w-full  lg:max-w-7xl font-manrope pt-12 pb-4 text-white'>
+        <div className='flex  justify-center mx-auto w-full  lg:max-w-7xl font-manrope pt-12 pb-4 text-white'>
           <h3>Follow us on:</h3>
           <div className='flex lg:mt-0 text-white ml-2 gap-x-2'>
             <a href='https://github.com/scatteredNote/scatteredNote' target='_blank' rel="noopener noreferrer">
