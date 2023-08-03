@@ -32,11 +32,10 @@ export default function Nav({ dark }) {
           <Link href={"/"} scroll={false}>Home</Link>
           <Link href="/#about" smooth>About</Link>
           <Link href="/#features" smooth >Features</Link>
-          <Link href="/contribute" smooth>Contribute</Link>
         </div>
         {session && <ProfileBar user={session.user} dark={dark} />}
         {!session && (
-          <div className=' bg-custom1 text-center px-8 py-4 text-white font-manrope font-medium rounded-xl ml-auto'>
+          <div className=' bg-custom1 text-center px-4 py-2 mr-2 tracking-tighter text-sm lg:px-8 lg:py-4 text-white font-manrope lg:font-medium rounded-xl ml-auto'>
             {!session && (
               <a
                 href={`/api/auth/signin`}

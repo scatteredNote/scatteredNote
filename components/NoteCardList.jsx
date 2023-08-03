@@ -4,14 +4,14 @@ import NoteCard from './NoteCard'
 const notes = [
   [{
     title: 'By-Product',
-    description: 'Note-taking while doing research or reading or investigation should be a by-product of the main task. switching mode should be controlled to prevent distraction from the main task. Hence note-taking should be seamless and undistracted time.',
+    description: 'Note-taking while doing research or reading or investigation should be a by-product of the main task. switching mode should be controlled to prevent distraction from the main task. Hence note-taking should be seamless and less distractive.',
     image: '/note-white.svg',
     color: 'bg-[#F7F8F8]',
     textColor: 'text-[#434141]'
   },
   {
     title: 'In Peace With Forgetting',
-    description: 'Being in Peace with forgetting, reshape your perspective on how you obtain and manage information. our aim is to enforce this',
+    description: 'Easy to spin up to grab content and take notes to reduce procrastination. Hence every worth knowledge is archive and jotted down to be in peace with forgetting',
     image: '/note-white.svg',
     color: 'bg-[#434141]',
     textColor: 'text-[#F7F8F8]'
@@ -27,15 +27,15 @@ const notes = [
   },
   {
     title: 'Atomic',
-    description: 'We ensure information grabbed from any source are atomic as possible, but your perspective can be extensive to fletch out the atomic information',
+    description: 'Embrace mental model of capturing information atomically and backing it up with your insight.',
     image: '/note-white.svg',
     color: 'bg-[#F7F8F8]',
     textColor: 'text-[#434141]'
   },
   ],
   [{
-    title: 'Personal Perspective dimension',
-    description: 'We also ensure a two-dimensional display of information containing your information and your perspective dimension',
+    title: 'A Stone Throw Away',
+    description: 'keep track of note per website and youtube videos re your note is always with a stone throw away.',
     image: '/note-white.svg',
     color: 'bg-[#F7F8F8]',
     textColor: 'text-[#434141]'
@@ -43,7 +43,7 @@ const notes = [
   },
   {
     title: 'Extended memory with AI in the loop',
-    description: 'information generally are static, AI is added to make your memory animated and human-like',
+    description: 'Query, chat and create flash card with your archived knowledge for quick insight',
     image: '/note-black.svg',
     color: 'bg-[#434141]',
     textColor: 'text-[#F7F8F8]'
