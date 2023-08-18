@@ -10,10 +10,11 @@ import {
   KBarProvider,
   KBarContext
 } from "kbar";
-
+import { useRouter } from 'next/router'
 
 export default function Index({ user, contentlist, content, mainContent }) {
   const [modifierKey, setModifierKey] = useState();
+  const router = useRouter()
 
   useEffect(() => {
     const isMac = /(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgent);
@@ -21,6 +22,14 @@ export default function Index({ user, contentlist, content, mainContent }) {
   }, []);
 
   const md = new Remarkable();
+  if (router.isFallback) {
+    return <section className='backdrop-blur-sm backdrop-saturate-200 bg-black/90 font-manrope  min-h-screen'>
+      <Nav dark={true} />
+      <div className='h-[100vh] w-full flex items-center justify-center'>
+        <h2>Data loading and generating page......</h2>
+      </div>
+    </section>
+  }
 
   return (
     <section className='min-h-screen backdrop-blur-sm backdrop-saturate-200 bg-black/90 font-manrope'>
@@ -111,7 +120,7 @@ export async function getStaticProps({ params }) {
   let content = await getUsersDataContent(userDir)
   let i = 0;
   content = content.flatMap(({ id, path, content }) => {
-    if (content.length > 0) {
+    if (content?.length > 0) {
       return content.map(({ grab, views, tags }, index) => ({
         id: i++,
         path,
