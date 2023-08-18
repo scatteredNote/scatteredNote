@@ -125,7 +125,7 @@ export async function getStaticProps({ params }) {
   const contentlist = await getUsersData(userDir);
   // let tags = await getTags(user);
   let content = await getUsersDataContent(userDir)
-  const mainContent = content[0]
+  const mainContent = content?.length ? content[0] : []
   let i = 0;
   content = content.flatMap(({ id, path, content }) => {
     if (content?.length > 0) {
