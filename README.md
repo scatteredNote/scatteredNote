@@ -66,3 +66,5 @@ GITHUB_TOKEN=
 REPO_OWNER=scatteredNote # repo owner
 REPO_NAME=data # repo use as database
 ```
+
+<a href="https://www.producthunt.com/posts/scatterednote?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-scatterednote" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=410420&theme=light" alt="scatteredNote - simple&#0032;ui&#0032;to&#0032;grab&#0032;content&#0032;and&#0032;take&#0032;note&#0032;easily&#0032; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
