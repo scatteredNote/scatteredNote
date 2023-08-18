@@ -1,8 +1,13 @@
 import Image from 'next/image'
 import NoteCardList from '@/components/NoteCardList'
-import FeaturedCardList from '@/components/FeaturedCardList'
+// import FeaturedCardList from '@/components/FeaturedCardList'
 import Nav from '@/components/NavBar'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
+
+const FeaturedCardList = dynamic(() => import('../components/FeaturedCardList'), {
+  ssr: false,
+})
 
 
 const Home = () => {
@@ -18,14 +23,9 @@ const Home = () => {
         <div className='mx-auto w-full  lg:max-w-7xl flex flex-col items-center py-4 font-manrope  pr-0 sm:px-6 md:px-8 '>
           <div className=' font-extrabold text-xl tracking-tight px-2 lg:px-0 lg:text-[3.625rem] lg:leading-[4.952rem] text-center'>Grab <span className='text-[#011687]'>Contents</span> and take <span className='text-[#011687]'>Notes</span> with ease as you go about your day.</div>
           <div className='font-normal text-sm lg:text-md tracking-tight text-center  2xl:text-[1.25rem] lg:leading-[3rem] mt-8 px-2 lg:px-0'>Make Note-taking a by-product of your main task without getting distracted from your current main goal.</div>
-          <div className='relative mt-8 2xl:w-[60%] 2xl:h-[45vh] w-[80%] aspect-video h-[250px] sm:h-[450px]'>
-            <Image src='/heroimage.png'
-              layout="fill"
-              className="relative  w-full text-[#000000]"
-              alt="hero image"
-            />
+          <div className='relative mt-8  w-[80%] xl:w-[50%] aspect-video'>
+            <iframe src="https://api.vadoo.tv/iframe_test?id=rh5CuDrSu2GEBfFMtGQjdkbwT0sVUdNB" scrolling="no" className='w-full h-[315px]' allowfullscreen="1" allow="autoplay"></iframe>
           </div>
-          {/* <div className='mt-8 rounded-lg bg-custom1 text-white py-4 px-14 font-semibold lg:text-[1.25rem] text-[1.05rem] lg:leading-[1.708rem] leading-[1.208rem]'>Get started for free!</div> */}
         </div>
       </section>
 
@@ -63,7 +63,7 @@ const Home = () => {
             </div>
             <div className='grid grid-rows-1 lg:grid-rows-3 h-[300px] sm:h-[400px] lg:h-full mt-8 lg:mt-0'>
               <div className='row-span-2 row-end-3 w-full h-full'>
-                <div className=' relative w-full  lg:w-[90%] h-full '>
+                <div className=' relative w-full sm:w-[80%] sm:mx-auto xl:mx-0 xl:w-[90%] h-full'>
                   <Image
                     src='/images/archiveeditor.png'
                     layout="fill"
@@ -95,7 +95,7 @@ const Home = () => {
             </div>
             <div className='grid grid-rows-1 lg:grid-rows-3 h-[300px] sm:h-[400px] lg:h-[600px] 2xl:h-full mt-8 lg:mt-0'>
               <div className='row-span-2 row-end-3 w-full h-full'>
-                <div className=' relative w-full lg:w-[90%] h-full border-[1px] rounded-xl'>
+                <div className=' relative w-full sm:w-[80%] sm:mx-auto xl:mx-0 xl:w-[90%] h-full border-[1px] rounded-xl'>
                   <Image
                     src='/images/commit3.png'
                     fill
@@ -114,7 +114,7 @@ const Home = () => {
             </div>
             <div className='grid grid-rows-1  h-[300px] sm:h-[400px] lg:h-[400px]  2xl:h-full mt-8 lg:mt-0'>
               <div className='row-span-1  w-full h-full'>
-                <div className=' relative w-full lg:w-[90%] h-full rounded-xl bg-black'>
+                <div className=' relative w-full sm:w-[80%] sm:mx-auto xl:mx-0 xl:w-[90%] h-full rounded-xl bg-black'>
                   <Image
                     src='/images/notes.png'
                     fill// required 
@@ -143,7 +143,7 @@ const Home = () => {
       <section className='font-manrope mx-auto w-full px-4 sm:px-6 md:px-8  sm:pl-0 lg:max-w-7xl mt-8 border-b-2 border-dashed border-gray-300 pb-8' id='pricing'>
         <h3 className='text-center  font-bold text-[2rem] leading-[2.732rem] text-[#2E2F30] mb-4 '>Subscription Base </h3>
         <p className=' tracking-normal text-center'>
-          We are currently in beta, so we are free for now. But we will be subscription base in the future. We will have a free tier and a paid tier.
+          We plan of adding subscription for the next version 1.0; to include AI (LLM) and database (yet to be decided as we currently use github fs and api)
         </p>
       </section>
 

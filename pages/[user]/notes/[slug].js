@@ -82,7 +82,7 @@ export async function getStaticPaths() {
     }));
     return paths;
   }))).flat();
-  return { paths, fallback: 'blocking' };
+  return { paths, fallback: true };
 }
 
 
