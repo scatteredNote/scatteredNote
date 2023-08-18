@@ -28,7 +28,7 @@ export async function getStaticPaths() {
       params: { user: dir.name },
     }));
 
-  return { paths, fallback: false };
+  return { paths, fallback: true };
 }
 
 export async function getStaticProps({ params }) {
