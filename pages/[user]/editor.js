@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { Octokit } from "@octokit/rest";
 import Nav from '@/components/NavBar'
 
+
 export async function getStaticPaths() {
   const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
@@ -138,6 +139,15 @@ export default function Editor({ data, directoryStructure, user, tags }) {
   const handleToggle = () => {
     setIsPublic(!isPublic);
   };
+
+  if (router.isFallback) {
+    return <section className='backdrop-blur-sm backdrop-saturate-200 bg-black/90 font-manrope  min-h-screen'>
+      <Nav dark={true} />
+      <div className='h-full backdrop-blur-sm backdrop-saturate-200 bg-black/90'>
+        <h2>Data loading and generating page......</h2>
+      </div>
+    </section>
+  }
 
   const notes = () => {
     if (subTopic && directoryStructure[subTopic.value]) {
