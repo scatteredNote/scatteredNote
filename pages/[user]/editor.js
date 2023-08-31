@@ -12,24 +12,24 @@ import Nav from '@/components/NavBar'
 
 
 export async function getStaticPaths() {
-  const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN,
-  });
-  const usersDir = 'users'; // Assuming 'users' is a directory in your GitHub repository
+  // const octokit = new Octokit({
+  //   auth: process.env.GITHUB_TOKEN,
+  // });
+  // const usersDir = 'users'; // Assuming 'users' is a directory in your GitHub repository
 
-  const users = await octokit.repos.getContent({
-    owner: process.env.REPO_OWNER,
-    repo: process.env.REPO_NAME,
-    path: usersDir,
-  });
+  // const users = await octokit.repos.getContent({
+  //   owner: process.env.REPO_OWNER,
+  //   repo: process.env.REPO_NAME,
+  //   path: usersDir,
+  // });
 
-  const paths = users.data
-    .filter((file) => file.type === 'dir')
-    .map((dir) => ({
-      params: { user: dir.name },
-    }));
+  // const paths = users.data
+  //   .filter((file) => file.type === 'dir')
+  //   .map((dir) => ({
+  //     params: { user: dir.name },
+  //   }));
 
-  return { paths, fallback: true };
+  return { paths: [], fallback: 'blocking' };
 }
 
 export async function getStaticProps({ params }) {

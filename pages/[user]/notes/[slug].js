@@ -83,24 +83,24 @@ export default function Index({ user, contentlist, content, mainContent }) {
 
 
 export async function getStaticPaths() {
-  const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN,
-  });
-  const usersDir = 'users';
-  const users = await octokit.repos.getContent({
-    owner: process.env.REPO_OWNER,
-    repo: process.env.REPO_NAME,
-    path: usersDir,
-  });
-  const paths = (await Promise.all(users.data.map(async (user) => {
-    const userDir = `users/${user.name}`;
-    const contentlist = await getUsersDataPath(userDir);
-    const paths = contentlist.map((item) => ({
-      params: { user: user.name, slug: item.replaceAll("/", "_") }
-    }));
-    return paths;
-  }))).flat();
-  return { paths, fallback: true };
+  // const octokit = new Octokit({
+  //   auth: process.env.GITHUB_TOKEN,
+  // });
+  // const usersDir = 'users';
+  // const users = await octokit.repos.getContent({
+  //   owner: process.env.REPO_OWNER,
+  //   repo: process.env.REPO_NAME,
+  //   path: usersDir,
+  // });
+  // const paths = (await Promise.all(users.data.map(async (user) => {
+  //   const userDir = `users/${user.name}`;
+  //   const contentlist = await getUsersDataPath(userDir);
+  //   const paths = contentlist.map((item) => ({
+  //     params: { user: user.name, slug: item.replaceAll("/", "_") }
+  //   }));
+  //   return paths;
+  // }))).flat();
+  return { paths: [], fallback: 'blocking' };
 }
 
 
@@ -170,5 +170,6 @@ export async function getStaticProps({ params }) {
       mainContent
     },
     revalidate: 10,
+    notFound: !{},
   };
 }
