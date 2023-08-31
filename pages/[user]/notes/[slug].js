@@ -4,7 +4,6 @@ import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
 import { getUsersDataPath, getUsersDataContent, getUsersData, getTags } from '@/libs/githubops';
 import { useState, useEffect } from 'react';
-import { Remarkable } from 'remarkable';
 import DirectoryTree from '@/components/DirectoryTree';
 import Nav from '@/components/NavBar'
 import SearchPortal, { SearchField } from "@/components/SearchPortal";
@@ -30,13 +29,6 @@ export default function Index({ user, contentlist, content, mainContent }) {
     setModifierKey(isMac ? "⌘" : "Ctrl ");
   }, []);
 
-  const md = new Remarkable('full', {
-    html: true,
-    typographer: true,
-    linkify: true,
-    breaks: true,
-    quotes: '“”‘’',
-  });
   if (router.isFallback) {
     return <section className='backdrop-blur-sm backdrop-saturate-200 bg-black/90 font-manrope  min-h-screen'>
       <Nav dark={true} />
@@ -78,7 +70,6 @@ export default function Index({ user, contentlist, content, mainContent }) {
 
 
                   <div className=' ml-16  border-dashed border-l-2 p-4 w-4 h-full' />
-                  {/* <div className=' rounded-xl  w-full p-4 ml-6 bg-black text-white' dangerouslySetInnerHTML={{ __html: md.render(item.views) }} /> */}
                   <MarkdownPreview source={item.views} className=' rounded-xl  w-full p-4 ml-6 bg-black text-white' />
                 </div>
               )

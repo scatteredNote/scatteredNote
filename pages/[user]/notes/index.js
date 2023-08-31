@@ -4,6 +4,9 @@ import { Octokit } from "@octokit/rest";
 import { getTags, getUsersData, getUsersDataContent } from '@/libs/githubops';
 import { useState, useEffect } from "react";
 import { Remarkable } from 'remarkable';
+import '@uiw/react-md-editor/markdown-editor.css';
+import '@uiw/react-markdown-preview/markdown.css';
+import dynamic from 'next/dynamic';
 import Nav from '@/components/NavBar'
 import SearchPortal, { SearchField } from "@/components/SearchPortal";
 import {
@@ -11,6 +14,11 @@ import {
   KBarContext
 } from "kbar";
 import { useRouter } from 'next/router'
+const MarkdownPreview = dynamic(
+  () => import('@uiw/react-markdown-preview').then((mod) => mod.default),
+  { ssr: false }
+);
+
 
 export default function Index({ user, contentlist, content, mainContent }) {
   const [modifierKey, setModifierKey] = useState();
@@ -21,7 +29,6 @@ export default function Index({ user, contentlist, content, mainContent }) {
     setModifierKey(isMac ? "⌘" : "Ctrl ");
   }, []);
 
-  const md = new Remarkable();
 
   if (router.isFallback) {
     return <section className='backdrop-blur-sm backdrop-saturate-200 bg-black/90 font-manrope  min-h-screen'>
@@ -65,9 +72,9 @@ export default function Index({ user, contentlist, content, mainContent }) {
                 <div key={index} className="w-full p-4 mt-4">
                   {item.grab.includes("youtu.be") ? <div className=' rounded-xl  w-full p-4 bg-white text-black'>
                     <iframe width="100%" height="315" src={`https://www.youtube.com/embed/${item.grab.split("/").pop().replace("t=", "start=")}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-                  </div> : <div className=' rounded-xl  w-full p-4 bg-white text-black' dangerouslySetInnerHTML={{ __html: md.render(item.grab) }} />}
+                  </div> : <MarkdownPreview source={item.grab} className=' rounded-xl  w-full p-4 bg-white text-black' style={{ backgroundColor: 'white', color: 'black' }} wrapperElement={'light'} />}
                   <div className=' ml-16  border-dashed border-l-2 p-4 w-4 h-full' />
-                  <div className=' rounded-xl  w-full p-4 ml-6 bg-black text-white' dangerouslySetInnerHTML={{ __html: md.render(item.views) }} />
+                  <MarkdownPreview source={item.views} className=' rounded-xl  w-full p-4 ml-6 bg-black text-white' />
                 </div>
               )
             })}

@@ -54,7 +54,7 @@ export async function getStaticProps({ params }) {
 
   const data = await generateDirectoryStructure(userDir);
   const directoryStructure = await generateDirectoryFilese(userDir);
-  const tags = await getTags(user)
+  const tags = await getTags(user) || []
 
   return {
     props: {
