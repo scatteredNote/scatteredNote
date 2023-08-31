@@ -1,16 +1,25 @@
 import React from 'react'
 import { Octokit } from "@octokit/rest";
+import '@uiw/react-md-editor/markdown-editor.css';
+import '@uiw/react-markdown-preview/markdown.css';
 import { getUsersDataPath, getUsersDataContent, getUsersData, getTags } from '@/libs/githubops';
 import { useState, useEffect } from 'react';
 import { Remarkable } from 'remarkable';
 import DirectoryTree from '@/components/DirectoryTree';
 import Nav from '@/components/NavBar'
 import SearchPortal, { SearchField } from "@/components/SearchPortal";
+import dynamic from 'next/dynamic';
 import {
   KBarProvider,
   KBarContext
 } from "kbar";
 import { useRouter } from 'next/router'
+
+const MarkdownPreview = dynamic(
+  () => import('@uiw/react-markdown-preview').then((mod) => mod.default),
+  { ssr: false }
+);
+
 
 export default function Index({ user, contentlist, content, mainContent }) {
   const [modifierKey, setModifierKey] = useState();
@@ -21,7 +30,13 @@ export default function Index({ user, contentlist, content, mainContent }) {
     setModifierKey(isMac ? "⌘" : "Ctrl ");
   }, []);
 
-  const md = new Remarkable();
+  const md = new Remarkable('full', {
+    html: true,
+    typographer: true,
+    linkify: true,
+    breaks: true,
+    quotes: '“”‘’',
+  });
   if (router.isFallback) {
     return <section className='backdrop-blur-sm backdrop-saturate-200 bg-black/90 font-manrope  min-h-screen'>
       <Nav dark={true} />
@@ -37,7 +52,7 @@ export default function Index({ user, contentlist, content, mainContent }) {
         <SearchPortal data={content} />
         <Nav dark={true} />
         <div className='grid grid-cols-12 mx-auto max-w-screen-xl px-4 py-10 md:py-10 mt-10 '>
-          <section className='border-r-2 border-gray-400 col-start-1 col-span-4 p-4 max-h-screen overflow-y-auto'>
+          <section className=' border-gray-400 col-start-1 col-span-4 p-4 max-h-screen overflow-y-auto'>
             <KBarContext>
               {({ query }) => (
                 <SearchField modifierKey={modifierKey} onOpen={query?.toggle} />
@@ -53,15 +68,18 @@ export default function Index({ user, contentlist, content, mainContent }) {
               )}
             </section>
           </section>
-          <section className='border-r-2 border-gray-400 col-start-5 col-span-10 p-4 text-white'>
+          <section className='border-r-2 border-l-2 border-gray-400 col-start-5 col-span-10 p-4 '>
             {mainContent.map((item, index) => {
               return (
                 <div key={index} className="w-full p-4 mt-4">
                   {item.grab.includes("youtu.be") ? <div className=' rounded-xl  w-full p-4 bg-white text-black'>
                     <iframe width="100%" height="315" src={`https://www.youtube.com/embed/${item.grab.split("/").pop().replace("t=", "start=")}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-                  </div> : <div className=' rounded-xl  w-full p-4 bg-white text-black' dangerouslySetInnerHTML={{ __html: md.render(item.grab) }} />}
+                  </div> : <MarkdownPreview source={item.grab} className=' rounded-xl  w-full p-4 bg-white text-black' style={{ backgroundColor: 'white', color: 'black' }} wrapperElement={'light'} />}
+
+
                   <div className=' ml-16  border-dashed border-l-2 p-4 w-4 h-full' />
-                  <div className=' rounded-xl  w-full p-4 ml-6 bg-black text-white' dangerouslySetInnerHTML={{ __html: md.render(item.views) }} />
+                  {/* <div className=' rounded-xl  w-full p-4 ml-6 bg-black text-white' dangerouslySetInnerHTML={{ __html: md.render(item.views) }} /> */}
+                  <MarkdownPreview source={item.views} className=' rounded-xl  w-full p-4 ml-6 bg-black text-white' />
                 </div>
               )
             })}
