@@ -11,12 +11,12 @@ export default async function handler(req, res) {
       auth: process.env.GITHUB_TOKEN,
     });
     const { user, slug } = req.query;
-    const userDir = `/users/${user}/${slug}.json`;
+    const userDir = `data/users/${user}/${slug}.json`;
 
     try {
       const response = await octokit.repos.getContent({
         owner: 'scatteredNote',
-        repo: 'data',
+        repo: 'scatteredNote',
         path: userDir,
       });
 

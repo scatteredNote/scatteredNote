@@ -6,7 +6,7 @@ export async function createGithubFolder(user) {
     auth: process.env.GITHUB_TOKEN,
   });
 
-  const userFolder = `users/${user}/.gitkeep`;
+  const userFolder = `data/users/${user}/.gitkeep`;
 
   // Check if user folder exists in repo
   octokit.repos.getContent({
@@ -39,7 +39,7 @@ export async function createGithubFolder(user) {
         octokit.repos.createOrUpdateFileContents({
           owner: process.env.REPO_OWNER,
           repo: process.env.REPO_NAME,
-          path: `userMeta/${user}.json`,
+          path: `data/userMeta/${user}.json`,
           message: `Create userMeta/${user}.json`,
           content: Buffer.from("{}").toString("base64"),
         })
@@ -198,7 +198,7 @@ export const getUsersData = async (dirPath) => {
         usersData.push(userData);
       } else if (item.type === "file" && item.name.split('.').pop() === 'json') {
         const filePath = path.join(dirPath, item.name);
-        const fileValue = filePath.split("/users/")[1].replace(/^[^/]+\//, '');
+        const fileValue = filePath.split("data/users/")[1].replace(/^[^/]+\//, '');
         usersData.push({ name: item.name, value: fileValue });
       }
     }
@@ -239,7 +239,7 @@ export const getUsersDataContent = async (dirPath, count = 0) => {
         count++;
         result.push({
           id: count,
-          path: filePath.split('users/')[1].replace(/^[^/]+\//, ''),
+          path: filePath.split('data/users/')[1].replace(/^[^/]+\//, ''),
           content: JSON.parse(content),
         });
       }
@@ -273,7 +273,7 @@ export const getUsersDataPath = async (dirPath) => {
       const filePath = path.join(dirPath, file.name);
       if (path.extname(file.name) === '.json') {
         result.push(
-          filePath.split('users/')[1].replace(/^[^/]+\//, '').split('.json')[0]
+          filePath.split('data/users/')[1].replace(/^[^/]+\//, '').split('.json')[0]
         );
       }
     } else if (file.type === 'dir') {
