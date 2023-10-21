@@ -1,0 +1,1 @@
+[{"grab":"## Kafka introduction","views":"* kafka is a messaging system\n* a kafka server serves as a broker\n* a collection of kafka server is called a cluster\n* kafka server in a cluster recieve same broadcasted message since they are replica and this makes it fault tolerant","tags":["kafka"]}]

@@ -1,8 +1,7 @@
 import React from 'react'
-import { Octokit } from "@octokit/rest";
 import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
-import { getUsersDataPath, getUsersDataContent, getUsersData, getTags } from '@/libs/githubops';
+import { getUsersDataPath, getUsersDataContent, getUsersData } from '@/libs/getUsersDirectory';
 import { useState, useEffect } from 'react';
 import DirectoryTree from '@/components/DirectoryTree';
 import Nav from '@/components/NavBar'
@@ -83,48 +82,29 @@ export default function Index({ user, contentlist, content, mainContent }) {
 
 
 export async function getStaticPaths() {
-  // const octokit = new Octokit({
-  //   auth: process.env.GITHUB_TOKEN,
-  // });
-  // const usersDir = 'users';
-  // const users = await octokit.repos.getContent({
-  //   owner: process.env.REPO_OWNER,
-  //   repo: process.env.REPO_NAME,
-  //   path: usersDir,
-  // });
-  // const paths = (await Promise.all(users.data.map(async (user) => {
-  //   const userDir = `users/${user.name}`;
-  //   const contentlist = await getUsersDataPath(userDir);
-  //   const paths = contentlist.map((item) => ({
-  //     params: { user: user.name, slug: item.replaceAll("/", "_") }
-  //   }));
-  //   return paths;
-  // }))).flat();
-  return { paths: [], fallback: 'blocking' };
+  const fs = require('fs');
+  const path = require('path');
+  const users = fs.readdirSync(path.join(process.cwd(), 'data/users'));
+  const paths = users.flatMap((user) => {
+    const userDir = path.join(process.cwd(), 'data/users', user);
+    const contentlist = getUsersDataPath(userDir);
+    const paths = contentlist.map((item) => ({
+      params: { user: user, slug: item.replaceAll("/", "_") }
+    }))
+    return paths
+
+  })
+  return { paths: paths, fallback: 'blocking' };
 }
 
 
 export async function getStaticProps({ params }) {
+  const path = require('path');
+  const fs = require('fs');
   const user = params.user;
   const slug = params.slug.replaceAll("_", "/");
-  const userDir = `/users/${user}`
-  const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN,
-  });
-  try {
-    await octokit.repos.getContent({
-      owner: process.env.REPO_OWNER,
-      repo: process.env.REPO_NAME,
-      path: userDir,
-    });
-  } catch (error) {
-    if (error.status === 404) {
-      return { notFound: true };
-    }
-    // Handle other errors if needed
-  }
-  const contentlist = await getUsersData(userDir);
-  // let tags = await getTags(user);
+  const userDir = path.join(process.cwd(), 'data/users', user);
+  const contentlist = getUsersData(userDir);
 
   let content = await getUsersDataContent(userDir)
   let i = 0;
@@ -144,22 +124,10 @@ export async function getStaticProps({ params }) {
     }
   });
 
-  const requestedContentPath = `users/${user}/${slug}.json`; // Relative path to the requested content
+  const requestedContentPath = path.join(process.cwd(), 'data/users', user, `${slug}.json`);
   let mainContent = null;
-
-  try {
-    const response = await octokit.repos.getContent({
-      owner: process.env.REPO_OWNER,
-      repo: process.env.REPO_NAME,
-      path: requestedContentPath,
-    });
-
-    if (response.data.type === "file") {
-      const content = Buffer.from(response.data.content, "base64").toString("utf-8");
-      mainContent = JSON.parse(content);
-    }
-  } catch (error) {
-    console.error("Error retrieving content:", error);
+  if (fs.existsSync(requestedContentPath)) {
+    mainContent = JSON.parse(fs.readFileSync(requestedContentPath, 'utf-8'));
   }
 
   return {
