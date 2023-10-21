@@ -1,7 +1,7 @@
 
 import DirectoryTree from '@/components/DirectoryTree';
 import { Octokit } from "@octokit/rest";
-import { getTags, getUsersData, getUsersDataContent } from '@/libs/githubops';
+import { getUsersData, getUsersDataContent } from '@/libs/getUsersDirectory';
 import { useState, useEffect } from "react";
 import { Remarkable } from 'remarkable';
 import '@uiw/react-md-editor/markdown-editor.css';
@@ -90,47 +90,23 @@ export default function Index({ user, contentlist, content, mainContent }) {
 
 
 export async function getStaticPaths() {
-  // const octokit = new Octokit({
-  //   auth: process.env.GITHUB_TOKEN,
-  // });
-  // const usersDir = 'users';
-  // const users = await octokit.repos.getContent({
-  //   owner: process.env.REPO_OWNER,
-  //   repo: process.env.REPO_NAME,
-  //   path: usersDir,
-  // });
+  const fs = require('fs');
+  const path = require('path');
+  const usersDir = path.join(process.cwd(), '/data/users');
+  const users = fs.existsSync(usersDir) ? fs.readdirSync(usersDir) : [];
+  const paths = users.map((user) => ({
+    params: { user: user },
+  }));
 
-  // const paths = users.data
-  //   .filter((file) => file.type === 'dir')
-  //   .map((dir) => ({
-  //     params: { user: dir.name },
-  //   }));
-
-  return { paths: [], fallback: 'blocking' };
+  return { paths: paths, fallback: 'blocking' };
 }
 
 
 export async function getStaticProps({ params }) {
+  const path = require('path');
   const user = params.user;
-  const userDir = `/users/${user}`
-  const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN,
-  });
-
-  try {
-    await octokit.repos.getContent({
-      owner: process.env.REPO_OWNER,
-      repo: process.env.REPO_NAME,
-      path: userDir,
-    });
-  } catch (error) {
-    if (error.status === 404) {
-      return { notFound: true };
-    }
-    // Handle other errors if needed
-  }
-  const contentlist = await getUsersData(userDir);
-  // let tags = await getTags(user);
+  const userDir = path.join(process.cwd(), 'data/users', user);
+  const contentlist = getUsersData(userDir);
   let content = await getUsersDataContent(userDir)
   const mainContent = content?.length ? content[0] : []
   let i = 0;

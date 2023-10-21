@@ -17,31 +17,31 @@ export const getDirDataRecursive = (dirPath) => {
   return dirData;
 };
 
-export const getUsersData = (dirPath) => {
-  const usersData = [];
-  const dirs = fs.readdirSync(dirPath, { withFileTypes: true });
-  for (const dir of dirs) {
-    if (dir.isDirectory()) {
-      const userData = { name: dir.name, children: [] };
-      const dirFullPath = path.join(dirPath, dir.name);
-      const filesAndDirs = fs.readdirSync(dirFullPath, {
-        withFileTypes: true,
-      });
-      for (const fileOrDir of filesAndDirs) {
-        if (fileOrDir.isFile()) {
-          userData.children.push({ name: fileOrDir.name, value: `${dirFullPath}/${fileOrDir.name}`.split("/users/")[1].replace(/^[^/]+\//, '') });
-        } else if (fileOrDir.isDirectory()) {
-          const subDirData = getDirDataRecursive(
-            path.join(dirFullPath, fileOrDir.name)
-          );
-          userData.children.push(subDirData);
-        }
-      }
-      usersData.push(userData);
-    }
-  }
-  return usersData;
-};
+// export const getUsersData = (dirPath) => {
+//   const usersData = [];
+//   const dirs = fs.readdirSync(dirPath, { withFileTypes: true });
+//   for (const dir of dirs) {
+//     if (dir.isDirectory()) {
+//       const userData = { name: dir.name, children: [] };
+//       const dirFullPath = path.join(dirPath, dir.name);
+//       const filesAndDirs = fs.readdirSync(dirFullPath, {
+//         withFileTypes: true,
+//       });
+//       for (const fileOrDir of filesAndDirs) {
+//         if (fileOrDir.isFile()) {
+//           userData.children.push({ name: fileOrDir.name, value: `${dirFullPath}/${fileOrDir.name}`.split("/users/")[1].replace(/^[^/]+\//, '') });
+//         } else if (fileOrDir.isDirectory()) {
+//           const subDirData = getDirDataRecursive(
+//             path.join(dirFullPath, fileOrDir.name)
+//           );
+//           userData.children.push(subDirData);
+//         }
+//       }
+//       usersData.push(userData);
+//     }
+//   }
+//   return usersData;
+// };
 
 
 
@@ -94,7 +94,9 @@ function getDirectoryTree(directoryPath) {
         obj[file.name] = directoryObj;
         walk(directoryPath, directoryObj);
       } else {
-        obj.files.push(file.name);
+        if (path.extname(file.name) === '.json') {
+          obj.files.push(file.name);
+        }
       }
     });
   };
@@ -175,4 +177,59 @@ export const getUsersDataPath = (dirPath) => {
     }
   });
   return result;
+};
+
+export const getTags = async (user) => {
+  const filePath = path.join(process.cwd(), 'data', 'userMeta', `${user}.json`);
+  let tags = [];
+
+  try {
+    // Synchronously read the file using the local filesystem
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+    const jsonContent = JSON.parse(fileContent);
+    tags = jsonContent?.tags;
+
+    if (tags) {
+      tags = tags.map((item) => ({
+        label: item.toLowerCase(),
+        value: item,
+      }));
+    }
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      // File does not exist
+      tags = [];
+    } else {
+      // Handle other errors
+      console.error("Error retrieving file:", error);
+    }
+  }
+
+  return tags;
+}
+
+export const getUsersData = (dirPath) => {
+  try {
+    const content = fs.readdirSync(dirPath, { withFileTypes: true });
+    const usersData = [];
+
+    for (const item of content) {
+      if (item.isDirectory()) {
+        const userData = { name: item.name, children: [] };
+        const subDirPath = path.join(dirPath, item.name);
+        const subDirContent = getUsersData(subDirPath);
+        userData.children = subDirContent;
+        usersData.push(userData);
+      } else if (item.isFile() && path.extname(item.name) === '.json') {
+        const filePath = path.join(dirPath, item.name);
+        const fileValue = filePath.split("/users/")[1].replace(/^[^/]+\//, '');
+        usersData.push({ name: item.name, value: fileValue });
+      }
+    }
+
+    return usersData;
+  } catch (error) {
+    console.error("Error retrieving users' data:", error);
+    return [];
+  }
 };

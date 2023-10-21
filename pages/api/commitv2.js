@@ -15,13 +15,13 @@ export default async function handler(req, res) {
       });
 
       // Create main topic directory if it doesn't exist
-      const mainTopicPath = `users/${user}/${MainTopic}`;
+      const mainTopicPath = `data/users/${user}/${MainTopic}`;
       const subTopicPath = SubTopic ? `${mainTopicPath}/${SubTopic}` : mainTopicPath;
       const noteFilePath = note.includes("json") ? `${subTopicPath}/${note}` : `${subTopicPath}/${note}.json`;
       await createOrUpdateFileContent(octokit, noteFilePath, { grab, views, tags });
 
       // Add tags to usermeta/user.json
-      const userMetaPath = `userMeta/${user}.json`;
+      const userMetaPath = `data/userMeta/${user}.json`;
       const { content: userMetaContent, sha: metasha } = await getFileContent(octokit, userMetaPath);
       const userMeta = JSON.parse(userMetaContent);
       if (!userMeta.tags) userMeta.tags = [];
@@ -33,7 +33,7 @@ export default async function handler(req, res) {
       // Add website url to web/website.json
       const { websiteUrl } = req.body;
       if (websiteUrl) {
-        const websitePath = `web/website.json`;
+        const websitePath = `data/web/website.json`;
         const { content: websiteContent, sha: websiteSha } = await getFileContent(octokit, websitePath);
         const website = JSON.parse(websiteContent);
         if (!website[websiteUrl]) website[websiteUrl] = [];
