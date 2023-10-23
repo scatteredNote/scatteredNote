@@ -292,7 +292,7 @@ export const getTags = async (user) => {
   const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
   });
-  const filePath = `userMeta/${user}.json`;
+  const filePath = `data/userMeta/${user}.json`;
   let tags = [];
   try {
     const response = await octokit.repos.getContent({
