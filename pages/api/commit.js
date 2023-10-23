@@ -6,7 +6,7 @@ export default async function handler(req, res) {
 
   try {
     // create main topic directory if it doesn't exist
-    const mainTopicPath = path.join(process.cwd(), `users/${user}`, MainTopic);
+    const mainTopicPath = path.join(process.cwd(), `data/users/${user}`, MainTopic);
     if (!(await isDirectory(mainTopicPath))) {
       await fs.mkdir(mainTopicPath);
     }
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     }
 
     // create note file if it doesn't exist
-    const noteFilePath = path.join(subTopicPath || mainTopicPath, note.includes("json")? note:`${note}.json`);
+    const noteFilePath = path.join(subTopicPath || mainTopicPath, note.includes("json") ? note : `${note}.json`);
     if (!(await isFile(noteFilePath))) {
       await fs.writeFile(noteFilePath, JSON.stringify([]));
     }
@@ -29,13 +29,13 @@ export default async function handler(req, res) {
     await fs.writeFile(noteFilePath, JSON.stringify(noteFile));
 
     // add tags to usermeta/user.json
-    const userMetaPath = path.join(process.cwd(), `userMeta/${user}.json`);
+    const userMetaPath = path.join(process.cwd(), `data/userMeta/${user}.json`);
     const userMeta = JSON.parse(await fs.readFile(userMetaPath));
     if (!userMeta.tags) userMeta.tags = [];
     userMeta.tags = [...new Set([...userMeta?.tags, ...tags])];
 
     //add notefilepath to usermeta/user.json to specify isPublic
-    const notePublic = `${MainTopic}/${SubTopic}/${note.includes("json")? note:`${note}.json`}`
+    const notePublic = `${MainTopic}/${SubTopic}/${note.includes("json") ? note : `${note}.json`}`
     userMeta[notePublic] = isPublic
     await fs.writeFile(userMetaPath, JSON.stringify(userMeta));
 

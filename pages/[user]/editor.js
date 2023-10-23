@@ -3,7 +3,7 @@ import '@uiw/react-markdown-preview/markdown.css';
 import dynamic from 'next/dynamic';
 import { useState, useRef } from 'react';
 import * as commands from '@uiw/react-md-editor/lib/commands';
-import { generateDirectoryStructure, generateDirectoryFilese, getTags } from '@/libs/githubops';
+import { generateDirectoryStructure, generateDirectoryFilese, getTags } from '@/libs/getUsersDirectory';
 import CreatableSelect from 'react-select/creatable';
 import { useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
@@ -12,45 +12,20 @@ import Nav from '@/components/NavBar'
 
 
 export async function getStaticPaths() {
-  // const octokit = new Octokit({
-  //   auth: process.env.GITHUB_TOKEN,
-  // });
-  // const usersDir = 'users'; // Assuming 'users' is a directory in your GitHub repository
+  const fs = require('fs');
+  const path = require('path');
+  const users = fs.readdirSync(path.join(process.cwd(), 'data/users'));
+  const paths = users.map((user) => ({
+    params: { user: user },
+  }));
 
-  // const users = await octokit.repos.getContent({
-  //   owner: process.env.REPO_OWNER,
-  //   repo: process.env.REPO_NAME,
-  //   path: usersDir,
-  // });
-
-  // const paths = users.data
-  //   .filter((file) => file.type === 'dir')
-  //   .map((dir) => ({
-  //     params: { user: dir.name },
-  //   }));
-
-  return { paths: [], fallback: 'blocking' };
+  return { paths: paths, fallback: 'blocking' };
 }
 
 export async function getStaticProps({ params }) {
+  const path = require('path');
   const user = params.user;
-  const userDir = `/users/${user}`
-  const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN,
-  });
-
-  try {
-    await octokit.repos.getContent({
-      owner: process.env.REPO_OWNER,
-      repo: process.env.REPO_NAME,
-      path: userDir,
-    });
-  } catch (error) {
-    if (error.status === 404) {
-      return { notFound: true };
-    }
-    // Handle other errors if needed
-  }
+  const userDir = path.join(process.cwd(), 'data/users', user);
 
   const data = await generateDirectoryStructure(userDir);
   const directoryStructure = await generateDirectoryFilese(userDir);
@@ -71,12 +46,6 @@ const MDEditor = dynamic(
   { ssr: false }
 );
 
-const FolderTree = dynamic(
-  () => import('@/components/react-folder-tree/FolderTree'),
-  {
-    ssr: false,
-  }
-);
 
 const t2 = (() => {
   const languages = ['js', 'rust', 'ts', 'php', 'bash'];

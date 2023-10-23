@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   await runMiddleware(req, res, cors)
   const { username } = req.query;
   const owner = username; // Assuming the GitHub username is the owner of the repository
-  const userDir = `/users/${username}`; // Replace with your repository name
+  const userDir = `data/users/${username}`; // Replace with your repository name
 
   try {
     const data = await generateDirectoryStructure(userDir);
