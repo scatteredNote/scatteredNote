@@ -1,0 +1,1 @@
+[{"grab":"## Volumes & Bind Mount","views":"**Anonymous volume** - `docker run -v /app/data`\n\n\n**Named Volume** - `docker run -v data:/app/data\n\n\n**Bind Mount** - `docker run -v /path/to/code:/app/code`","tags":["docker"]}]
