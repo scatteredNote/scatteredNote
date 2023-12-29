@@ -24,7 +24,8 @@ const Home = () => {
           <div className=' font-extrabold text-xl tracking-tight px-2 lg:px-0 lg:text-[3.625rem] lg:leading-[4.952rem] text-center'>Grab <span className='text-[#011687]'>Contents</span> and take <span className='text-[#011687]'>Notes</span> with ease as you go about your day.</div>
           <div className='font-normal text-sm lg:text-md tracking-tight text-center  2xl:text-[1.25rem] lg:leading-[3rem] mt-8 px-2 lg:px-0'>Make Note-taking a by-product of your main task without getting distracted from your current main goal.</div>
           <div className='relative mt-8 w-[98%] sm:w-[80%] xl:w-[50%] aspect-video'>
-            <iframe src="https://api.vadoo.tv/iframe_test?id=rh5CuDrSu2GEBfFMtGQjdkbwT0sVUdNB" scrolling="no" className='w-full h-[315px]' allowfullscreen="1" allow="autoplay"></iframe>
+            <video src="https://github.com/scatteredNote/data/raw/main/Introduction.mp4" controls className='w-full h-full object-cover rounded-xl' />
+            {/* <iframe src="https://github.com/scatteredNote/data/raw/main/Introduction.mp4" scrolling="no" className='w-full h-[315px]' allowfullscreen="1" allow="autoplay"></iframe> */}
           </div>
         </div>
       </section>
