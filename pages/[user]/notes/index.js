@@ -104,10 +104,15 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const path = require('path');
+  const fs = require('fs')
   const user = params.user;
   const userDir = path.join(process.cwd(), 'data/users', user);
-  const contentlist = getUsersData(userDir);
-  let content = await getUsersDataContent(userDir)
+  let contentlist = [];
+  let content = []
+  if (fs.existsSync(userDir)) {
+    contentlist = getUsersData(userDir);
+    content = await getUsersDataContent(userDir)
+   }
   const mainContent = content?.length ? content[0] : []
   let i = 0;
   content = content.flatMap(({ id, path, content }) => {

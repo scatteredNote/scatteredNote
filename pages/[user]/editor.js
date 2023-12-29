@@ -14,7 +14,7 @@ import Nav from '@/components/NavBar'
 export async function getStaticPaths() {
   const fs = require('fs');
   const path = require('path');
-  const users = fs.readdirSync(path.join(process.cwd(), 'data/users'));
+  const users = fs.readdirSync(path.join(process.cwd(), 'data/users')) || [];
   const paths = users.map((user) => ({
     params: { user: user },
   }));
@@ -24,11 +24,16 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const path = require('path');
+  const fs = require('fs');
   const user = params.user;
   const userDir = path.join(process.cwd(), 'data/users', user);
+  let data = []
+  let directoryStructure = {}
 
-  const data = await generateDirectoryStructure(userDir);
-  const directoryStructure = await generateDirectoryFilese(userDir);
+  if (fs.existsSync(userDir)) {
+    data = await generateDirectoryStructure(userDir);
+    directoryStructure = await generateDirectoryFilese(userDir);
+  }
   const tags = await getTags(user) || []
 
   return {
