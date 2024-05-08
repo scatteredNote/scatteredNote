@@ -14,7 +14,7 @@
     "@fontsource/manrope": "^5.0.0",
     "@headlessui/react": "^1.7.15",
     "@octokit/rest": "^19.0.8",
-    "@uiw/react-markdown-preview": "^5.0.9",
+    "@uiw/react-markdown-preview": "5.0.9",
     "@uiw/react-md-editor": "3.6.0",
     "cors": "^2.8.5",
     "eslint": "8.35.0",

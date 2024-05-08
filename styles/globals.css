@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .wmde-markdown pre>code {
-  color: white !important;
+  color: black !important;
 }

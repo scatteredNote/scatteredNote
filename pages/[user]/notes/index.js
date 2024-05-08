@@ -1,9 +1,9 @@
 
 import DirectoryTree from '@/components/DirectoryTree';
-import { Octokit } from "@octokit/rest";
+
 import { getUsersData, getUsersDataContent } from '@/libs/getUsersDirectory';
 import { useState, useEffect } from "react";
-import { Remarkable } from 'remarkable';
+
 import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
 import dynamic from 'next/dynamic';
@@ -74,7 +74,7 @@ export default function Index({ user, contentlist, content, mainContent }) {
                     <iframe width="100%" height="315" src={`https://www.youtube.com/embed/${item.grab.split("/").pop().replace("t=", "start=")}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
                   </div> : <MarkdownPreview source={item.grab} className=' rounded-xl  w-full p-4 bg-white text-black' style={{ backgroundColor: 'white', color: 'black' }} wrapperElement={'light'} />}
                   <div className=' ml-16  border-dashed border-l-2 p-4 w-4 h-full' />
-                  <MarkdownPreview source={item.views} className=' rounded-xl  w-full p-4 ml-6 bg-black text-white' />
+                  <MarkdownPreview source={item.views} className=' rounded-xl  w-full p-4 ml-6 bg-black text-white' style={{ backgroundColor: 'black', color: 'white' }} wrapperElement={'dark'}  />
                 </div>
               )
             })}

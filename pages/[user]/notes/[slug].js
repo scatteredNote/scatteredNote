@@ -69,7 +69,7 @@ export default function Index({ user, contentlist, content, mainContent }) {
 
 
                   <div className=' ml-16  border-dashed border-l-2 p-4 w-4 h-full' />
-                  <MarkdownPreview source={item.views} className=' rounded-xl  w-full p-4 ml-6 bg-black text-white' />
+                  <MarkdownPreview source={item.views} className=' rounded-xl  w-full p-4 ml-6 bg-black text-white' style={{ backgroundColor: 'black', color: 'white' }} wrapperElement={'dark'}  />
                 </div>
               )
             })}

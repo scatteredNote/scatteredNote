@@ -41,13 +41,13 @@ export default function SearchPortal({ data }) {
   useRegisterActions(searchActions, [searchActions]);
   return (
     <KBarPortal>
-      <KBarPositioner className="bg-gray-300/50 p-4 backdrop-blur backdrop-filter dark:bg-black/50">
+      <KBarPositioner className=" p-4 backdrop-blur backdrop-filter bg-black/50">
         <KBarAnimator className="w-full max-w-xl">
-          <div className="overflow-hidden rounded-2xl border border-gray-100 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
+          <div className="overflow-hidden rounded-2xl border  border-gray-800 bg-gray-900">
             <div className="flex items-center space-x-4 p-4">
               <span className="block w-5">
                 <svg
-                  className="text-gray-400 dark:text-gray-300"
+                  className=" text-gray-400"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -63,9 +63,9 @@ export default function SearchPortal({ data }) {
               </span>
               <KBarSearch
                 defaultPlaceholder="Search"
-                className="h-8 w-full bg-transparent text-slate-600 placeholder-slate-400 focus:outline-none dark:text-slate-200 dark:placeholder-slate-500"
+                className="h-8 w-full bg-transparent focus:outline-none text-slate-200 placeholder-slate-500"
               />
-              <span className="inline-block whitespace-nowrap rounded border border-slate-400/70 px-1.5 align-middle font-medium leading-4 tracking-wide text-slate-500 [font-size:10px] dark:border-slate-600 dark:text-slate-400">
+              <span className="inline-block whitespace-nowrap rounded border border-slate-400/70 px-1.5 align-middle font-medium leading-4 tracking-wide [font-size:10px] border-slate-600 text-slate-400">
                 ESC
               </span>
             </div>
